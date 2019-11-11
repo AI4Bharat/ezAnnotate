@@ -31,7 +31,7 @@ Two main subcomponents:
     
     Setup mysql server as in: https://github.com/DataTurks/DataTurks/blob/master/hope/docker/mysqlInit.sql
     
-    # java -Djava.net.useSystemProxies=true -server -jar dataturks-1.0-SNAPSHOT.jar server onprem.yml
+    # java -Djava.net.useSystemProxies=true -server -jar target/dataturks-1.0-SNAPSHOT.jar server onprem.yml
     
   2. Bazaar: React based front-end.
    
