@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>                        
           </button>-->
-          <a class="navbar-brand navbar-brand-imp" href="#">Dataturks</a>
+          <a class="navbar-brand navbar-brand-imp" href="/">Dataturks</a>
         </div>
         <!--<div class="collapse navbar-collapse" id="pageNavBar">
         <ul class="nav navbar-nav navbar-right">
@@ -267,9 +267,6 @@
             <div class="row text-center">
                 <div class="col-md-6 col-md-offset-3 text-center marginTop">
                     <hr class="small">
-                    
-                    <p class="text-muted">(+91) 080-331-72755, +91-99010-49915, +91-88614-08222</p>
-                    <p class="text-muted">contact@dataturks.com</p>
                 </div>
             </div>
             

@@ -87,6 +87,12 @@
       <version>1.7.4</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>6.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <properties>
     <jetty.version>6.1.26</jetty.version>

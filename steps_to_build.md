@@ -1,7 +1,8 @@
-## Steps to build
+## Steps to build from source
 
 - Clone this repo first and `cd` into it.
-- Was tested and successfully working on Ubuntu 16.04 GCP VM
+- Was tested and successfully working on Ubuntu 16.04 GCP VM and Ubuntu 18.04 locally.
+- If you're feeling lazy to build from scratch, use [this pre-built docker image](https://medium.com/@dataturks/dataturks-on-prem-a-fully-self-hosted-data-annotation-solution-86b455bf0634).
 
 ### Initial Setup
 ```
@@ -24,36 +25,25 @@ cd hope/
 
 ##### Install MySQL
 ```bash
-sudo apt install mysql-server
-sudo service start mysql
+sudo apt install -y mysql-server
+sudo service mysql start
 ```
-- Ensure you know the root password of MySQL, which you'll have to enter below.
+- Ensure you know the [root password](https://stackoverflow.com/a/54165621/5002496) of MySQL, which you'll have to enter below.
 
 ##### Creating the DB schema
 ```bash
-mysql -u root -e "CREATE DATABASE hope" -p
-mysql -u root -e "CREATE USER dataturks@'127.0.0.1' IDENTIFIED BY '12345';" -p
-mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE ON hope.* TO dataturks@127.0.0.1;FLUSH PRIVILEGES;" -p
-mysql -u root hope -p < docker/mysqlInit.sql
-```
-
-#### Setting up the server stack
-```
-sudo apt install apache2 php7.0 libapache2-mod-php7.0
-sudo cp docker/onprem-dataturks.com.conf /etc/apache2/sites-available/
-sudo cp docker/onprem-dataturks.com.conf /etc/apache2/sites-available/000-default.conf
-sudo a2enmod proxy_http
-sudo service apache2 restart
-sudo a2enmod php7.0
-sudo a2ensite onprem-dataturks.com.conf
-sudo service apache2 reload
+sudo mysql -u root -e "CREATE DATABASE hope" -p
+sudo mysql -u root -e "CREATE USER dataturks@'127.0.0.1' IDENTIFIED BY '12345';" -p
+sudo mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE ON hope.* TO dataturks@127.0.0.1;FLUSH PRIVILEGES;" -p
+sudo mysql -u root hope -p < docker/mysqlInit.sql
 ```
 
 #### Building `hope` (DataTurk's Java backend)
 ```
-sudo apt install default-jdk maven
+sudo apt install -y openjdk-8-jdk openjdk-8-jre maven
 mvn package -DskipTests
 ```
+(Ensure that `java -version` command gives the java version as `1.8`)
 
 #### Starting the backend server
 ```
@@ -69,21 +59,35 @@ cd bazaar/
 chmod -R 777 *
 ```
 
+#### Setting up the server stack
+```
+sudo apt install -y apache2 php7.0 libapache2-mod-php7.0
+sudo a2enmod proxy_http
+sudo a2enmod php7.0
+sudo service apache2 restart
+
+sudo cp ../hope/docker/onprem-dataturks.com.conf /etc/apache2/sites-available/
+sudo sed -i "s|/home/dataturks/bazaar|`pwd`|g" /etc/apache2/sites-available/onprem-dataturks.com.conf
+sudo cp /etc/apache2/sites-available/onprem-dataturks.com.conf /etc/apache2/sites-available/000-default.conf
+sudo a2ensite onprem-dataturks.com.conf
+sudo service apache2 reload
+```
+
 #### Setting up NodeJS
 
 ```
-sudo apt install build-essential nodejs
+sudo apt install -y build-essential
 curl -sL https://deb.nodesource.com/setup_8.x >/tmp/install_node.sh
 chmod 777 /tmp/install_node.sh
 sudo /tmp/install_node.sh
+sudo apt install -y nodejs
 sudo npm i -g nodemon
 ```
-
-#### Building `bazaar` (DataTurk's frontend)
+    
+#### Building `bazaar` (DataTurk's React frontend)
 ```
-npm install
-npm run build-onprem
-npm prune
+npm install && npm run build-onprem
+npm prune #Optional
 ```
 
 #### Starting the frontend service
@@ -92,5 +96,4 @@ npm run start-onprem
 ```
 
 - Now, you should be able to go to [http://localhost:3000](http://localhost:3000) and view the on-prem website.
-- What now? Go mind your own business.
-
+- What now? Go do whatever you want.

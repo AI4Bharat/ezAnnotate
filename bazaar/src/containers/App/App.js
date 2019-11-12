@@ -339,7 +339,7 @@ export default class App extends Component {
          <Navbar fixedTop style={spaceStyle}>
          <Navbar.Header>
             <Navbar.Brand>
-              <a href="https://dataturks.com">
+              <a href="/">
                 <div className={styles.brand}/>
                 <span style={{color: '#ffffff'}}>
                   <h3 className={styles.brandLink}>
@@ -474,9 +474,14 @@ export default class App extends Component {
         </Segment>
       }
 
-
         <div className="col-md-0.5" />
           <Segment basic vertical>
+		  { !user && !spaceOpen &&
+		  <div id="container">
+		    <br/>
+		    <h2 style={{ textAlign: 'center', marginTop: '2%' }}> Please login to start using the platform! </h2>
+		  </div>
+		  }
           {this.state.apiKeyModal &&
           <div>
             <Modal.Dialog>
@@ -547,9 +552,7 @@ export default class App extends Component {
           </div>
             <div className="footer-links centered">
                 <div className="text-center marginTop">
-                    <hr className="small" />
-                    <p>(+91) 080-331-72755, +91-99010-49915, +91-88614-08222</p>
-                    <p>contact@dataturks.com</p>
+                    
                 </div>
             </div>
 
@@ -560,3 +563,4 @@ export default class App extends Component {
     );
   }
 }
+
