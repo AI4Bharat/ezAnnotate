@@ -42,6 +42,10 @@ public class DataDownloadHandler {
         return handleForTextTypes(reqObj, project, downloadType);
     }
 
+    public static String handleTextTranslation(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
+        return handleForTextTypes(reqObj, project, downloadType);
+    }
+
     public static String handleTextModeration(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
         return handleForTextTypes(reqObj, project, downloadType);
     }

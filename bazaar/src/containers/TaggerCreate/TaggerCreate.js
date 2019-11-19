@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 import { logEvent } from '../../helpers/dthelper';
 import { Card, Label, Header } from 'semantic-ui-react';
 import { push } from 'react-router-redux';
-import { TEXT_SUMMARIZATION, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_CLASSIFICATION } from '../../helpers/Utils';
+import { TEXT_SUMMARIZATION, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_CLASSIFICATION, SENTENCE_TRANSLATION } from '../../helpers/Utils';
 
 @connect(
   state => ({user: state.auth.user}),
@@ -276,6 +276,25 @@ export default class TaggerCreate extends Component {
                             </Card.Meta>
                             <Card.Description>
                                 Get your team to moderate the user generated text
+                            </Card.Description>
+                          </Card.Content>
+                          <Card.Content extra>
+                              <Label color="green" primary name="posT" size="small">Create Dataset</Label>
+                          </Card.Content>
+                        </Card>
+
+                        <Card raised blue centered onClick={this.createProject.bind(this, SENTENCE_TRANSLATION)} style={{ padding: '1%', margin: '1%'}}>
+                            <Card.Header className="text-center">
+                              <h3> Sentence Translation </h3>
+                            </Card.Header>
+                          <Card.Content extra onClick={this.createProject}>
+                            <Card.Meta className="marginTop">
+                              <span className="date">
+                                NLP, Text Processing
+                              </span>
+                            </Card.Meta>
+                            <Card.Description>
+                                Upload sentences and invite people to write translations
                             </Card.Description>
                           </Card.Content>
                           <Card.Content extra>

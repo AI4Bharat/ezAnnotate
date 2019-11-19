@@ -64,6 +64,7 @@ import {
   convertKeyToString,
   POS_TAGGING,
   TEXT_SUMMARIZATION,
+  SENTENCE_TRANSLATION,
   IMAGE_BOUNDING_BOX,
   TEXT_CLASSIFICATION,
   HIT_STATE_SKIPPED,
@@ -316,7 +317,8 @@ export default class TaggerSpace extends Component {
       this.props.projectDetails &&
       this.props.currentHit &&
       (this.props.projectDetails.task_type === TEXT_SUMMARIZATION ||
-        this.props.projectDetails.task_type === TEXT_MODERATION)
+        this.props.projectDetails.task_type === TEXT_MODERATION ||
+        this.props.projectDetails.task_type === SENTENCE_TRANSLATION)
     ) {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
       let shortcuts = getDetaultShortcuts(this.props.projectDetails.task_type);
@@ -668,6 +670,7 @@ export default class TaggerSpace extends Component {
         case POS_TAGGING:
         case TEXT_MODERATION:
         case TEXT_SUMMARIZATION:
+        case SENTENCE_TRANSLATION:
         case TEXT_CLASSIFICATION:
         case IMAGE_CLASSIFICATION:
         case VIDEO_CLASSIFICATION:
@@ -1234,7 +1237,8 @@ export default class TaggerSpace extends Component {
       return tagString.trim();
     } else if (
       this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-      this.state.projectDetails.task_type === TEXT_MODERATION
+      this.state.projectDetails.task_type === TEXT_MODERATION ||
+      this.state.projectDetails.task_type == SENTENCE_TRANSLATION
     ) {
       return this.state.textSummary;
     } else if (
@@ -1587,7 +1591,8 @@ export default class TaggerSpace extends Component {
             }
           } else if (
             projectDetails.task_type === TEXT_SUMMARIZATION ||
-            projectDetails.task_type === TEXT_MODERATION
+            projectDetails.task_type === TEXT_MODERATION ||
+            projectDetails.task_type === SENTENCE_TRANSLATION
           ) {
             if (response.body.hits.length > 0) {
               let textSummary = "";
@@ -1954,7 +1959,8 @@ export default class TaggerSpace extends Component {
             }
           } else if (
             this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-            this.state.projectDetails.task_type === TEXT_MODERATION
+            this.state.projectDetails.task_type === TEXT_MODERATION ||
+            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
           ) {
             textSummary = currentHit.result;
           } else if (
@@ -1984,7 +1990,8 @@ export default class TaggerSpace extends Component {
         } else if (currentHit.hitResults !== null) {
           if (
             this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-            this.state.projectDetails.task_type === TEXT_MODERATION
+            this.state.projectDetails.task_type === TEXT_MODERATION ||
+            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
           ) {
             textSummary = currentHit.hitResults[0].result;
           } else if (
@@ -2384,6 +2391,17 @@ export default class TaggerSpace extends Component {
           label="Moderated Text"
           value={this.state.textSummary}
           placeholder="Write moderated text here..."
+        />
+      );
+    } else if(type === SENTENCE_TRANSLATION) {
+      return (
+        <Form.Field
+          id="write_text"
+          control={TextArea}
+          onChange={this.handleChange.bind(this, "summary")}
+          label="Translated Text"
+          value={this.state.textSummary}
+          placeholder="Write translated text here..."
         />
       );
     }
@@ -4164,8 +4182,7 @@ export default class TaggerSpace extends Component {
                           </div>
                         </Fullscreen>
                       )}
-                      {this.state.projectDetails.task_type ===
-                        TEXT_SUMMARIZATION && (
+                      {this.state.projectDetails.task_type === TEXT_SUMMARIZATION && (
                         <Fullscreen
                           enabled={this.state.fullScreen}
                           onChange={isFullscreenEnabled =>
@@ -4179,7 +4196,35 @@ export default class TaggerSpace extends Component {
                             {extra && <div>{this.showExtra(extra)}</div>}
                             {this.showText()}
                             <br />
-                            {this.showWriteText(TEXT_SUMMARIZATION)}
+                            {this.showWriteText(this.state.projectDetails.task_type)}
+                            {this.state.loading &&
+                              this.state.isFullscreenEnabled && (
+                                <Segment basic vertical loading />
+                              )}
+                            <div
+                              style={{ height: "20px" }}
+                              disabled={this.state.loading}
+                            />
+                            {this.state.type === "notDone" &&
+                              this.showButtons()}
+                          </div>
+                        </Fullscreen>
+                      )}
+                      {this.state.projectDetails.task_type === SENTENCE_TRANSLATION && (
+                        <Fullscreen
+                          enabled={this.state.fullScreen}
+                          onChange={isFullscreenEnabled =>
+                            this.setState({
+                              isFullscreenEnabled,
+                              fullScreen: isFullscreenEnabled
+                            })
+                          }
+                        >
+                          <div className="marginTopExtra">
+                            {extra && <div>{this.showExtra(extra)}</div>}
+                            {this.showText()}
+                            <br />
+                            {this.showWriteText(this.state.projectDetails.task_type)}
                             {this.state.loading &&
                               this.state.isFullscreenEnabled && (
                                 <Segment basic vertical loading />

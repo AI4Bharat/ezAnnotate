@@ -6,7 +6,7 @@ import { uploadDataForm, updateFileUploadStats, selectProject, updateHomeData, g
 import { uploadFileDT, getUidToken, getHomeData, logEvent } from '../../helpers/dthelper';
 import { push } from 'react-router-redux';
 import { posSample, imageBoundingSample, imagePolyBoundingSample, textClassificationJsonSample } from '../../helpers/Utils';
-import { VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, DOCUMENT_ANNOTATION, TEXT_SUMMARIZATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING, POS_TAGGING_GENERIC, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_BOUNDING_BOX } from '../../helpers/Utils';
+import { VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, DOCUMENT_ANNOTATION, TEXT_SUMMARIZATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING, POS_TAGGING_GENERIC, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_BOUNDING_BOX, SENTENCE_TRANSLATION } from '../../helpers/Utils';
 // import { GoogleLogin } from 'react-google-login';
 // import FontAwesome from 'react-fontawesome';
 import { Checkbox, Button, Label, Icon, Form, Divider, Card, Statistic, Input, Segment, Progress, Accordion, Menu } from 'semantic-ui-react';
@@ -185,7 +185,7 @@ export default class TaggerImport extends Component {
       console.log('project already created, upload file');
       logEvent('buttons', 'file uploading');
       if (this.state.uploadType === 'Pre-Annotated') {
-        if (this.props.location.query.type === TEXT_SUMMARIZATION || this.props.location.query.type === TEXT_MODERATION || this.props.location.query.type === VIDEO_CLASSIFICATION
+        if (this.props.location.query.type === TEXT_SUMMARIZATION || this.props.location.query.type === SENTENCE_TRANSLATION || this.props.location.query.type === TEXT_MODERATION || this.props.location.query.type === VIDEO_CLASSIFICATION
           || this.props.location.query.type === IMAGE_CLASSIFICATION) {
           uploadFileDT(this.state.file, this.props.currentProject, this.fileUploaded, this.fileUploadProgressCallback, 'PRE_TAGGED_TSV');
         }  else if (this.props.location.query.type === TEXT_CLASSIFICATION) {
@@ -281,7 +281,7 @@ export default class TaggerImport extends Component {
     if ((type === POS_TAGGING || type === POS_TAGGING_GENERIC || type === TEXT_CLASSIFICATION || type === DOCUMENT_ANNOTATION || type === IMAGE_CLASSIFICATION || type === IMAGE_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX || type === VIDEO_CLASSIFICATION || type === VIDEO_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX_V2) &&
     ((Object.keys(this.state.fields).length === 6 || (this.state.file)) && !this.state.loading)) {
       submitDisabled = false;
-    } else if ((type === TEXT_SUMMARIZATION || type === TEXT_MODERATION) && ((Object.keys(this.state.fields).length === 5 || (this.state.file)) && !this.state.loading)) {
+    } else if ((type === TEXT_SUMMARIZATION || type === TEXT_MODERATION || type === SENTENCE_TRANSLATION) && ((Object.keys(this.state.fields).length === 5 || (this.state.file)) && !this.state.loading)) {
       submitDisabled = false;
     }
     if (!submitDisabled && (this.state.fields.project_name && this.state.fields.project_name.length === 0)) {
@@ -335,6 +335,9 @@ export default class TaggerImport extends Component {
         break;
       case TEXT_SUMMARIZATION:
         namePlaceHolder = 'Resume Summarization Dataset';
+        break;
+      case SENTENCE_TRANSLATION:
+        namePlaceHolder = 'English to Hebrew Translation Dataset';
         break;
     }
     const docOptions = (
@@ -434,6 +437,10 @@ export default class TaggerImport extends Component {
                                       {
                                         type === TEXT_SUMMARIZATION &&
                                         'Summarize Text'
+                                      }
+                                      {
+                                        type === SENTENCE_TRANSLATION &&
+                                        'Translate Sentences'
                                       }
                                       {
                                         type === TEXT_MODERATION &&
@@ -706,7 +713,7 @@ export default class TaggerImport extends Component {
                                 </div>
                                 }
                                 {
-                                 (type === TEXT_SUMMARIZATION || type === TEXT_MODERATION) &&
+                                 (type === TEXT_SUMMARIZATION || type === TEXT_MODERATION || type === SENTENCE_TRANSLATION) &&
                                  <div>
                                     <p>
                                     Please upload a text file with each line in file having input sentence in following tab seperated format.
@@ -836,26 +843,6 @@ export default class TaggerImport extends Component {
 
                                 </p>
                                 }
-                              {
-                                 type === TEXT_SUMMARIZATION &&
-                                 <div>
-                                    <p>
-                                    Please upload a text file with each line in file having input sentence in following tab seperated format.
-                                     Max size 10MB
-                                <pre>
-                                  Text Line           Result Text     Extra KeyValue Pair1(optional)    Extra KeyValue Pair1(optional)
-
-
-                                  AFP - India's Tata Iron and Steel Company Ltd.      Tata Iron and Steel Company.    id=1  content=games
-
-                                  British Foreign Minister         UK Foreign Minister id=2  content=UK  site=34
-
-                                  Japan carmaker Toyota         Japanese carmaker Toyota    id=100
-                                </pre>
-                                    <b>Content</b> contains input text, <b>annotation</b> has the labeled content, <b>extras</b> is for some extra columns that you want to show with each row.
-                                      </p>
-                                </div>
-                                }
                                <div className="col-md-5" />
                                 <div className="col-md-3 text-center" style={inputWidth}>
                                 <form encType="multipart/form-data" action="" key="importFile" className="text-center">
@@ -901,6 +888,11 @@ export default class TaggerImport extends Component {
                                   </div>
                                 }
                                 { type === TEXT_SUMMARIZATION &&
+                                    <p>Please upload a text file with each line in file having sentence to be summarized.<br />
+                                                           <strong> OR </strong> <br />
+                                    A zip file of all the text documents to be summarized. Max file size is 100 MB for free plans</p>
+                                }
+                                { type === SENTENCE_TRANSLATION &&
                                     <p>Please upload a text file with each line in file having sentence to be summarized.<br />
                                                            <strong> OR </strong> <br />
                                     A zip file of all the text documents to be summarized. Max file size is 100 MB for free plans</p>

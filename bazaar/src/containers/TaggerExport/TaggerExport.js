@@ -8,7 +8,7 @@ import { setCurrentProject, getProjectDetails } from 'redux/modules/dataturks';
 // import FontAwesome from 'react-fontawesome';
 import { Button, Form, Label, Segment, Icon, Breadcrumb } from 'semantic-ui-react';
 import { goBack, push } from 'react-router-redux';
-import { TEXT_SUMMARIZATION, DOCUMENT_ANNOTATION, POS_TAGGING_GENERIC, POS_TAGGING, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, IMAGE_CLASSIFICATION} from '../../helpers/Utils';
+import { TEXT_SUMMARIZATION, DOCUMENT_ANNOTATION, POS_TAGGING_GENERIC, POS_TAGGING, TEXT_CLASSIFICATION, TEXT_MODERATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, IMAGE_CLASSIFICATION, SENTENCE_TRANSLATION} from '../../helpers/Utils';
 
 const FileSaver = require('file-saver');
 
@@ -80,7 +80,7 @@ export default class TaggerExport extends Component {
       const blob = new Blob([response.text], {type: 'application/octet-stream'});
       if (this.props.projectDetails) {
         const taskType = this.props.projectDetails.task_type;
-        if (taskType === TEXT_MODERATION || taskType === TEXT_SUMMARIZATION) {
+        if (taskType === TEXT_MODERATION || taskType === TEXT_SUMMARIZATION || taskType === SENTENCE_TRANSLATION) {
           FileSaver.saveAs(blob, this.props.projectDetails.name + '.tsv');
         } else {
           if (this.state.downloadFormat === 'json') {
@@ -175,6 +175,9 @@ export default class TaggerExport extends Component {
                                 <p>Download file would be a text file where each line is a JSON containing the selected text, start index, end index and marked category</p>
                                 }
                                 { this.props.projectDetails && this.props.projectDetails.task_type === TEXT_SUMMARIZATION &&
+                                <p>Download file would be a tab seperated file with input in first column and output row in second column.</p>
+                                }
+                                { this.props.projectDetails && this.props.projectDetails.task_type === SENTENCE_TRANSLATION &&
                                 <p>Download file would be a tab seperated file with input in first column and output row in second column.</p>
                                 }
                                 { this.props.projectDetails && this.props.projectDetails.task_type === TEXT_MODERATION &&

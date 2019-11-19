@@ -157,6 +157,9 @@ public class Controlcenter {
                         case TEXT_SUMMARIZATION:
                             response = DataUploadHandler.handleTextSummarization(reqObj,  project, filePath);
                             break;
+                        case SENTENCE_TRANSLATION:
+                            response = DataUploadHandler.handleSentenceTranslation(reqObj,  project, filePath);
+                            break;
                         case TEXT_MODERATION:
                             response = DataUploadHandler.handleTextModeration(reqObj,  project, filePath);
                             break;
@@ -223,6 +226,9 @@ public class Controlcenter {
                         break;
                     case TEXT_SUMMARIZATION:
                         filePath = DataDownloadHandler.handleTextSummarization(reqObj,  project, downloadType);
+                        break;
+                    case SENTENCE_TRANSLATION:
+                        filePath = DataDownloadHandler.handleTextTranslation(reqObj,  project, downloadType);
                         break;
                     case TEXT_MODERATION:
                         filePath = DataDownloadHandler.handleTextModeration(reqObj,  project, downloadType);
@@ -610,6 +616,9 @@ public class Controlcenter {
                 stats = StatsHandler.handleTextClassification(reqObj, project);
                 break;
             case TEXT_SUMMARIZATION:
+                stats = StatsHandler.handleTextSummarization(reqObj, project);
+                break;
+            case SENTENCE_TRANSLATION: //TODO_SENTENCE_TRANSLATION
                 stats = StatsHandler.handleTextSummarization(reqObj, project);
                 break;
             case TEXT_MODERATION:

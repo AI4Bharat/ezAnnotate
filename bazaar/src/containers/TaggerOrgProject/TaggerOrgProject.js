@@ -48,7 +48,8 @@ import {
   createEntitiesJson,
   TEXT_MODERATION,
   createDocEntityColorMap,
-  TEXT_SUMMARIZATION
+  TEXT_SUMMARIZATION,
+  SENTENCE_TRANSLATION
 } from "../../helpers/Utils";
 import { TaggerInvite } from "../../components";
 import { push } from "react-router-redux";
@@ -2008,7 +2009,7 @@ export default class TaggerOrgProject extends Component {
         {projectDetails &&
           hitsDetails &&
           hitsDetails.length > 0 &&
-          projectDetails.task_type === TEXT_SUMMARIZATION && (
+          (projectDetails.task_type === TEXT_SUMMARIZATION || projectDetails.task_type === SENTENCE_TRANSLATION) && (
             <Segment.Group>
               <Header attached="top" block as="h4">
                 <Icon name="list" disabled />
@@ -2016,7 +2017,7 @@ export default class TaggerOrgProject extends Component {
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
-                {this.showSummaries(hitsDetails, TEXT_SUMMARIZATION)}
+                {this.showSummaries(hitsDetails, projectDetails.task_type)}
               </Segment>
             </Segment.Group>
           )}

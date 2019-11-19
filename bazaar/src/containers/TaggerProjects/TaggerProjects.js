@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux';
 import { Card, Button, Menu, Dropdown, Header, Progress, Segment, Label, Icon, Message } from 'semantic-ui-react';
 import { push } from 'react-router-redux';
 import { getHomeData, getUidToken, refreshUidToken, logEvent } from '../../helpers/dthelper';
-import { timeConverter, taskTypeMap, DUMMY_UID, POS_TAGGING, POS_TAGGING_GENERIC, TEXT_SUMMARIZATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, TEXT_CLASSIFICATION, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX } from '../../helpers/Utils';
+import { timeConverter, taskTypeMap, DUMMY_UID, POS_TAGGING, POS_TAGGING_GENERIC, TEXT_SUMMARIZATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, TEXT_CLASSIFICATION, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, SENTENCE_TRANSLATION } from '../../helpers/Utils';
 import { updateHomeData, selectProject, getOrgDetails, updateProjectDetails } from 'redux/modules/dataturks';
 import { signIn } from 'redux/modules/auth';
 
@@ -135,6 +135,8 @@ export default class TaggerProjects extends Component {
 
                               }
                               {projects[index].projectDetails.task_type === TEXT_SUMMARIZATION && 'Write Summary'
+                              }
+                              {projects[index].projectDetails.task_type === SENTENCE_TRANSLATION && 'Write Translations'
                               }
                               {projects[index].projectDetails.task_type === TEXT_MODERATION && 'Moderate Text'
                               }

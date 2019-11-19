@@ -9,7 +9,7 @@ import { setCurrentProject } from 'redux/modules/dataturks';
 import { Segment, Statistic, Header, Button, Icon, Breadcrumb } from 'semantic-ui-react';
 import { push, goBack } from 'react-router-redux';
 import { fetchStats, getUidToken } from '../../helpers/dthelper';
-import { POS_TAGGING, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX_V2, TEXT_CLASSIFICATION, POS_TAGGING_GENERIC, IMAGE_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_CLASSIFICATION, TEXT_SUMMARIZATION, TEXT_MODERATION } from '../../helpers/Utils';
+import { POS_TAGGING, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX_V2, TEXT_CLASSIFICATION, POS_TAGGING_GENERIC, IMAGE_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_CLASSIFICATION, TEXT_SUMMARIZATION, TEXT_MODERATION, SENTENCE_TRANSLATION } from '../../helpers/Utils';
 import { BarChart, Bar, Tooltip, YAxis, XAxis, Legend } from 'recharts';
 import Table from 'react-bootstrap/lib/Table';
 
@@ -220,7 +220,7 @@ export default class TaggerVisualize extends Component {
       if (response.body.details.task_type === POS_TAGGING) {
         projectStats = response.body.posTaggingStats;
         taskType = response.body.details.task_type;
-      } else if (response.body.details.task_type === TEXT_SUMMARIZATION || response.body.details.task_type === TEXT_MODERATION) {
+      } else if (response.body.details.task_type === TEXT_SUMMARIZATION || response.body.details.task_type === TEXT_MODERATION || response.body.details.task_type === SENTENCE_TRANSLATION) {
         projectStats = response.body.textSummarizationStats;
         taskType = response.body.details.task_type;
       } else if (response.body.details.task_type === TEXT_CLASSIFICATION) {
@@ -385,7 +385,7 @@ export default class TaggerVisualize extends Component {
                             </Segment>
                            </div>
                           }
-                          { (projectStats && taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION ) &&
+                          { (projectStats && taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION || taskType === SENTENCE_TRANSLATION ) &&
                             <div className="text-center col-md-12">
                             <Segment basic vertical textAlign="center" loading={this.state.loading}>
                               <Header as="h2">Insights from completed HITs</Header>
@@ -447,7 +447,7 @@ export default class TaggerVisualize extends Component {
                            </div>
                           }
 
-                           { projectStats && ( taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION ) &&
+                           { projectStats && ( taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION || taskType === SENTENCE_TRANSLATION ) &&
                             <div className="text-center col-md-12">
                               <Segment basic vertical textAlign="center" loading={this.state.loading}>
                               <div className="marginTop" style={{ paddingLeft: '20%', paddingRight: '20%' }}>

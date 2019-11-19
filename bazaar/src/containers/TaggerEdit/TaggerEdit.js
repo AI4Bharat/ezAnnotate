@@ -10,7 +10,7 @@ import { push } from 'react-router-redux';
 import { uploadFileDT, editProject, getHomeData, getUidToken } from '../../helpers/dthelper';
 import { posSample, imageBoundingSample, imagePolyBoundingSample, textClassificationJsonSample } from '../../helpers/Utils';
 import { updateFileUploadStats, updateHomeData, setCurrentProject, getProjectDetails, getUserHomeData } from 'redux/modules/dataturks';
-import { IMAGE_POLYGON_BOUNDING_BOX, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_BOUNDING_BOX, TEXT_SUMMARIZATION, POS_TAGGING, TEXT_CLASSIFICATION, IMAGE_CLASSIFICATION, TEXT_MODERATION } from '../../helpers/Utils';
+import { IMAGE_POLYGON_BOUNDING_BOX, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_BOUNDING_BOX, TEXT_SUMMARIZATION, POS_TAGGING, TEXT_CLASSIFICATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, SENTENCE_TRANSLATION } from '../../helpers/Utils';
 
 const bytes = require('bytes');
 
@@ -275,7 +275,7 @@ export default class TaggerEdit extends Component {
     if (this.props.currentProject && this.state.file) {
       console.log('project file', response);
       if (this.state.uploadType === 'Pre-Annotated') {
-        if (this.props.projectDetails.task_type === TEXT_SUMMARIZATION || this.props.projectDetails.task_type === TEXT_MODERATION ||
+        if (this.props.projectDetails.task_type === TEXT_SUMMARIZATION || this.props.projectDetails.task_type === TEXT_MODERATION || this.props.projectDetails.task_type === SENTENCE_TRANSLATION ||
           this.props.projectDetails.task_type === IMAGE_CLASSIFICATION || this.props.projectDetails.task_type === VIDEO_CLASSIFICATION) {
           uploadFileDT(this.state.file, this.props.currentProject, this.fileUploaded, this.fileUploadProgressCallback, 'PRE_TAGGED_TSV');
         } else if (this.props.projectDetails.task_type === TEXT_CLASSIFICATION) {
@@ -715,6 +715,33 @@ export default class TaggerEdit extends Component {
                               }
                             </div>
                           }
+                          { this.state.type === 'label' && projectDetails && projectDetails.task_type === SENTENCE_TRANSLATION &&
+                            <div>
+                              <br />
+                              {!this.state.projectEdited &&
+                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                                <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
+                                <br />
+                                <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Translate" control="TextArea" value={instructions} />
+                                <br />
+                                <br />
+                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                    <p className={styles.error} disabled={!this.state.errors}>
+                                      {this.state.errors}
+                                    </p>
+                              </Form>
+                              }
+                              {
+                                this.state.projectEdited &&
+                                <div>
+                                  <h2> Project Update successful</h2>
+                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName )}>
+                                      Go Back to Projects
+                                    </Button>
+                                </div>
+                              }
+                            </div>
+                          }
                           {this.state.type === 'file' && !this.state.uploadType && !this.state.fileUploaded && projectDetails &&
                           <div>
                             <h2> Select Upload Type </h2>
@@ -754,7 +781,7 @@ export default class TaggerEdit extends Component {
                                   </p>
                                 </div>
                                 }
-                                { (projectDetails.task_type === TEXT_SUMMARIZATION || projectDetails.task_type === TEXT_MODERATION) &&
+                                { (projectDetails.task_type === TEXT_SUMMARIZATION || projectDetails.task_type === TEXT_MODERATION || projectDetails.task_type === SENTENCE_TRANSLATION) &&
                                 <p>
                                 Please upload a text file with each line in file having input sentence in following tab seperated format.
                                  Max size 10MB
@@ -979,6 +1006,11 @@ export default class TaggerEdit extends Component {
                                     <p>Please upload a text file with each line in file having sentence to be summarized.<br />
                                                            <strong> OR </strong> <br />
                                     A zip file of all the text documents to be summarized. Max file size is 100 MB for free plans</p>
+                                }
+                                { projectDetails.task_type === SENTENCE_TRANSLATION &&
+                                    <p>Please upload a text file with each line in file having sentence to be translated.<br />
+                                                           <strong> OR </strong> <br />
+                                    A zip file of all the text documents to be translated. Max file size is 100 MB for free plans</p>
                                 }
                                 { projectDetails.task_type === TEXT_MODERATION &&
                                     <p>Please upload a text file with each line in file having sentence to be moderated.<br />
