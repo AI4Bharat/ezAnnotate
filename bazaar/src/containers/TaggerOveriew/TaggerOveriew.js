@@ -1019,6 +1019,11 @@ showClassificationImages = (hitsDetails) => {
        <h2>No Sample HITs</h2>
      );
    }
+   if (this.state.projectDetails.task_type === SENTENCE_TRANSLATION){
+    return (
+      <h2>No Sample HITs</h2>
+    );
+   }
    console.log('show hits details ', hitsDetails);
    const currentHit = hitsDetails[this.state.start];
    const data = currentHit.data;

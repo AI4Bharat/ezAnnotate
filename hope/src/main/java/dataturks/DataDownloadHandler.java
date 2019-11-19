@@ -43,7 +43,32 @@ public class DataDownloadHandler {
     }
 
     public static String handleTextTranslation(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
-        return handleForTextTypes(reqObj, project, downloadType);
+        List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
+        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
+
+        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
+        for (DHitsResult result : results) {
+            hitsResultMap.put(result.getHitId(), result);
+        }
+        String separator = DConstants.TEXT_INPUT_RESULT_SEPARATOR;
+
+        List<String> lines = new ArrayList<>();
+        lines.add("input"+ DConstants.TEXT_INPUT_RESULT_SEPARATOR  + "result");
+        //get all hit/hit id pairs.
+        for (DHits hit : hits) {
+            if (DConstants.HIT_STATUS_DONE.equalsIgnoreCase(hit.getStatus()) && hitsResultMap.containsKey(hit.getId())) {
+                lines.add(hit.getData() + separator + hitsResultMap.get(hit.getId()).getResult() + separator + hitsResultMap.get(hit.getId()).getUserId());
+            }
+
+            else if (downloadType == DTypes.File_Download_Type.ALL) {
+                //in case of skipped, we might have some result.
+                String resultData = hitsResultMap.containsKey(hit.getId())? hitsResultMap.get(hit.getId()).getResult(): "";
+                lines.add(hit.getData() + separator + resultData + separator + hitsResultMap.get(hit.getId()));
+            }
+        }
+
+        String filePath = DataDownloadHelper.outputToTempFile(lines, project.getName() + ".tsv");
+        return filePath;
     }
 
     public static String handleTextModeration(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {

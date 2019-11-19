@@ -2340,6 +2340,37 @@ export default class TaggerSpace extends Component {
     );
   }
 
+  showTranslationText() {
+    // const currentHit = this.state.currentHit;
+    const { data } = this.state.currentHit;
+    const sid = this.state.currentHit.data.split('|')[0];
+    const srcTxt = this.state.currentHit.data.split('|')[1];
+    const destTxt = this.state.currentHit.data.split('|')[2];
+
+    console.log("show text", this.state);
+    return (
+      <div>
+        <label> Source Text </label>
+        <div className={styles.tagArea}>
+          <p className={styles.textStyle}>{srcTxt}</p>
+        </div>
+        <br />
+        <label> Uncorrected Translation </label>
+        <div className={styles.tagArea}>
+        <p className={styles.textStyle}>{destTxt}</p>
+        <Button
+          className={styles.copyButton}
+          size="small"
+          onClick={this.copyToClipboard}
+        >
+          <Icon name="copy" color="teal" />
+          Copy
+        </Button>
+      </div>
+    </div>
+    );
+  }
+
   showTextAnnotation() {
     // const currentHit = this.state.currentHit;
     const { data } = this.state.currentHit;
@@ -4222,7 +4253,7 @@ export default class TaggerSpace extends Component {
                         >
                           <div className="marginTopExtra">
                             {extra && <div>{this.showExtra(extra)}</div>}
-                            {this.showText()}
+                            {this.showTranslationText()}
                             <br />
                             {this.showWriteText(this.state.projectDetails.task_type)}
                             {this.state.loading &&
