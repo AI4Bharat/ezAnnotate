@@ -10,7 +10,7 @@ import { push } from 'react-router-redux';
 import { uploadFileDT, editProject, getHomeData, getUidToken } from '../../helpers/dthelper';
 import { posSample, imageBoundingSample, imagePolyBoundingSample, textClassificationJsonSample } from '../../helpers/Utils';
 import { updateFileUploadStats, updateHomeData, setCurrentProject, getProjectDetails, getUserHomeData } from 'redux/modules/dataturks';
-import { IMAGE_POLYGON_BOUNDING_BOX, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_BOUNDING_BOX, TEXT_SUMMARIZATION, POS_TAGGING, TEXT_CLASSIFICATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, SENTENCE_TRANSLATION } from '../../helpers/Utils';
+import { IMAGE_POLYGON_BOUNDING_BOX, VIDEO_BOUNDING_BOX, VIDEO_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_BOUNDING_BOX, TEXT_SUMMARIZATION, POS_TAGGING, TEXT_CLASSIFICATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, SENTENCE_TRANSLATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
 
 const bytes = require('bytes');
 
@@ -278,7 +278,7 @@ export default class TaggerEdit extends Component {
         if (this.props.projectDetails.task_type === TEXT_SUMMARIZATION || this.props.projectDetails.task_type === TEXT_MODERATION || this.props.projectDetails.task_type === SENTENCE_TRANSLATION ||
           this.props.projectDetails.task_type === IMAGE_CLASSIFICATION || this.props.projectDetails.task_type === VIDEO_CLASSIFICATION) {
           uploadFileDT(this.state.file, this.props.currentProject, this.fileUploaded, this.fileUploadProgressCallback, 'PRE_TAGGED_TSV');
-        } else if (this.props.projectDetails.task_type === TEXT_CLASSIFICATION) {
+        } else if (this.props.projectDetails.task_type === TEXT_CLASSIFICATION || this.props.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ) {
           let format = 'PRE_TAGGED_TSV';
           if (this.state.selectedFormat && this.state.selectedFormat === 'json') {
             format = 'PRE_TAGGED_JSON';
@@ -574,7 +574,7 @@ export default class TaggerEdit extends Component {
                               }
                             </div>
                           }
-                          { this.state.type === 'label' && projectDetails && (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === IMAGE_CLASSIFICATION || projectDetails.task_type === VIDEO_CLASSIFICATION) &&
+                          { this.state.type === 'label' && projectDetails && (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER || projectDetails.task_type === IMAGE_CLASSIFICATION || projectDetails.task_type === VIDEO_CLASSIFICATION) &&
                             <div>
                               <br />
                               {!this.state.projectEdited &&
@@ -805,7 +805,7 @@ export default class TaggerEdit extends Component {
                                 </pre>
                                   </p>
                                 }
-                                { projectDetails.task_type === TEXT_CLASSIFICATION &&
+                                { (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ) &&
                                   <Form>
                                     <Form.Field>
                                       Selected value: <b>{this.state.value}</b>
@@ -832,7 +832,8 @@ export default class TaggerEdit extends Component {
                                       </Form.Field>
                                   </Form>
                                 }
-                                { projectDetails.task_type === TEXT_CLASSIFICATION && this.state.selectedFormat === 'json' &&
+                                { (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ) &&
+                                this.state.selectedFormat === 'json' &&
                                 <p>
                                 Please upload a text file with each line in file having input sentence in json format.
                                 This is same as download format from dataturks
@@ -843,7 +844,8 @@ export default class TaggerEdit extends Component {
 
                                 </p>
                                 }
-                                { projectDetails.task_type === TEXT_CLASSIFICATION && this.state.selectedFormat === 'tsv' &&
+                                { (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ) &&
+                                this.state.selectedFormat === 'tsv' &&
                                 <p>
                                 Please upload a text file with each line in file having input sentence in following tab seperated format.
                                  Max size 10MB
@@ -1019,6 +1021,11 @@ export default class TaggerEdit extends Component {
                                 }
                                 { projectDetails.task_type === TEXT_CLASSIFICATION &&
                                     <p>Please upload a text file with each line in file having sentence to be classified.<br />
+                                                           <strong> OR </strong> <br />
+                                    A zip file of all the text documents to be classified. Max file size is 100 MB for free plans</p>
+                                }
+                                { projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER &&
+                                    <p>Please upload a text file with each line in file having the text pairs to be compared and classified.<br />
                                                            <strong> OR </strong> <br />
                                     A zip file of all the text documents to be classified. Max file size is 100 MB for free plans</p>
                                 }

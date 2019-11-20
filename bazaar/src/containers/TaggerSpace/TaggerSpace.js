@@ -67,6 +67,7 @@ import {
   SENTENCE_TRANSLATION,
   IMAGE_BOUNDING_BOX,
   TEXT_CLASSIFICATION,
+  SENTENCE_PAIR_CLASSIFIER,
   HIT_STATE_SKIPPED,
   HIT_STATE_DONE,
   HIT_STATE_NOT_DONE,
@@ -355,6 +356,7 @@ export default class TaggerSpace extends Component {
       this.props.projectDetails &&
       this.props.currentHit &&
       (this.props.projectDetails.task_type === TEXT_CLASSIFICATION ||
+        this.props.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
         this.props.projectDetails.task_type === VIDEO_CLASSIFICATION ||
         this.props.projectDetails.task_type === IMAGE_CLASSIFICATION)
     ) {
@@ -672,6 +674,7 @@ export default class TaggerSpace extends Component {
         case TEXT_SUMMARIZATION:
         case SENTENCE_TRANSLATION:
         case TEXT_CLASSIFICATION:
+        case SENTENCE_PAIR_CLASSIFIER:
         case IMAGE_CLASSIFICATION:
         case VIDEO_CLASSIFICATION:
           return 10;
@@ -791,9 +794,11 @@ export default class TaggerSpace extends Component {
     console.log("setClassification", entity, event);
     const { currentTags, changesInSession } = this.state;
     console.log("setClassification", entity);
+    const isMutex = this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER;
     if (currentTags.has(entity)) {
       currentTags.delete(entity);
     } else {
+      if (isMutex) currentTags.clear();
       currentTags.add(entity);
     }
     this.setState({ currentTags, changesInSession: changesInSession + 1 });
@@ -1243,6 +1248,7 @@ export default class TaggerSpace extends Component {
       return this.state.textSummary;
     } else if (
       this.state.projectDetails.task_type === TEXT_CLASSIFICATION ||
+      this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
       this.state.projectDetails.task_type === IMAGE_CLASSIFICATION ||
       this.state.projectDetails.task_type === VIDEO_CLASSIFICATION
     ) {
@@ -1611,7 +1617,7 @@ export default class TaggerSpace extends Component {
                 action: ""
               });
             }
-          } else if (projectDetails.task_type === TEXT_CLASSIFICATION) {
+          } else if (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
             if (response.body.hits.length > 0) {
               let currentTags = new Set();
               let currentNote = "";
@@ -1944,6 +1950,7 @@ export default class TaggerSpace extends Component {
         if (currentHit.result && currentHit.result !== null) {
           if (
             this.state.projectDetails.task_type === TEXT_CLASSIFICATION ||
+            this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
             this.state.projectDetails.task_type === IMAGE_CLASSIFICATION ||
             this.state.projectDetails.task_type === VIDEO_CLASSIFICATION
           ) {
@@ -1996,6 +2003,7 @@ export default class TaggerSpace extends Component {
             textSummary = currentHit.hitResults[0].result;
           } else if (
             this.state.projectDetails.task_type === TEXT_CLASSIFICATION ||
+            this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
             this.state.projectDetails.task_type === IMAGE_CLASSIFICATION ||
             this.state.projectDetails.task_type === VIDEO_CLASSIFICATION
           ) {
@@ -2340,6 +2348,34 @@ export default class TaggerSpace extends Component {
     );
   }
 
+  showTextPairs() {
+    // const currentHit = this.state.currentHit;
+    const { data } = this.state.currentHit;
+    const splitArr = this.state.currentHit.data.split('|');
+    const sid = splitArr[0];
+    const srcTxt = splitArr[1];
+    const destTxt = splitArr[2];
+    console.log("show text", this.state);
+    return (
+      <div className={styles.tagArea}>
+        <p className={styles.textStyle}>{srcTxt}</p>
+        <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+        <p className={styles.textStyle}>{destTxt}</p>
+        {splitArr.length > 3 &&
+        <div>
+          <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+          <p className={styles.textStyle}>{splitArr[3]}</p>
+        </div>
+        }
+        <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+        {this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER &&
+          this.state.currentTags &&
+          this.state.currentTags.size > 0 &&
+          this.showCurrentTags()}
+      </div>
+    );
+  }
+
   showTranslationText() {
     // const currentHit = this.state.currentHit;
     const { data } = this.state.currentHit;
@@ -2378,7 +2414,7 @@ export default class TaggerSpace extends Component {
     return (
       <div className={styles.tagArea}>
         <p className={styles.textStyle}>{data}</p>
-        {this.state.projectDetails.task_type === TEXT_CLASSIFICATION &&
+        {(this.state.projectDetails.task_type === TEXT_CLASSIFICATION || this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) &&
           this.state.currentTags &&
           this.state.currentTags.size > 0 &&
           this.showCurrentTags()}
@@ -2433,6 +2469,10 @@ export default class TaggerSpace extends Component {
           label="Translated Text"
           value={this.state.textSummary}
           placeholder="Write translated text here..."
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
         />
       );
     }
@@ -3371,6 +3411,10 @@ export default class TaggerSpace extends Component {
       this.state.currentIndex < 0 ||
       (this.state.hitScrollCompleted &&
         this.state.currentIndex >= this.state.hits.length - 1);
+    let moveToDoneButtonDisabled = false;
+    if(this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
+      moveToDoneButtonDisabled = this.state.currentTags.size > 0 ? false : true;
+    }
     if ("shortcuts" in this.state) {
       const shortcuts = this.state.shortcuts;
       if ("next" in shortcuts) {
@@ -3464,6 +3508,7 @@ export default class TaggerSpace extends Component {
             icon
             labelPosition="left"
             onClick={this.moveToDone.bind(this, "saveToDone")}
+            disabled={moveToDoneButtonDisabled}
           >
             <Icon name="save" />
             Move to Done
@@ -3711,10 +3756,10 @@ export default class TaggerSpace extends Component {
             </a>
           </Popover>
         );
-      } else if (this.state.projectDetails.task_type === TEXT_CLASSIFICATION) {
+      } else if (this.state.projectDetails.task_type === TEXT_CLASSIFICATION || this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
         popoverTop = (
           <Popover id="popover-positioned-top" title="How to classify">
-            Click to select a class to classify the sentence. More queries?{" "}
+            Click to select a class to classify the text. More queries?{" "}
             <a href="https://dataturks.com/help/help.php" target="_blank">
               {" "}
               See Demo Videos{" "}
@@ -4294,6 +4339,43 @@ export default class TaggerSpace extends Component {
                               {this.state.currentIndex >= 0 && showNoteLable()}
                             </div>
                             <div style={{ width: "20%" }}>
+                              {this.state.loading &&
+                                this.state.isFullscreenEnabled && (
+                                  <Segment basic vertical loading />
+                                )}
+                              {this.showClassifyTags(true, "vertical")}
+                              <br />
+                              {this.state.type === "notDone" &&
+                                this.showButtons("vertical")}
+                            </div>
+                          </div>
+                        </Fullscreen>
+                      )}
+                      {this.state.projectDetails.task_type ===
+                        SENTENCE_PAIR_CLASSIFIER && (
+                        <Fullscreen
+                          enabled={this.state.fullScreen}
+                          onChange={isFullscreenEnabled =>
+                            this.setState({
+                              isFullscreenEnabled,
+                              fullScreen: isFullscreenEnabled
+                            })
+                          }
+                        >
+                          <div
+                            className="marginTopExtra"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between"
+                            }}
+                          >
+                            <div style={{ width: "67%" }}>
+                              {extra && <div>{this.showExtra(extra)}</div>}
+                              {this.showTextPairs()}
+                              <br />
+                              {this.state.currentIndex >= 0 && showNoteLable()}
+                            </div>
+                            <div style={{ width: "30%" }}>
                               {this.state.loading &&
                                 this.state.isFullscreenEnabled && (
                                   <Segment basic vertical loading />

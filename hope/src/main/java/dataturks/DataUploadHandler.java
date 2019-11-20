@@ -41,6 +41,10 @@ public class DataUploadHandler {
         return handleTextClassificationZIPSingleFile(reqObj, project, filePath);
     }
 
+    public static UploadResponse handleTextPairClassification(DReqObj reqObj, DProjects project, String filePath) {
+        return handleTextClassificationZIPSingleFile(reqObj, project, filePath);
+    }
+
     public static UploadResponse handleTextSummarization(DReqObj reqObj, DProjects project, String filePath) {
         return handleTextClassificationZIPSingleFile(reqObj, project, filePath);
     }
@@ -278,6 +282,7 @@ public class DataUploadHandler {
         DTypes.Project_Task_Type taskType = project.getTaskType();
         if (!(taskType == DTypes.Project_Task_Type.IMAGE_CLASSIFICATION ||
                 taskType == DTypes.Project_Task_Type.TEXT_CLASSIFICATION||
+                taskType == DTypes.Project_Task_Type.SENTENCE_PAIR_CLASSIFIER ||
                 taskType == DTypes.Project_Task_Type.TEXT_MODERATION||
                 taskType == DTypes.Project_Task_Type.TEXT_SUMMARIZATION ||
                 taskType == DTypes.Project_Task_Type.SENTENCE_TRANSLATION)) {

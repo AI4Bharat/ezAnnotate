@@ -154,6 +154,9 @@ public class Controlcenter {
                         case TEXT_CLASSIFICATION:
                             response = DataUploadHandler.handleTextClassification(reqObj,  project, filePath);
                             break;
+                        case SENTENCE_PAIR_CLASSIFIER:
+                            response = DataUploadHandler.handleTextPairClassification(reqObj,  project, filePath);
+                            break;
                         case TEXT_SUMMARIZATION:
                             response = DataUploadHandler.handleTextSummarization(reqObj,  project, filePath);
                             break;
@@ -223,6 +226,9 @@ public class Controlcenter {
                         break;
                     case TEXT_CLASSIFICATION:
                         filePath = DataDownloadHandler.handleTextClassification(reqObj,  project, downloadType);
+                        break;
+                    case SENTENCE_PAIR_CLASSIFIER:
+                        filePath = DataDownloadHandler.handleTextPairClassification(reqObj,  project, downloadType);
                         break;
                     case TEXT_SUMMARIZATION:
                         filePath = DataDownloadHandler.handleTextSummarization(reqObj,  project, downloadType);
@@ -613,6 +619,9 @@ public class Controlcenter {
                 stats = StatsHandler.handlePOSTaggingGeneric(reqObj, project);
                 break;
             case TEXT_CLASSIFICATION:
+                stats = StatsHandler.handleTextClassification(reqObj, project);
+                break;
+            case SENTENCE_PAIR_CLASSIFIER:
                 stats = StatsHandler.handleTextClassification(reqObj, project);
                 break;
             case TEXT_SUMMARIZATION:

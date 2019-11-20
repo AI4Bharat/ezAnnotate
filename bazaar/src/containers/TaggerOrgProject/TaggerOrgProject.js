@@ -43,6 +43,7 @@ import {
   IMAGE_POLYGON_BOUNDING_BOX_V2,
   IMAGE_BOUNDING_BOX,
   TEXT_CLASSIFICATION,
+  SENTENCE_PAIR_CLASSIFIER,
   POS_TAGGING,
   taskTypeMap,
   createEntitiesJson,
@@ -293,6 +294,7 @@ export default class TaggerOrgProject extends Component {
       if (
         projectDetails.task_type === POS_TAGGING ||
         projectDetails.task_type === TEXT_CLASSIFICATION ||
+        projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
         projectDetails.task_type === DOCUMENT_ANNOTATION ||
         projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX ||
         projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2 ||

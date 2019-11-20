@@ -9,7 +9,7 @@ import { fetchHitsDetails, getUidToken, addHits } from '../../helpers/dthelper';
 import { push, goBack } from 'react-router-redux';
 import { Table, Label, Dropdown, Button, Icon, Divider, Segment, Breadcrumb } from 'semantic-ui-react';
 
-import { getDetaultShortcuts, checkVideoURL, convertKeyToString, VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, createEntitiesJson, createDocEntityColorMap, TEXT_MODERATION, POS_TAGGING, TEXT_SUMMARIZATION, TEXT_CLASSIFICATION, SENTENCE_TRANSLATION } from '../../helpers/Utils';
+import { getDetaultShortcuts, checkVideoURL, convertKeyToString, VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, createEntitiesJson, createDocEntityColorMap, TEXT_MODERATION, POS_TAGGING, TEXT_SUMMARIZATION, TEXT_CLASSIFICATION, SENTENCE_TRANSLATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
 import BoxAnnotator from '../../components/BoxAnnotator/BoxAnnotator';
 import BoxAnnotatorOld from '../../components/BoxAnnotatorOld/BoxAnnotator';
 import PolygonAnnotator from '../../components/PolygonAnnotator/PolygonAnnotator';
@@ -233,7 +233,7 @@ export default class TaggerOveriew extends Component {
       let entityColorMap = {};
       if (projectDetails.task_type === POS_TAGGING ||
        projectDetails.task_type === IMAGE_BOUNDING_BOX || projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX ||
-        projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === IMAGE_CLASSIFICATION || projectDetails.task_type === VIDEO_CLASSIFICATION ||
+        projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER || projectDetails.task_type === IMAGE_CLASSIFICATION || projectDetails.task_type === VIDEO_CLASSIFICATION ||
         projectDetails.task_type === DOCUMENT_ANNOTATION || projectDetails.task_type === POS_TAGGING_GENERIC ||
         projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2 || projectDetails.task_type === VIDEO_BOUNDING_BOX) {
         entities = createEntitiesJson(projectDetails.taskRules).entities;
@@ -1183,7 +1183,7 @@ showClassificationImages = (hitsDetails) => {
                     </div>
                   }
                   {
-                    (projectDetails.task_type === TEXT_CLASSIFICATION) && hitsDetails && hitsDetails.length >= 0 &&
+                    (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) && hitsDetails && hitsDetails.length >= 0 &&
                     <div style={{ paddingBottom: '5%' }}>
                       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
                         <div>

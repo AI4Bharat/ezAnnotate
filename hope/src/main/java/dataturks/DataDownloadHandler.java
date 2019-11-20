@@ -38,6 +38,10 @@ public class DataDownloadHandler {
         return handleJsonDownload(reqObj, project, downloadType);
     }
 
+    public static String handleTextPairClassification(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
+        return handleJsonDownload(reqObj, project, downloadType);
+    }
+
     public static String handleTextSummarization(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
         return handleForTextTypes(reqObj, project, downloadType);
     }
@@ -57,13 +61,13 @@ public class DataDownloadHandler {
         //get all hit/hit id pairs.
         for (DHits hit : hits) {
             if (DConstants.HIT_STATUS_DONE.equalsIgnoreCase(hit.getStatus()) && hitsResultMap.containsKey(hit.getId())) {
-                lines.add(hit.getData() + separator + hitsResultMap.get(hit.getId()).getResult() + separator + hitsResultMap.get(hit.getId()).getUserId());
+                lines.add(hit.getData().split("\\|")[0] + separator + hitsResultMap.get(hit.getId()).getResult() + separator + hitsResultMap.get(hit.getId()).getUserId());
             }
 
             else if (downloadType == DTypes.File_Download_Type.ALL) {
                 //in case of skipped, we might have some result.
                 String resultData = hitsResultMap.containsKey(hit.getId())? hitsResultMap.get(hit.getId()).getResult(): "";
-                lines.add(hit.getData() + separator + resultData + separator + hitsResultMap.get(hit.getId()));
+                lines.add(hit.getData().split("\\|")[0] + separator + resultData + separator + hitsResultMap.get(hit.getId()));
             }
         }
 
@@ -180,17 +184,17 @@ public class DataDownloadHandler {
         String resultJson = result != null ? result.getResult() : "";
         //for image classification, old hit results may not have a wellformed json in result
         // fix that.
-        if (DTypes.Project_Task_Type.IMAGE_CLASSIFICATION == project.getTaskType()) {
-            resultJson = DataDownloadHelper.fixImageClassificationResultJson(resultJson);
+        switch(project.getTaskType()) {
+            case IMAGE_CLASSIFICATION:
+            case TEXT_CLASSIFICATION:
+            case SENTENCE_PAIR_CLASSIFIER:
+                resultJson = DataDownloadHelper.fixImageClassificationResultJson(resultJson);
+                break;
+            case POS_TAGGING:
+                resultJson = DataDownloadHelper.convertPoSToJson(resultJson);
+                break;
         }
-        else if (DTypes.Project_Task_Type.TEXT_CLASSIFICATION == project.getTaskType()) {
-            resultJson = DataDownloadHelper.fixImageClassificationResultJson(resultJson);
-        }
-        else if (DTypes.Project_Task_Type.POS_TAGGING == project.getTaskType()) {
-            resultJson = DataDownloadHelper.convertPoSToJson(resultJson);
-        }
-
-
+        
         return DataDownloadHelper.formatAsJson(hit, result, resultJson, isPaidPlanProject);
     }
 

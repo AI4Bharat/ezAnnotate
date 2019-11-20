@@ -38,6 +38,7 @@ public class DTypes {
         VIDEO_CLASSIFICATION,
         VIDEO_BOUNDING_BOX,
         SENTENCE_TRANSLATION,
+        SENTENCE_PAIR_CLASSIFIER,
     }
 
     public enum Project_User_Role {
