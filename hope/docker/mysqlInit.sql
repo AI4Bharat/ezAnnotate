@@ -52,6 +52,7 @@ CREATE TABLE `d_hits_result` (
   `notes` text,
   `created_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `sentViaAPI` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=948028 DEFAULT CHARSET=latin1;
 

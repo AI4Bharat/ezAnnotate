@@ -4,12 +4,16 @@ import bonsai.Utils.CommonUtils;
 import bonsai.Utils.UploadFileUtil;
 import bonsai.config.AppConfig;
 import bonsai.dropwizard.dao.d.DProjects;
+import bonsai.dropwizard.resources.DataturksEndpoint.DummyResponse;
 import bonsai.email.EmailSender;
 import bonsai.sa.EventsLogger;
 import bonsai.security.LoginAuth;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.appengine.repackaged.com.google.common.base.Hash;
+
+import dataturks.Controlcenter;
 import dataturks.DConstants;
 import dataturks.DReqObj;
 import dataturks.DUtils;
@@ -283,6 +287,63 @@ public class DataturksAPIEndPoint {
             throw e;
         }
 
+    }
+
+    @POST
+    @Path("/{version}/{orgName}/{projectName}/downsync")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM + ";charset=utf-8")
+    public Response downSync(@NotNull @HeaderParam("secret") String token,
+                                 @NotNull @HeaderParam("key") String key,
+                                 @NotNull @PathParam("orgName") String orgName,
+                                 @NotNull @PathParam("projectName") String projectName,
+                                 @QueryParam("items") String items,
+                                 @QueryParam("format") String format) {
+
+        EventsLogger.logEvent("d_APIdownSyncData");
+
+        String id = Validations.validateAPIAccessGetUidElseThrowException(key, token);
+
+        String regStr = "APIdownSyncData: orgName = " + orgName + " projectName = " +  projectName +  " uid = " + id;
+        LOG.info(regStr);
+
+        try {
+            String projectId = getProjectByOrgName(orgName, projectName);
+            HashMap <String, String> reqMap = new HashMap<>();
+            reqMap.put("isDownSync", "Yes");
+            DReqObj reqObj = new DReqObj(id, reqMap);
+            return DataturksEndpoint.handleDataDownload(reqObj, projectId, items, format);
+        }
+        catch (Exception e) {
+            LOG.error("Error " + regStr + e.toString());
+            EventsLogger.logErrorEvent("d_APIdownsyncDatadError");
+            EmailSender.sendEventMail("Dataturks API errors: downsync", "uid = " + id  + "orgName = " + orgName + " projectName = " +  projectName +
+                    "\n" + "error = " + e.toString());
+
+            throw e;
+        }
+    }
+
+    @POST
+    @Path("/{version}/{orgName}/{projectName}/reset_downsync")
+    public DataturksEndpoint.DummyResponse resetDownSync(@NotNull @HeaderParam("secret") String token,
+                                 @NotNull @HeaderParam("key") String key,
+                                 @NotNull @PathParam("orgName") String orgName,
+                                 @NotNull @PathParam("projectName") String projectName,
+                                 @QueryParam("from_unix_time") Long timestamp_since) {
+        
+        EventsLogger.logEvent("d_APIresetDownSyncData");
+        String id = Validations.validateAPIAccessGetUidElseThrowException(key, token);
+        String regStr = "APIresetDownSyncData: orgName = " + orgName + " projectName = " +  projectName +  " uid = " + id;
+        LOG.info(regStr);
+
+        try {
+            String projectId = getProjectByOrgName(orgName, projectName);
+            DReqObj reqObj = new DReqObj(id, null);
+            long T = timestamp_since != null ? timestamp_since : 0;
+            return Controlcenter.handleDownSyncReset(reqObj, projectId, T);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @POST

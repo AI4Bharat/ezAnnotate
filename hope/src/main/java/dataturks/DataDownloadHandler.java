@@ -7,6 +7,8 @@ import bonsai.config.DBBasedConfigs;
 import bonsai.dropwizard.dao.d.DHits;
 import bonsai.dropwizard.dao.d.DHitsResult;
 import bonsai.dropwizard.dao.d.DProjects;
+import bonsai.dropwizard.resources.DataturksEndpoint.DummyResponse;
+
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,6 +27,36 @@ public class DataDownloadHandler {
     private static JsonStringEncoder e = JsonStringEncoder.getInstance();
 
     private static final Logger LOG = LoggerFactory.getLogger(DataDownloadHandler.class);
+
+    static Map<Long, DHitsResult> getHitId2ResultMap(DReqObj reqObj, DProjects project) {
+        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
+        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
+        final boolean syncMode = (reqObj.getReqMap() != null && reqObj.getReqMap().containsKey("isDownSync"));
+
+        for (DHitsResult result : results) {
+            if (syncMode) { 
+                if (result.getSentViaAPI()) continue; // Ignore results already sent
+                result.setSentViaAPI(true); // Mark this HitsResult as sent via API
+                AppConfig.getInstance().getdHitsResultDAO().saveOrUpdateInternal(result);
+            }
+            hitsResultMap.put(result.getHitId(), result);
+        }
+
+        return hitsResultMap;
+    }
+
+    public static DummyResponse handleDownSyncReset(DReqObj reqObj, DProjects project, long timestamp_since) {
+        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
+        java.util.Date timestamp = new java.util.Date(timestamp_since*1000L);
+
+        for (DHitsResult result : results) {
+            if (result.getSentViaAPI() && result.getUpdated_timestamp().after(timestamp)) {
+                result.setSentViaAPI(false);
+                AppConfig.getInstance().getdHitsResultDAO().saveOrUpdateInternal(result);
+            }
+        }
+        return DummyResponse.getOk();
+    }
 
     public static String handlePOSTagging(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType,  DTypes.File_Download_Format format) {
         return handlePOSTypes(reqObj, project, downloadType, format);
@@ -48,26 +80,31 @@ public class DataDownloadHandler {
 
     public static String handleTextTranslation(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
         List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
-        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
-
-        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
-        for (DHitsResult result : results) {
-            hitsResultMap.put(result.getHitId(), result);
-        }
+        Map<Long, DHitsResult> hitsResultMap = getHitId2ResultMap(reqObj, project);
+        
         String separator = DConstants.TEXT_INPUT_RESULT_SEPARATOR;
 
         List<String> lines = new ArrayList<>();
         lines.add("input"+ DConstants.TEXT_INPUT_RESULT_SEPARATOR  + "result");
+        
         //get all hit/hit id pairs.
         for (DHits hit : hits) {
             if (DConstants.HIT_STATUS_DONE.equalsIgnoreCase(hit.getStatus()) && hitsResultMap.containsKey(hit.getId())) {
-                lines.add(hit.getData().split("\\|")[0] + separator + hitsResultMap.get(hit.getId()).getResult() + separator + hitsResultMap.get(hit.getId()).getUserId());
+                DHitsResult result = hitsResultMap.get(hit.getId());
+                String userEmail = AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()).getEmail();
+                lines.add(hit.getData().split("\\|")[0] + separator + result.getResult() + separator + userEmail);
             }
 
             else if (downloadType == DTypes.File_Download_Type.ALL) {
                 //in case of skipped, we might have some result.
-                String resultData = hitsResultMap.containsKey(hit.getId())? hitsResultMap.get(hit.getId()).getResult(): "";
-                lines.add(hit.getData().split("\\|")[0] + separator + resultData + separator + hitsResultMap.get(hit.getId()));
+                String resultData = "";
+                if (hitsResultMap.containsKey(hit.getId())) {
+                    DHitsResult result = hitsResultMap.get(hit.getId());
+                    resultData += result.getResult();
+                    String userEmail = AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()).getEmail();
+                    resultData += separator + userEmail;
+                }
+                lines.add(hit.getData().split("\\|")[0] + separator + resultData);
             }
         }
 
@@ -126,12 +163,7 @@ public class DataDownloadHandler {
     private static String handleForTextTypes(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
 
         List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
-        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
-
-        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
-        for (DHitsResult result : results) {
-            hitsResultMap.put(result.getHitId(), result);
-        }
+        Map<Long, DHitsResult> hitsResultMap = getHitId2ResultMap(reqObj, project);
 
         List<String> lines = new ArrayList<>();
         lines.add("input"+ DConstants.TEXT_INPUT_RESULT_SEPARATOR  + "result");
@@ -155,12 +187,7 @@ public class DataDownloadHandler {
 
     private static String handleJsonDownload(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
         List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
-        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
-
-        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
-        for (DHitsResult result : results) {
-            hitsResultMap.put(result.getHitId(), result);
-        }
+        Map<Long, DHitsResult> hitsResultMap = getHitId2ResultMap(reqObj, project);
         List<String> lines = new ArrayList<>();
 
         boolean isPaidProject = Validations.isPaidPlanProject(project);

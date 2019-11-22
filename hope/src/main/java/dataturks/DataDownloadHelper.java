@@ -113,12 +113,7 @@ public class DataDownloadHelper {
     public static String handleStanfordDownload(DReqObj reqObj, DProjects project) {
 
         List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
-        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
-
-        Map<Long, DHitsResult> hitsResultMap = new HashMap<>();
-        for (DHitsResult result : results) {
-            hitsResultMap.put(result.getHitId(), result);
-        }
+        Map<Long, DHitsResult> hitsResultMap = DataDownloadHandler.getHitId2ResultMap(reqObj, project);
         List<String> lines = new ArrayList<>();
 
         //get all hit/hit id pairs.

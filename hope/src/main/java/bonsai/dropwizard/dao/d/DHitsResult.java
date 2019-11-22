@@ -1,7 +1,9 @@
 package bonsai.dropwizard.dao.d;
 
-
 import javax.persistence.*;
+
+import org.hibernate.annotations.Type;
+
 import java.util.Date;
 
 @Entity
@@ -39,6 +41,10 @@ public class DHitsResult implements IDdbPojo{
     private java.util.Date created_timestamp;
     @Column(updatable=false, insertable=false)
     private java.util.Date updated_timestamp;
+
+    @Column(columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean sentViaAPI;
 
     public DHitsResult(){
 
@@ -122,6 +128,14 @@ public class DHitsResult implements IDdbPojo{
 
     public void setUpdated_timestamp(Date updated_timestamp) {
         this.updated_timestamp = updated_timestamp;
+    }
+
+    public boolean getSentViaAPI() {
+        return sentViaAPI;
+    }
+
+    public void setSentViaAPI(boolean sentViaAPI) {
+        this.sentViaAPI = sentViaAPI;
     }
 
     @PrePersist

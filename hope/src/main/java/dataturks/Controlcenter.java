@@ -1,10 +1,10 @@
 package dataturks;
 
-
 import bonsai.Utils.UploadFileUtil;
 import bonsai.config.AppConfig;
 import bonsai.config.DBBasedConfigs;
 import bonsai.dropwizard.dao.d.*;
+import bonsai.dropwizard.resources.DataturksEndpoint.DummyResponse;
 import bonsai.email.EmailSender;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -203,6 +203,18 @@ public class Controlcenter {
 
         }
         return null;
+    }
+
+    public static DummyResponse handleDownSyncReset(DReqObj reqObj, String projectId, long timestamp_since) {
+        if (projectId != null) {
+            DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(projectId);
+            if (project == null) {
+                throw new WebApplicationException("No such project found", Response.Status.NOT_FOUND);
+            }
+            canUserWriteProjectElseThrowException(reqObj, project);
+            DataDownloadHandler.handleDownSyncReset(reqObj, project, timestamp_since);
+        }
+        return DummyResponse.getOk();
     }
 
     //copy the data in a local file and return file path
