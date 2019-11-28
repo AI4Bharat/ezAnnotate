@@ -5,6 +5,7 @@ import dataturks.DTypes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectDetails {
     public String id;
@@ -35,6 +36,7 @@ public class ProjectDetails {
     private java.util.Date created_timestamp;
 
     private List<ContributorDetails> contributorDetails;
+    private Map<String, Map<UserDetails, Integer>> contributorDailyStats;
 
     // Possible permissions for the user context this project object is being sent.
     // not sure if this is a right place to add this.
@@ -219,5 +221,13 @@ public class ProjectDetails {
 
     public void setPermissions(UserProjectPermissions permissions) {
         this.permissions = permissions;
+    }
+
+    public Map<String, Map<UserDetails, Integer>> getContributorDailyStats() {
+        return contributorDailyStats;
+    }
+
+    public void setContributorDailyStats(Map<String, Map<UserDetails, Integer>> contributorDailyStats) {
+        this.contributorDailyStats = contributorDailyStats;
     }
 }

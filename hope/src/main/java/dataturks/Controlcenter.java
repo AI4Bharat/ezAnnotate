@@ -21,6 +21,9 @@ import ucar.nc2.grib.TimeCoordUnion;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -1197,6 +1200,49 @@ public class Controlcenter {
             return projects;
         }
         return null;
+    }
+
+    private static void addContributorStatsPerDay(List<DProjectUsers> projectUsers, List<DHitsResult> results, ProjectDetails details) {
+        if (results == null || details == null)
+            return;
+        
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Map<String, Map<UserDetails, Integer>> contributorDailyStats = new HashMap<>();
+        String date;
+        Map<UserDetails, Integer> date2user;
+        for (DHitsResult result : results) {
+            date = formatter.format(result.getUpdated_timestamp());
+            if (!contributorDailyStats.containsKey(date))
+                contributorDailyStats.put(date, new HashMap<>());
+            date2user = contributorDailyStats.get(date);
+            UserDetails user = new UserDetails(AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()));
+            if (!date2user.containsKey(user)) {
+                date2user.put(user, 0);
+            }
+            date2user.put(user, date2user.get(user)+1);
+        }
+
+        if (projectUsers == null) {
+            details.setContributorDailyStats(contributorDailyStats);
+            return;
+        };
+        
+        //also add contributors who might have 0 hits.
+        List<UserDetails> allUserDetails = new ArrayList<>();
+        for (DProjectUsers projectUser : projectUsers) {
+            allUserDetails.add(new UserDetails(
+                AppConfig.getInstance().getdUsersDAO().findByIdInternal(projectUser.getUserId())));
+        }
+        for (String dateI : contributorDailyStats.keySet()) {
+            date2user = contributorDailyStats.get(dateI);
+            for (UserDetails userDetails : allUserDetails) {
+                if (!date2user.containsKey(userDetails)) {
+                    date2user.put(userDetails, 0);
+                }
+            }
+        }
+
+        details.setContributorDailyStats(contributorDailyStats);
     }
 
     // update the details object with contributor level details like HITS done, average time taken etc.
