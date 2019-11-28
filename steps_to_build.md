@@ -4,16 +4,6 @@
 - Was tested and successfully working on Ubuntu 16.04 GCP VM and Ubuntu 18.04 locally.
 - If you're feeling lazy to build from scratch, use [this pre-built docker image](https://medium.com/@dataturks/dataturks-on-prem-a-fully-self-hosted-data-annotation-solution-86b455bf0634).
 
-### Initial Setup
-```
-sudo apt-get update
-#### Disable firewall
-sudo ufw disable
-sudo iptables -F
-```
-- Ensure all the ingress/egress ports are open in your computer/VM.
-
-
 ### Building the backend
 
 ```
@@ -21,8 +11,6 @@ cd hope/
 ```
 
 #### Setting up the DB
-
-
 ##### Install MySQL
 ```bash
 sudo apt install -y mysql-server
@@ -96,4 +84,35 @@ npm run start-onprem
 ```
 
 - Now, you should be able to go to [http://localhost:3000](http://localhost:3000) and view the on-prem website.
-- What now? Go do whatever you want.
+
+
+### Optional Details
+
+#### To build in `debug` mode
+
+Do `export NODE_ENV=development`
+
+Then use the following to build and run the front-end:
+```
+npm run build-onprem-dev
+npm run start-onprem-dev
+```
+
+#### Installing `phpMyAdmin` to browse your DB
+
+```
+sudo apt install phpmyadmin
+sudo service apache2 restart
+sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+sudo a2enconf phpmyadmin
+sudo service apache2 reload
+```
+
+Now you can visit http://localhost/phpmyadmin to access it (Use DB's root username and password to login)
+
+#### Disable firewall
+```
+sudo ufw disable
+sudo iptables -F
+```
+- Ensure all the ingress/egress ports are open in your computer/VM.

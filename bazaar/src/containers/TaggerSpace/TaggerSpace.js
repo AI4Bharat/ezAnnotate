@@ -2377,7 +2377,7 @@ export default class TaggerSpace extends Component {
   showTranslationText() {
     // const currentHit = this.state.currentHit;
     const dataArr = this.state.currentHit.data.split('|');
-    const srcTxt = dataArr.size > 1 ? dataArr[1] : dataArr[0];
+    const srcTxt = dataArr.length > 1 ? dataArr[1] : dataArr[0];
 
     console.log("show text", this.state);
     return (
@@ -2387,7 +2387,7 @@ export default class TaggerSpace extends Component {
           <p className={styles.textStyle}>{srcTxt}</p>
         </div>
         <br />
-        { dataArr.size > 2 &&
+        { dataArr.length > 2 &&
         <div>
           <label> Uncorrected Translation </label>
           <div className={styles.tagArea}>
