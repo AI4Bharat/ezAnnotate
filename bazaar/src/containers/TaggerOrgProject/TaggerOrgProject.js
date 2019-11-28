@@ -1433,11 +1433,14 @@ export default class TaggerOrgProject extends Component {
     }
     console.log("show hits details ", hitsDetails);
     const currentHit = hitsDetails[this.state.start];
-    const data = currentHit.data;
+    let data = currentHit.data;
     const result = currentHit.hitResults[0].result;
     let title = "Summaries";
     if (type === TEXT_MODERATION) {
       title = "Moderated Text";
+    }
+    if (type === SENTENCE_TRANSLATION) {
+      data = data.split('|').size > 1 ? data.split('|')[1] : data;
     }
     return (
       <div

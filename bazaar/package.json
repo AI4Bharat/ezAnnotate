@@ -29,7 +29,9 @@
     "start-prod-api": "better-npm-run start-prod-api",
     "build": "better-npm-run build",
     "build-onprem": "better-npm-run build-onprem",
+    "build-onprem-dev": "better-npm-run build-onprem-dev",
     "start-onprem": "concurrent --kill-others \"better-npm-run start-onprem-prod\"",
+    "start-onprem-dev": "concurrent --kill-others \"better-npm-run start-onprem-dev\"",
     "postinstall": "npm run build",
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "better-npm-run start-dev",
@@ -57,6 +59,17 @@
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
+        "NODE_DEST": "onpremise",
+        "BASE_URL": "http://localhost/dataturks/",
+        "PORT": 3000,
+        "APIPORT": 3030
+      }
+    },
+    "start-onprem-dev": {
+      "command": "node ./bin/server.js",
+      "env": {
+        "NODE_PATH": "./src",
+        "NODE_ENV": "development",
         "NODE_DEST": "onpremise",
         "BASE_URL": "http://localhost/dataturks/",
         "PORT": 3000,
@@ -107,6 +120,14 @@
       "command": "webpack --verbose --colors --display-error-details --config webpack/onprem.config.js",
       "env": {
         "NODE_ENV": "production",
+        "NODE_DEST": "onpremise",
+        "BASE_URL": "dataturks/"
+      }
+    },
+    "build-onprem-dev": {
+      "command": "webpack --verbose --colors --display-error-details --config webpack/onprem_dev.config.js",
+      "env": {
+        "NODE_ENV": "development",
         "NODE_DEST": "onpremise",
         "BASE_URL": "dataturks/"
       }

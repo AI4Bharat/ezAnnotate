@@ -534,8 +534,8 @@ export default class App extends Component {
         </div>
         */}
         <div className="centered footer">
-        <div className="footer-links">
-        <a href="/" className="brand footer-brand w-nav-brand">
+          <div className="footer-links">
+            <a href="/" className="brand footer-brand w-nav-brand">
             <h4>
             Dataturks
             </h4>
@@ -550,15 +550,7 @@ export default class App extends Component {
                 <div>Privacy Policy</div>
             </a>
           </div>
-            <div className="footer-links centered">
-                <div className="text-center marginTop">
-                    
-                </div>
-            </div>
-
-    </div>
-
-
+        </div>
       </div>
     );
   }

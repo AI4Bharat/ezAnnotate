@@ -1243,7 +1243,7 @@ export default class TaggerSpace extends Component {
     } else if (
       this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
       this.state.projectDetails.task_type === TEXT_MODERATION ||
-      this.state.projectDetails.task_type == SENTENCE_TRANSLATION
+      this.state.projectDetails.task_type === SENTENCE_TRANSLATION
     ) {
       return this.state.textSummary;
     } else if (
@@ -2350,24 +2350,22 @@ export default class TaggerSpace extends Component {
 
   showTextPairs() {
     // const currentHit = this.state.currentHit;
-    const { data } = this.state.currentHit;
     const splitArr = this.state.currentHit.data.split('|');
-    const sid = splitArr[0];
     const srcTxt = splitArr[1];
     const destTxt = splitArr[2];
     console.log("show text", this.state);
     return (
       <div className={styles.tagArea}>
         <p className={styles.textStyle}>{srcTxt}</p>
-        <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+        <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
         <p className={styles.textStyle}>{destTxt}</p>
         {splitArr.length > 3 &&
         <div>
-          <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+          <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
           <p className={styles.textStyle}>{splitArr[3]}</p>
         </div>
         }
-        <hr style="border: 2px dashed rgb(0, 181, 173);"/>
+        <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
         {this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER &&
           this.state.currentTags &&
           this.state.currentTags.size > 0 &&
@@ -2378,10 +2376,8 @@ export default class TaggerSpace extends Component {
 
   showTranslationText() {
     // const currentHit = this.state.currentHit;
-    const { data } = this.state.currentHit;
-    const sid = this.state.currentHit.data.split('|')[0];
-    const srcTxt = this.state.currentHit.data.split('|')[1];
-    const destTxt = this.state.currentHit.data.split('|')[2];
+    const dataArr = this.state.currentHit.data.split('|');
+    const srcTxt = dataArr.size > 1 ? dataArr[1] : dataArr[0];
 
     console.log("show text", this.state);
     return (
@@ -2391,9 +2387,14 @@ export default class TaggerSpace extends Component {
           <p className={styles.textStyle}>{srcTxt}</p>
         </div>
         <br />
-        <label> Uncorrected Translation </label>
-        <div className={styles.tagArea}>
-        <p className={styles.textStyle}>{destTxt}</p>
+        { dataArr.size > 2 &&
+        <div>
+          <label> Uncorrected Translation </label>
+          <div className={styles.tagArea}>
+            <p className={styles.textStyle}>{dataArr[2]}</p>
+          </div>
+        </div>
+        }
         <Button
           className={styles.copyButton}
           size="small"
@@ -2403,7 +2404,6 @@ export default class TaggerSpace extends Component {
           Copy
         </Button>
       </div>
-    </div>
     );
   }
 
@@ -2460,7 +2460,7 @@ export default class TaggerSpace extends Component {
           placeholder="Write moderated text here..."
         />
       );
-    } else if(type === SENTENCE_TRANSLATION) {
+    } else if (type === SENTENCE_TRANSLATION) {
       return (
         <Form.Field
           id="write_text"
@@ -3407,12 +3407,14 @@ export default class TaggerSpace extends Component {
     let prevButton = "Previous";
     let skipButton = "Skip";
     let moveToDoneButton = "Move to Done";
+    let showNextButton = false;
+    let showPrevButton = false;
     const nextButtonDisabled =
       this.state.currentIndex < 0 ||
       (this.state.hitScrollCompleted &&
         this.state.currentIndex >= this.state.hits.length - 1);
     let moveToDoneButtonDisabled = false;
-    if(this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
+    if (this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
       moveToDoneButtonDisabled = this.state.currentTags.size > 0 ? false : true;
     }
     if ("shortcuts" in this.state) {
@@ -3468,6 +3470,7 @@ export default class TaggerSpace extends Component {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          { showPrevButton &&
           <div title={prevButton}>
             <Button
               size="mini"
@@ -3483,6 +3486,8 @@ export default class TaggerSpace extends Component {
               Previous
             </Button>
           </div>
+          }
+          { showNextButton &&
           <div title={nextButton}>
             <Button
               size="mini"
@@ -3498,6 +3503,7 @@ export default class TaggerSpace extends Component {
               <Icon name="right arrow" />
             </Button>
           </div>
+          }
         </div>
         <br />
         <div title={moveToDoneButton}>
@@ -3540,6 +3546,7 @@ export default class TaggerSpace extends Component {
           padding: '0.5rem'
         }}
       >
+        { showPrevButton &&
         <Button
           size="mini"
           color="grey"
@@ -3552,6 +3559,7 @@ export default class TaggerSpace extends Component {
           <Icon name="left arrow" />
           {prevButton}
         </Button>
+        }
         <br />
         <Button
           size="mini"
@@ -3578,6 +3586,7 @@ export default class TaggerSpace extends Component {
           {moveToDoneButton}
         </Button>
         <br />
+        { showNextButton &&
         <Button
           size="mini"
           color="blue"
@@ -3590,6 +3599,7 @@ export default class TaggerSpace extends Component {
           {nextButton}
           <Icon name="right arrow" />
         </Button>
+        }
       </div>
     );
   }
