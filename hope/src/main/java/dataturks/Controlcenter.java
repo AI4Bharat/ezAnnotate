@@ -1207,42 +1207,50 @@ public class Controlcenter {
             return;
         
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Map<String, Map<UserDetails, Integer>> contributorDailyStats = new HashMap<>();
+        Map<String, Map<String, Integer>> contributorDailyStats = new HashMap<>();
         String date;
-        Map<UserDetails, Integer> date2user;
+        Map<String, Integer> date2user;
         for (DHitsResult result : results) {
             date = formatter.format(result.getUpdated_timestamp());
             if (!contributorDailyStats.containsKey(date))
                 contributorDailyStats.put(date, new HashMap<>());
             date2user = contributorDailyStats.get(date);
-            UserDetails user = new UserDetails(AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()));
-            if (!date2user.containsKey(user)) {
-                date2user.put(user, 0);
+            if (!date2user.containsKey(result.getUserId())) {
+                date2user.put(result.getUserId(), 0);
             }
-            date2user.put(user, date2user.get(user)+1);
+            date2user.put(result.getUserId(), date2user.get(result.getUserId())+1);
         }
 
-        if (projectUsers == null) {
-            details.setContributorDailyStats(contributorDailyStats);
-            return;
-        };
-        
-        //also add contributors who might have 0 hits.
-        List<UserDetails> allUserDetails = new ArrayList<>();
-        for (DProjectUsers projectUser : projectUsers) {
-            allUserDetails.add(new UserDetails(
-                AppConfig.getInstance().getdUsersDAO().findByIdInternal(projectUser.getUserId())));
-        }
-        for (String dateI : contributorDailyStats.keySet()) {
-            date2user = contributorDailyStats.get(dateI);
-            for (UserDetails userDetails : allUserDetails) {
-                if (!date2user.containsKey(userDetails)) {
-                    date2user.put(userDetails, 0);
+        if (projectUsers != null) {
+            //also add contributors who might have 0 hits.
+            List<String> allUserDetails = new ArrayList<>();
+            for (DProjectUsers projectUser : projectUsers) {
+                allUserDetails.add(projectUser.getUserId());
+            }
+            for (String dateI : contributorDailyStats.keySet()) {
+                date2user = contributorDailyStats.get(dateI);
+                for (String usr : allUserDetails) {
+                    if (!date2user.containsKey(usr)) {
+                        date2user.put(usr, 0);
+                    }
                 }
             }
         }
-
-        details.setContributorDailyStats(contributorDailyStats);
+        
+        Map<String, List<ContributorDetails>> dailyStats = new HashMap<>();
+        List<ContributorDetails> contributorList;
+        for (String key: contributorDailyStats.keySet()) {
+            contributorList = new ArrayList<>();
+            date2user = contributorDailyStats.get(key);
+            for (String userId : date2user.keySet()) {
+                ContributorDetails contributorDetails = new ContributorDetails(
+                    new UserDetails(AppConfig.getInstance().getdUsersDAO().findByIdInternal(userId)));
+                contributorDetails.setHitsDone(date2user.get(userId));
+                contributorList.add(contributorDetails);
+            }
+            dailyStats.put(key, contributorList);
+        }
+        details.setContributorDailyStats(dailyStats);
     }
 
     // update the details object with contributor level details like HITS done, average time taken etc.
@@ -1295,7 +1303,7 @@ public class Controlcenter {
                 }
             }
         }
-
+        addContributorStatsPerDay(projectUsers, results, details);
     }
 
     // don't show user email etc to non-contributors.

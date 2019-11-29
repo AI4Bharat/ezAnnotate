@@ -79,37 +79,7 @@ public class DataDownloadHandler {
     }
 
     public static String handleTextTranslation(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
-        List<DHits> hits = AppConfig.getInstance().getdHitsDAO().findAllByProjectIdInternal(project.getId());
-        Map<Long, DHitsResult> hitsResultMap = getHitId2ResultMap(reqObj, project);
-        
-        String separator = DConstants.TEXT_INPUT_RESULT_SEPARATOR;
-
-        List<String> lines = new ArrayList<>();
-        lines.add("input"+ DConstants.TEXT_INPUT_RESULT_SEPARATOR  + "result");
-        
-        //get all hit/hit id pairs.
-        for (DHits hit : hits) {
-            if (DConstants.HIT_STATUS_DONE.equalsIgnoreCase(hit.getStatus()) && hitsResultMap.containsKey(hit.getId())) {
-                DHitsResult result = hitsResultMap.get(hit.getId());
-                String userEmail = AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()).getEmail();
-                lines.add(hit.getData().split("\\|")[0] + separator + result.getResult() + separator + userEmail);
-            }
-
-            else if (downloadType == DTypes.File_Download_Type.ALL) {
-                //in case of skipped, we might have some result.
-                String resultData = "";
-                if (hitsResultMap.containsKey(hit.getId())) {
-                    DHitsResult result = hitsResultMap.get(hit.getId());
-                    resultData += result.getResult();
-                    String userEmail = AppConfig.getInstance().getdUsersDAO().findByIdInternal(result.getUserId()).getEmail();
-                    resultData += separator + userEmail;
-                }
-                lines.add(hit.getData().split("\\|")[0] + separator + resultData);
-            }
-        }
-
-        String filePath = DataDownloadHelper.outputToTempFile(lines, project.getName() + ".tsv");
-        return filePath;
+        return handleJsonDownload(reqObj, project, downloadType);
     }
 
     public static String handleTextModeration(DReqObj reqObj, DProjects project, DTypes.File_Download_Type downloadType) {
