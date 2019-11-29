@@ -3713,7 +3713,11 @@ export default class TaggerSpace extends Component {
           </Label>
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
-          <p>{this.state.rules.instructions}</p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.state.rules.instructions
+            }}
+          />
         </Accordion.Content>
       </Accordion>
     );

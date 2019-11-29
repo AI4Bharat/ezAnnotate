@@ -80,7 +80,7 @@ export default class TaggerExport extends Component {
       const blob = new Blob([response.text], {type: 'application/octet-stream'});
       if (this.props.projectDetails) {
         const taskType = this.props.projectDetails.task_type;
-        if (taskType === TEXT_MODERATION || taskType === TEXT_SUMMARIZATION || taskType === SENTENCE_TRANSLATION) {
+        if (taskType === TEXT_MODERATION || taskType === TEXT_SUMMARIZATION) {
           FileSaver.saveAs(blob, this.props.projectDetails.name + '.tsv');
         } else {
           if (this.state.downloadFormat === 'json') {
