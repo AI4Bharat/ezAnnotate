@@ -578,6 +578,7 @@ export default class TaggerSpace extends Component {
     const editor = document.getElementById("write_text");
     console.log("editor is ", editor);
     if (editor !== null) {
+      editor.focus();
       editor.setAttribute("data-gramm", "false");
     }
     // this.loadData()
@@ -656,6 +657,7 @@ export default class TaggerSpace extends Component {
     const editor = document.getElementById("write_text");
     console.log("editor is ", editor);
     if (editor !== null) {
+      editor.focus();
       editor.setAttribute("data-gramm", "false");
     }
   }
