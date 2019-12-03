@@ -278,7 +278,7 @@ public class DataDownloadHelper {
                 metadataStr = mapper.writeValueAsString(node);
             }
 
-            return "{" + "\"content\": \"" + hitdataJsonEncoded + "\"," + "\"annotation\":" + resultJson +   "," + "\"extras\":" + hitExtraJson +   "," + "\"metadata\":" + metadataStr +"}";
+            return "{" + "\"content\": \"" + hitdataJsonEncoded + "\", " + "\"annotation\": " + resultJson +   ", " + "\"extras\": " + hitExtraJson +   ", " + "\"metadata\": " + metadataStr +"}";
         }
         catch (Exception e) {
             LOG.error("Error creating a download record..skipping..");
@@ -293,7 +293,7 @@ public class DataDownloadHelper {
     }
 
 
-    private static String getStringJsonEscaped(String str) {
+    static String getStringJsonEscaped(String str) {
         //convert the hit data in a valid json string, pick the result json as it is.
         JsonStringEncoder e = JsonStringEncoder.getInstance();
         StringBuilder sb = new StringBuilder();

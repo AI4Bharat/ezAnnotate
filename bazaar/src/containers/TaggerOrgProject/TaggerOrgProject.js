@@ -28,6 +28,7 @@ import {
   sendInvite,
   getUidToken,
   fetchHitsDetails,
+  getStatsForDate,
   deleteProjectDt,
   logEvent
 } from "../../helpers/dthelper";
@@ -58,6 +59,8 @@ import Popover from "react-bootstrap/lib/Popover";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
 import Table from "react-bootstrap/lib/Table";
 import Modal from "react-bootstrap/lib/Modal";
+
+import DatePicker from "react-date-picker";
 // import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 // import Tooltip from 'react-bootstrap/lib/Tooltip';
 import ReactTooltip from "react-tooltip";
@@ -69,6 +72,8 @@ import PolygonAnnotatorV2 from "../../components/PolygonAnnotatorV2/PolygonAnnot
 import PolygonAnnotatorOld from "../../components/PolygonAnnotatorOld/PolygonAnnotator";
 import DocumentAnnotator from "../../components/DocumentAnnotator/DocumentAnnotator";
 import config from "../../config";
+
+
 import {
   Player,
   ControlBar,
@@ -134,6 +139,7 @@ export default class TaggerOrgProject extends Component {
     this.projectDeleted = this.projectDeleted.bind(this);
     this.showTags = this.showTags.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
+    this.dateStatsFetched = this.dateStatsFetched.bind(this);
     this.state = {
       fields: {},
       errors: {},
@@ -145,8 +151,12 @@ export default class TaggerOrgProject extends Component {
       inviteModal: false,
       loading: false,
       successModal: false,
-      selectedLabel: undefined
+      selectedLabel: undefined,
+      date: null,
+      dateStats:null,
+      dateStatsError:undefined
     };
+    
   }
 
   state = {
@@ -158,9 +168,22 @@ export default class TaggerOrgProject extends Component {
     loading: false,
     successModal: false,
     projectDetailsError: undefined,
-    hitsDetails: undefined
+    hitsDetails: undefined,
+    date: null,
+    dateStats:null,
+    dateStatsError:undefined
   };
 
+  onChange = date => 
+  {
+    this.setState({date})
+    getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+  }
+  setInitialDate(){
+    const date = new Date();
+    this.setState({date:date});
+    getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+  }
   componentWillMount() {
     console.log("TaggerStats componentWillMount");
     if (
@@ -176,7 +199,11 @@ export default class TaggerOrgProject extends Component {
     }
     this.setState({ hitsDetails: undefined, isMounted: true });
   }
-
+  componentDidUpdate(prevState) {
+    // if(prevState.date!=this.state.date){
+    //     getStatsForDate(this.props.currentProject,this.state.date.toLocaleDateString(),this.dateStatsFetched);
+    //   }   
+  }
   componentDidMount() {
     console.log("Did mount TaggerStats ", this.state.projectDetails);
     if (
@@ -202,8 +229,9 @@ export default class TaggerOrgProject extends Component {
         20,
         this.hitsFetched,
         "done"
-      );
+      );  
     }
+    
     // if (this.props.currentProject) {
     //   this.loadProjectDetails();
     //   fetchHitsDetails(this.props.currentProject, 0, 10, this.hitsFetched);
@@ -278,6 +306,21 @@ export default class TaggerOrgProject extends Component {
     }
     return <tbody>{arrs}</tbody>;
   };
+
+  dateStatsFetched(error, response) {
+    if (!error) {
+       this.setState({  
+        dateStats: response.body,
+        dateStatsError: undefined
+      });
+    } else {
+      if (response && response.body && response.body.message) {
+        this.setState({ dateStatsError: response.body.message });
+      } else {  
+        this.setState({ dateStatsError: "Error in fetching data" });
+      } 
+    }
+  }
 
   hitsFetched(error, response) {
     console.log("hitsFetched ", error, response);
@@ -425,9 +468,10 @@ export default class TaggerOrgProject extends Component {
     } else {
       fetchProjectStats(this.props.currentProject, this.projectDetailsFetched);
     }
+    this.setInitialDate();
   }
 
-  inviteSent(error, response) {
+  inviteSent(error, response) { 
     console.log("invite sent ", error, response);
     if (!error) {
       logEvent("buttons", "Invite sent success");
@@ -1633,7 +1677,7 @@ export default class TaggerOrgProject extends Component {
                         disabled={!permissions.canUploadData}
                         onClick={this.openScreen.bind(this, "edit", "file")}
                       >
-                        {" "}
+                        {" "} 
                         <Icon name="add circle" color="blue" /> Add Data
                       </Dropdown.Item>
                       <Dropdown.Item
@@ -1962,7 +2006,7 @@ export default class TaggerOrgProject extends Component {
         )}
 
         <div style={{ height: "50px" }} />
-        {projectDetails &&
+        { projectDetails &&
           projectDetails.contributorDetails &&
           projectDetails.contributorDetails.length > 0 && (
             <div
@@ -1991,7 +2035,44 @@ export default class TaggerOrgProject extends Component {
               </Segment.Group>
             </div>
           )}
-
+        <br />
+        <br />
+        {
+        (
+            <div
+              className="text-center"
+              style={{ display: "flex", justifyContent: "space-around" }}
+            >
+              <Segment.Group
+                loading={this.state.loading}
+                style={{ width: "60%" }}
+                centered
+              >
+                <Header attached="top" block as="h4">
+                  <Icon name="line chart" disabled />
+                  <Header.Content>Stats  
+                      <DatePicker 
+                      onChange={this.onChange}
+                      value={this.state.date}
+                      maxDate={new Date()}
+                      />  
+                  </Header.Content>
+                </Header>
+                {this.state.dateStats&&(
+                <Table striped bordered condensed hover responsive>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Time(s) / HIT</th>
+                      <th>#HITs done</th>
+                    </tr>
+                  </thead>
+                  {this.getContributorsData(this.state.dateStats)}
+                </Table>
+                )}
+              </Segment.Group>
+            </div>
+        )}
         <br />
         <br />
 

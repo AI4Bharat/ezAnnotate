@@ -193,7 +193,7 @@ public class DataDownloadHandler {
             case TEXT_SUMMARIZATION:
             case SENTENCE_TRANSLATION:
             case TEXT_MODERATION:
-                resultJson = "\""+resultJson+"\"";
+                resultJson = "\"" + DataDownloadHelper.getStringJsonEscaped(resultJson) + "\"";
                 break;
         }
         
