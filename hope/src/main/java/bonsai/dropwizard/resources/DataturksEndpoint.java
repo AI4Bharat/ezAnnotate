@@ -1,6 +1,5 @@
 package bonsai.dropwizard.resources;
 
-
 import bonsai.Utils.CommonUtils;
 import bonsai.Utils.UploadFileUtil;
 import bonsai.config.AppConfig;
@@ -31,8 +30,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.text.ParseException;
 /*
 * DT annotations platform
 * */
@@ -777,7 +777,17 @@ public class DataturksEndpoint {
             throw e;
         }
     }
+    @POST
+    @Path("/{projectId}/fetchStatsForDate")
+    public List<ContributorDetails> fetchStatsForDate(@NotNull @HeaderParam("token") String token,
+            @NotNull @HeaderParam("uid") String id, @NotNull @PathParam("projectId") String projectId,
+            @NotNull @QueryParam("date") String date) throws ParseException {
 
+        LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
+        List<ContributorDetails> details=Controlcenter.fetchStatsForDateInternal(projectId, date);
+        return details;
+    }
+    
 
 
         /////////////////////////////// ALL INTERNAL FUNCTIONS /////////////////////////////////////////////////////////
