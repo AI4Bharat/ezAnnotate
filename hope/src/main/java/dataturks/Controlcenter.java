@@ -485,6 +485,7 @@ public class Controlcenter {
                     hitStatus = DConstants.HIT_STATUS_SKIPPED;
                 }
                 else {
+                    // TODO: If 'prev' or 'next' is pressed, don't mark as done?
                     hitStatus = DConstants.HIT_STATUS_DONE;
                 }
             }
@@ -509,6 +510,7 @@ public class Controlcenter {
                 result.setUserId(reqObj.getUid());
                 result.setResult(reqObj.getReqMap().get("result"));
                 result.setNotes(reqObj.getReqMap().get("notes"));
+                result.setSentViaAPI(false); //Maybe the user has updated it by clicking 'prev'
                 try {
                     int time = 0;
                     if (reqObj.getReqMap().containsKey("timeTakenToLabelInSec")) {

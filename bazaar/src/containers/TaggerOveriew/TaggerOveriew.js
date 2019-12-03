@@ -494,7 +494,7 @@ moveToDone() {
     timeTakenToLabelInSec = currentHit.hitResults[0].timeTakenToLabelInSec;
   }
   this.setState({ loading: true });
-  addHits(currentHit.id, { result, timeTakenToLabelInSec }, this.props.currentProject, this.hitAddCallback);
+  addHits(currentHit.id, { result: result, timeTakenToLabelInSec: timeTakenToLabelInSec, status: "done" }, this.props.currentProject, this.hitAddCallback);
   // if (this.state.type === 'skipped') {
   //   url = '/projects/' + this.props.params.orgName + '/' + this.props.params.projectName + '/space?type=skipped';
   // } else {

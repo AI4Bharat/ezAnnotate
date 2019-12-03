@@ -190,6 +190,11 @@ public class DataDownloadHandler {
             case POS_TAGGING:
                 resultJson = DataDownloadHelper.convertPoSToJson(resultJson);
                 break;
+            case TEXT_SUMMARIZATION:
+            case SENTENCE_TRANSLATION:
+            case TEXT_MODERATION:
+                resultJson = "\""+resultJson+"\"";
+                break;
         }
         
         return DataDownloadHelper.formatAsJson(hit, result, resultJson, isPaidPlanProject);

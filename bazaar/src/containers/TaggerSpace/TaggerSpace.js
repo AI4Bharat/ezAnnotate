@@ -312,6 +312,7 @@ export default class TaggerSpace extends Component {
         loading: false,
         currentStart: 0,
         currentCount: 1,
+        hitIDsDone: new Set(),
         startTime: new Date().getTime()
       };
     } else if (
@@ -350,6 +351,7 @@ export default class TaggerSpace extends Component {
         loading: false,
         currentStart: 0,
         currentCount: 1,
+        hitIDsDone: new Set(),
         startTime: new Date().getTime()
       };
     } else if (
@@ -408,6 +410,7 @@ export default class TaggerSpace extends Component {
         loading: false,
         currentStart: 0,
         currentCount: 1,
+        hitIDsDone: new Set(),
         startTime: new Date().getTime()
       };
     } else if (
@@ -501,6 +504,7 @@ export default class TaggerSpace extends Component {
         loading: false,
         currentStart: 0,
         currentCount: 1,
+        hitIDsDone: new Set(),
         startTime: new Date().getTime()
       };
     } else {
@@ -531,6 +535,7 @@ export default class TaggerSpace extends Component {
         entityColorMap: {},
         currentStart: 0,
         currentCount: this.getDefaultCount(),
+        hitIDsDone: new Set(),
         DEFAULT_COUNT: this.getDefaultCount(),
         activeIndex: -1,
         action: "",
@@ -1122,6 +1127,7 @@ export default class TaggerSpace extends Component {
         <div>
             {fileName && <Label title="File Name" size="mini">{fileName}</Label>}
             {status && <Label title="HIT status" style={{ textTransform: 'capitalize' }} size="mini">{hitStateNameMap[status]}</Label>}
+            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="mini">{'Currently Done: '+ (this.state.hitIDsDone.size)}</Label>}
         </div>
       );
     }
@@ -1314,6 +1320,7 @@ export default class TaggerSpace extends Component {
       start: 0,
       currentHit: undefined,
       currentCount: this.state.DEFAULT_COUNT,
+      hitIDsDone: new Set(),
       hitsCompleted: false,
       changesInSession: 0
     });
@@ -1397,6 +1404,19 @@ export default class TaggerSpace extends Component {
     if (this.state.classification && this.state.classification.length > 0) {
       if (Object.keys(this.state.classificationResponse).length === 0) {
         alert("Please choose atleast one classification");
+        return false;
+      }
+    }
+    if (this.state.currentTags.size < 1 && 
+      this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
+        alert("Please choose atleast one tag");
+        return false;
+    }
+    if (this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
+      this.state.projectDetails.task_type === SENTENCE_TRANSLATION ||
+      this.state.projectDetails.task_type === TEXT_MODERATION) {
+      if (result == null || result.length <= 0) {
+        alert("Please type something");
         return false;
       }
     }
@@ -1894,6 +1914,7 @@ export default class TaggerSpace extends Component {
       const chits = this.state.hits;
       let nextIndex = -1;
       let imgLoaded = false;
+      let currentHit = this.state.currentHit;
 
       // chits[currentIndex].result = getTaggedResult
       // for (let index = this.state.currentIndex + 1; index < chits.length; index ++) {
@@ -1903,6 +1924,7 @@ export default class TaggerSpace extends Component {
       //   }
       // }
       if ((action && action === "moveToDone") || this.state.action === "moveToDone") {
+        this.state.hitIDsDone.add(currentHit.id);
         nextIndex = this.state.currentIndex;
         this.state.currentStart = this.state.currentStart - 1;
         chits.splice(this.state.currentIndex, 1);
@@ -1912,6 +1934,7 @@ export default class TaggerSpace extends Component {
           nextIndex = nextIndex - 1;
         }
       } else if ((action && action === "saveToDone") || this.state.action === "saveToDone") {
+        this.state.hitIDsDone.add(currentHit.id);
         if (this.state.currentIndex + 1 < chits.length) {
           nextIndex = this.state.currentIndex + 1;
         }
@@ -1930,7 +1953,6 @@ export default class TaggerSpace extends Component {
       }
       // chits.splice(0, 1);
       // console.log(' Hit Added ', chits);
-      let currentHit = this.state.currentHit;
       if (nextIndex > -1 &&  nextIndex < chits.length) {
         currentHit = chits[nextIndex];
         let currentTags = new Set();
@@ -2108,6 +2130,7 @@ export default class TaggerSpace extends Component {
     logEvent("buttons", "Skip hit");
     logEvent("Mark As", 'Skipped');
     this.setState({ loading: true, action: "next", changesInSession: 0 });
+    this.state.hitIDsDone.delete(currentHit.id); // Just in-case it was added
     skipHits(
       this.state.currentHit.id,
       this.props.currentProject,
@@ -2439,6 +2462,13 @@ export default class TaggerSpace extends Component {
     this.setState({ changesInSession, textSummary: value });
   }
 
+  handleWriteTextOnKeyPress(event) {
+    // Prevent text field new line when Enter is pressed
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  }
+
   showWriteText(type) {
     if (type === TEXT_SUMMARIZATION) {
       return (
@@ -2449,6 +2479,10 @@ export default class TaggerSpace extends Component {
           label="Summary"
           value={this.state.textSummary}
           placeholder="Write text summary here..."
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
         />
       );
     } else if (type === TEXT_MODERATION) {
@@ -2460,6 +2494,10 @@ export default class TaggerSpace extends Component {
           label="Moderated Text"
           value={this.state.textSummary}
           placeholder="Write moderated text here..."
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
         />
       );
     } else if (type === SENTENCE_TRANSLATION) {
@@ -2471,6 +2509,7 @@ export default class TaggerSpace extends Component {
           label="Translated Text"
           value={this.state.textSummary}
           placeholder="Write translated text here..."
+          onKeyPress={(e) => { this.handleWriteTextOnKeyPress(e) }}
           style={{
             width: "100%",
             height: "100%"
@@ -3410,18 +3449,19 @@ export default class TaggerSpace extends Component {
     let skipButton = "Skip";
     let moveToDoneButton = "Move to Done";
     let showNextButton = false;
-    let showPrevButton = false;
+    let showPrevButton = true;
     const nextButtonDisabled =
       this.state.currentIndex < 0 ||
       (this.state.hitScrollCompleted &&
         this.state.currentIndex >= this.state.hits.length - 1);
-    let moveToDoneButtonDisabled = false;
-    if (this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
-      moveToDoneButtonDisabled = this.state.currentTags.size > 0 ? false : true;
-    }
     if ("shortcuts" in this.state) {
       const shortcuts = this.state.shortcuts;
-      if ("next" in shortcuts) {
+      // Force Mousetrap: stackoverflow.com/questions/21013866/
+      Mousetrap.prototype.stopCallback = function () {
+        return false;
+      }
+
+      if ("next" in shortcuts && showNextButton) {
         const combo = convertKeyToString(shortcuts.next);
         nextButton = "Next (" + combo + ")";
         if (!nextButtonDisabled) {
@@ -3430,7 +3470,7 @@ export default class TaggerSpace extends Component {
           Mousetrap.unbind(combo);
         }
       }
-      if ("previous" in shortcuts) {
+      if ("previous" in shortcuts && showPrevButton) {
         const combo = convertKeyToString(shortcuts.previous);
         prevButton = "Previous (" + combo + ")";
         if (this.state.currentIndex > 0) {
@@ -3516,7 +3556,6 @@ export default class TaggerSpace extends Component {
             icon
             labelPosition="left"
             onClick={this.moveToDone.bind(this, "saveToDone")}
-            disabled={moveToDoneButtonDisabled}
           >
             <Icon name="save" />
             Move to Done
