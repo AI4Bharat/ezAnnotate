@@ -15,7 +15,7 @@ database:
     # the password
     password: abcd@abcd
     # the JDBC URL; the database is called DWGettingStarted
-    url: jdbc:mysql://localhost:3306/hope?useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/hope
 
     properties:
       charSet: UTF-8
