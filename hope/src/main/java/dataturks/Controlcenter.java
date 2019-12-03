@@ -23,6 +23,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1368,5 +1369,76 @@ public class Controlcenter {
         user.setUpdated_timestamp(new Date());
         AppConfig.getInstance().getdUsersDAO().saveOrUpdateInternal(user);
     }
+    public static List<ContributorDetails> fetchStatsForDateInternal(String projectId, String date) {
+        DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(projectId);
+        if (project == null) {
+            throw new WebApplicationException("No such project found", Response.Status.NOT_FOUND);
+        }
+        List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO()
+                .findAllByProjectIdInternal(project.getId());
+        List<DProjectUsers> projectUsers = AppConfig.getInstance().getdProjectUsersDAO()
+                .findAllByProjectIdInternal(project.getId());
 
+        return fetchStatsForDate(results, projectUsers, date);
+    }
+
+    public static List<ContributorDetails> fetchStatsForDate(List<DHitsResult> results,
+            List<DProjectUsers> projectUsers, String inpDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate = "";
+        try {
+            strDate = formatter.format(parser.parse(inpDate));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Map<String, List<DHitsResult>> contributorsMapForDate = new HashMap<>();
+        List<ContributorDetails> detailsForDate = new ArrayList<ContributorDetails>();
+        for (DHitsResult result : results) {
+
+            String date = formatter.format(result.getUpdated_timestamp());
+            if (date.equals(strDate)) {
+                if (!contributorsMapForDate.containsKey(result.getUserId())) {
+                    contributorsMapForDate.put(result.getUserId(), new ArrayList<>());
+                }
+                contributorsMapForDate.get(result.getUserId()).add(result);
+            }
+        }
+        contributorsMapForDate = sortByHitsDone(contributorsMapForDate);
+        for (String userId : contributorsMapForDate.keySet()) {
+            DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(userId);
+            List<DHitsResult> userHits = contributorsMapForDate.get(userId);
+
+            ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
+            contributorDetails.setHitsDone(userHits.size());
+            contributorDetails.setAvrTimeTakenInSec(getAvrgTimePerHit(userHits));
+
+            // get user role.
+            if (projectUsers != null) {
+                for (DProjectUsers projectUser : projectUsers) {
+                    if (projectUser.getUserId().equalsIgnoreCase(userId)) {
+                        contributorDetails.setRole(projectUser.getRole());
+                    }
+                }
+            }
+            detailsForDate.add(contributorDetails);
+        }
+        // also add contributors who might have 0 hits.
+        if (projectUsers != null) {
+            for (DProjectUsers projectUser : projectUsers) {
+                if (!contributorsMapForDate.containsKey(projectUser.getUserId())) {
+                    DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(projectUser.getUserId());
+                    if (user == null) {
+                        continue;
+                    }
+                    ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
+                    contributorDetails.setRole(projectUser.getRole());
+                    detailsForDate.add(contributorDetails);
+                }
+            }
+           
+        }
+        return detailsForDate;
+    }
 }

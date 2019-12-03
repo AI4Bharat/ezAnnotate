@@ -266,7 +266,7 @@ export default class TaggerStats extends Component {
                           }
 
                           <br />
-                                                  { projectDetails &&
+                            { projectDetails &&
                           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                               <Button disabled={!permissions.canSeeInsights} primary size="small" onClick={this.openScreen.bind(this, 'visualize')}>
                                 <Icon name="bar graph"/> Insights
