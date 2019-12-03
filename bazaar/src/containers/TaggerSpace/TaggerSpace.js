@@ -1387,6 +1387,25 @@ export default class TaggerSpace extends Component {
     }
   }
 
+  checkIfQualityCheckHit(hitData, result) {
+    const dataArr = hitData.split('|');
+    if (dataArr[0] !== 'test' || dataArr.length < 4) return;
+    const correctAnswer = dataArr[3];
+    const alertStr = 'You MAY have done a mistake! \nThe correct answer could have been ' + '"' + correctAnswer + '"';
+    switch (this.state.projectDetails.task_type) {
+      case SENTENCE_PAIR_CLASSIFIER:
+        if (!this.state.currentTags.has(correctAnswer)) {
+          window.alert(alertStr);
+        }
+        break;
+      case SENTENCE_TRANSLATION:
+        if (correctAnswer.localeCompare(result) != 0) {
+          window.alert(alertStr);
+        }
+        break;
+    }
+  }
+
   moveToDone(action) {
     console.log('move to done', action);
     logEvent("buttons", 'Done');
@@ -1420,6 +1439,9 @@ export default class TaggerSpace extends Component {
         return false;
       }
     }
+
+    this.checkIfQualityCheckHit(this.state.currentHit.data, result);
+
     this.state.action = action ? action : 'moveToDone';
     this.state.changesInSession = 0;
     this.setState({ loading: true, action: action ? action : 'moveToDone' });
@@ -2384,12 +2406,12 @@ export default class TaggerSpace extends Component {
         <p className={styles.textStyle}>{srcTxt}</p>
         <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
         <p className={styles.textStyle}>{destTxt}</p>
-        {splitArr.length > 3 &&
+        {/* {splitArr.length > 3 &&
         <div>
           <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
           <p className={styles.textStyle}>{splitArr[3]}</p>
         </div>
-        }
+        } */}
         <hr style={{border: '2px dashed rgb(0, 181, 173)'}}/>
         {this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER &&
           this.state.currentTags &&
