@@ -83,6 +83,7 @@ import {
   getClassificationResult,
   HIT_EVALUATION_CORRECT,
   HIT_EVALUATION_INCORRECT,
+  getStringDiffCount
 } from "../../helpers/Utils";
 import PanZoomElement from "../../components/PinchZoomPan/PanZoomElement";
 import Fullscreen from "react-fullscreen-crossbrowser";
@@ -1399,7 +1400,7 @@ export default class TaggerSpace extends Component {
         }
         break;
       case SENTENCE_TRANSLATION:
-        if (correctAnswer.localeCompare(result) != 0) {
+        if (getStringDiffCount(correctAnswer, result) > 5) {
           window.alert(alertStr);
         }
         break;
