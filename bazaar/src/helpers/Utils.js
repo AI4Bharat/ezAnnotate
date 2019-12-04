@@ -314,10 +314,10 @@ export const createEntitiesJson = ruleLine => {
 };
 
 
-export const getDetaultShortcuts = (type, entities) => {
+export const getDefaultShortcuts = (type, entities) => {
   const commonKeys = {
-    next: { qualifier: "", key: "right" },
-    previous: { qualifier: "", key: "left" },
+    next: { qualifier: "ctrl", key: "." },
+    previous: { qualifier: "ctrl", key: "," },
     skip: { qualifier: "ctrl", key: "q" },
     moveToDone: { qualifier: "ctrl", key: "enter" }
   };

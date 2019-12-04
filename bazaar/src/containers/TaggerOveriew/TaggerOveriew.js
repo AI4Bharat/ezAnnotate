@@ -9,7 +9,7 @@ import { fetchHitsDetails, getUidToken, addHits } from '../../helpers/dthelper';
 import { push, goBack } from 'react-router-redux';
 import { Table, Label, Dropdown, Button, Icon, Divider, Segment, Breadcrumb } from 'semantic-ui-react';
 
-import { getDetaultShortcuts, checkVideoURL, convertKeyToString, VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, createEntitiesJson, createDocEntityColorMap, TEXT_MODERATION, POS_TAGGING, TEXT_SUMMARIZATION, TEXT_CLASSIFICATION, SENTENCE_TRANSLATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
+import { getDefaultShortcuts, checkVideoURL, convertKeyToString, VIDEO_CLASSIFICATION, VIDEO_BOUNDING_BOX, IMAGE_CLASSIFICATION, POS_TAGGING_GENERIC, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, createEntitiesJson, createDocEntityColorMap, TEXT_MODERATION, POS_TAGGING, TEXT_SUMMARIZATION, TEXT_CLASSIFICATION, SENTENCE_TRANSLATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
 import BoxAnnotator from '../../components/BoxAnnotator/BoxAnnotator';
 import BoxAnnotatorOld from '../../components/BoxAnnotatorOld/BoxAnnotator';
 import PolygonAnnotator from '../../components/PolygonAnnotator/PolygonAnnotator';
@@ -240,7 +240,7 @@ export default class TaggerOveriew extends Component {
         entityColorMap = createDocEntityColorMap(entities);
       }
       const rules = JSON.parse(projectDetails.taskRules);
-      let shortcuts = getDetaultShortcuts(projectDetails.task_type, entities);
+      let shortcuts = getDefaultShortcuts(projectDetails.task_type, entities);
       if ('shortcuts' in rules) {
         shortcuts = rules.shortcuts;
       }

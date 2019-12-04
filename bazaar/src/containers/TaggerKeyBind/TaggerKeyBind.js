@@ -9,7 +9,7 @@ import { push } from 'react-router-redux';
 import { setCurrentProject, getProjectDetails } from 'redux/modules/dataturks';
 import { getUidToken, editProject } from '../../helpers/dthelper';
 import { Button, Form, Segment, Breadcrumb, Icon } from 'semantic-ui-react';
-import { createEntitiesJson, getDetaultShortcuts, convertKeyToString, keyMap, VIDEO_BOUNDING_BOX, POS_TAGGING_GENERIC, POS_TAGGING, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, TEXT_CLASSIFICATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
+import { createEntitiesJson, getDefaultShortcuts, convertKeyToString, keyMap, VIDEO_BOUNDING_BOX, POS_TAGGING_GENERIC, POS_TAGGING, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_CLASSIFICATION, IMAGE_POLYGON_BOUNDING_BOX_V2, TEXT_CLASSIFICATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
 
 @connect(
   state => ({user: state.auth.user,
@@ -92,13 +92,13 @@ export default class TaggerKeyBind extends Component {
     if (!projectdetails) return { fields: {}, shortcuts: {} };
     const { taskRules, task_type } = projectdetails;
     let fields = {};
-    let shortcuts = getDetaultShortcuts(task_type);
+    let shortcuts = getDefaultShortcuts(task_type);
     console.log('default shortcuts', shortcuts);
     const ruleJson = JSON.parse(taskRules);
     if (task_type === IMAGE_CLASSIFICATION || task_type === TEXT_CLASSIFICATION || task_type === SENTENCE_PAIR_CLASSIFIER || task_type === POS_TAGGING || task_type === IMAGE_POLYGON_BOUNDING_BOX || task_type === IMAGE_POLYGON_BOUNDING_BOX_V2 ) {
       if ('tags' in ruleJson) {
         fields = createEntitiesJson(taskRules).entities;
-        shortcuts = getDetaultShortcuts(task_type, fields);
+        shortcuts = getDefaultShortcuts(task_type, fields);
       }
     }
     if ('shortcuts' in ruleJson) {
@@ -174,7 +174,7 @@ export default class TaggerKeyBind extends Component {
     const keySet = new Set();
     const finalShortcuts = {};
     for (const key of Object.keys(shortcuts)) {
-      if (key in getDetaultShortcuts(this.props.projectDetails.task_type, this.state.fields) || (this.state.fields && this.state.fields.includes(key))) {
+      if (key in getDefaultShortcuts(this.props.projectDetails.task_type, this.state.fields) || (this.state.fields && this.state.fields.includes(key))) {
         const value = shortcuts[key];
         if (key.length > 0 && (value.qualifier.length > 0 || value.key.length > 0)) {
           finalShortcuts[key] = value;

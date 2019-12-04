@@ -60,7 +60,7 @@ import {
   ENTITY_COLORS,
   createEntities,
   createEntitiesJson,
-  getDetaultShortcuts,
+  getDefaultShortcuts,
   convertKeyToString,
   POS_TAGGING,
   TEXT_SUMMARIZATION,
@@ -203,7 +203,7 @@ export default class TaggerSpace extends Component {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
       const entities = createEntitiesJson(this.props.projectDetails.taskRules).entities;
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -323,7 +323,7 @@ export default class TaggerSpace extends Component {
         this.props.projectDetails.task_type === SENTENCE_TRANSLATION)
     ) {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
-      let shortcuts = getDetaultShortcuts(this.props.projectDetails.task_type);
+      let shortcuts = getDefaultShortcuts(this.props.projectDetails.task_type);
       if ("shortcuts" in rules) {
         shortcuts = rules.shortcuts;
       }
@@ -364,7 +364,7 @@ export default class TaggerSpace extends Component {
     ) {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
       const entities = createEntitiesJson(this.props.projectDetails.taskRules).entities;
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -427,7 +427,7 @@ export default class TaggerSpace extends Component {
       const entities = createEntities(this.props.projectDetails.taskRules).entities;
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
       const hits = [];
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -1569,7 +1569,7 @@ export default class TaggerSpace extends Component {
       const entitiesObject = createEntitiesJson(projectDetails.taskRules);
       const entities = entitiesObject.entities;
       const entityJson = entitiesObject.entityJson;
-      let shortcuts = getDetaultShortcuts(projectDetails.task_type, entities);
+      let shortcuts = getDefaultShortcuts(projectDetails.task_type, entities);
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
       this.state.entityColorMap = entityColorMap;
       if ("shortcuts" in rules) {
