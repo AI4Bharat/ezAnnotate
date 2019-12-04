@@ -620,13 +620,16 @@ export default class TaggerOrgProject extends Component {
     return <div> {renderArrs} </div>;
   }
 
-  showClassifications = hitsDetails => {
+  showClassifications = (hitsDetails, type) => {
     if (hitsDetails && hitsDetails.length === 0) {
       return <h2>No Sample HITs</h2>;
     }
     console.log("show classifications ", this.state);
     const currentHit = hitsDetails[this.state.start];
-    const data = currentHit.data;
+    let data = currentHit.data;
+    if (type === SENTENCE_PAIR_CLASSIFIER && data.split('|').length > 1) {
+      data = data.split('|')[1];
+    }
     const result = currentHit.hitResults[0].result;
     let currentTags = [];
     let currentNote = "";
@@ -1484,7 +1487,8 @@ export default class TaggerOrgProject extends Component {
       title = "Moderated Text";
     }
     if (type === SENTENCE_TRANSLATION) {
-      data = data.split('|').size > 1 ? data.split('|')[1] : data;
+      data = data.split('|').length > 1 ? data.split('|')[1] : data;
+      title = "Translation";
     }
     return (
       <div
@@ -2118,14 +2122,14 @@ export default class TaggerOrgProject extends Component {
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
-                {this.showSummaries(hitsDetails, TEXT_MODERATION)}
+                {this.showSummaries(hitsDetails, projectDetails.task_type)}
               </Segment>
             </Segment.Group>
           )}
         {projectDetails &&
           hitsDetails &&
           hitsDetails.length >= 0 &&
-          projectDetails.task_type === TEXT_CLASSIFICATION && (
+          (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) && (
             <Segment.Group>
               <Header attached="top" block as="h4">
                 <Icon name="list" disabled />
@@ -2137,7 +2141,7 @@ export default class TaggerOrgProject extends Component {
                 <br />
                 {extra && <div>{this.showExtra(extra)}</div>}
                 <br />
-                {this.showClassifications(hitsDetails)}
+                {this.showClassifications(hitsDetails, projectDetails.task_type)}
               </Segment>
             </Segment.Group>
           )}

@@ -1445,6 +1445,7 @@ export default class TaggerSpace extends Component {
       }
     }
     this.setState({ loading: true, action: 'moveToDone' });
+    this.state.hitIDsDone.delete(currentHit.id); // Just in-case it was added
     updateHitStatus(currentHit.id, this.props.currentProject, HIT_STATE_SKIPPED, result, this.moveToDoneCallback.bind(this));
   }
 
@@ -2130,7 +2131,7 @@ export default class TaggerSpace extends Component {
     logEvent("buttons", "Skip hit");
     logEvent("Mark As", 'Skipped');
     this.setState({ loading: true, action: "next", changesInSession: 0 });
-    this.state.hitIDsDone.delete(currentHit.id); // Just in-case it was added
+    this.state.hitIDsDone.delete(this.state.currentHit.id); // Just in-case it was added
     skipHits(
       this.state.currentHit.id,
       this.props.currentProject,
