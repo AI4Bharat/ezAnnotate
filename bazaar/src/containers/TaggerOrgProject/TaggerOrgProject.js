@@ -176,13 +176,15 @@ export default class TaggerOrgProject extends Component {
 
   onChange = date => 
   {
-    this.setState({date})
+    this.setState({date});
     getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
   }
   setInitialDate(){
     const date = new Date();
     this.setState({date:date});
+    if(this.props.currentProject){
     getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+    }
   }
   componentWillMount() {
     console.log("TaggerStats componentWillMount");
@@ -199,11 +201,7 @@ export default class TaggerOrgProject extends Component {
     }
     this.setState({ hitsDetails: undefined, isMounted: true });
   }
-  componentDidUpdate(prevState) {
-    // if(prevState.date!=this.state.date){
-    //     getStatsForDate(this.props.currentProject,this.state.date.toLocaleDateString(),this.dateStatsFetched);
-    //   }   
-  }
+
   componentDidMount() {
     console.log("Did mount TaggerStats ", this.state.projectDetails);
     if (
@@ -231,7 +229,7 @@ export default class TaggerOrgProject extends Component {
         "done"
       );  
     }
-    
+    this.setInitialDate();
     // if (this.props.currentProject) {
     //   this.loadProjectDetails();
     //   fetchHitsDetails(this.props.currentProject, 0, 10, this.hitsFetched);
@@ -297,7 +295,7 @@ export default class TaggerOrgProject extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].userDetails.firstName}</td>
+            <td>{data[index].userDetails.firstName+" "+data[index].userDetails.secondName}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
           </tr>
@@ -448,6 +446,7 @@ export default class TaggerOrgProject extends Component {
         this.setState({ projectDetailsError: "Error in fetching data" });
       }
     }
+    this.setInitialDate();
   }
 
   openInviteModal(event, data) {
@@ -468,7 +467,7 @@ export default class TaggerOrgProject extends Component {
     } else {
       fetchProjectStats(this.props.currentProject, this.projectDetailsFetched);
     }
-    this.setInitialDate();
+    
   }
 
   inviteSent(error, response) { 
@@ -620,13 +619,16 @@ export default class TaggerOrgProject extends Component {
     return <div> {renderArrs} </div>;
   }
 
-  showClassifications = hitsDetails => {
+  showClassifications = (hitsDetails, type) => {
     if (hitsDetails && hitsDetails.length === 0) {
       return <h2>No Sample HITs</h2>;
     }
     console.log("show classifications ", this.state);
     const currentHit = hitsDetails[this.state.start];
-    const data = currentHit.data;
+    let data = currentHit.data;
+    if (type === SENTENCE_PAIR_CLASSIFIER && data.split('|').length > 1) {
+      data = data.split('|')[1];
+    }
     const result = currentHit.hitResults[0].result;
     let currentTags = [];
     let currentNote = "";
@@ -1484,7 +1486,8 @@ export default class TaggerOrgProject extends Component {
       title = "Moderated Text";
     }
     if (type === SENTENCE_TRANSLATION) {
-      data = data.split('|').size > 1 ? data.split('|')[1] : data;
+      data = data.split('|').length > 1 ? data.split('|')[1] : data;
+      title = "Translation";
     }
     return (
       <div
@@ -2050,7 +2053,7 @@ export default class TaggerOrgProject extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content>Stats  
+                  <Header.Content>Stats for the selected date
                       <DatePicker 
                       onChange={this.onChange}
                       value={this.state.date}
@@ -2118,14 +2121,14 @@ export default class TaggerOrgProject extends Component {
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
-                {this.showSummaries(hitsDetails, TEXT_MODERATION)}
+                {this.showSummaries(hitsDetails, projectDetails.task_type)}
               </Segment>
             </Segment.Group>
           )}
         {projectDetails &&
           hitsDetails &&
           hitsDetails.length >= 0 &&
-          projectDetails.task_type === TEXT_CLASSIFICATION && (
+          (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) && (
             <Segment.Group>
               <Header attached="top" block as="h4">
                 <Icon name="list" disabled />
@@ -2137,7 +2140,7 @@ export default class TaggerOrgProject extends Component {
                 <br />
                 {extra && <div>{this.showExtra(extra)}</div>}
                 <br />
-                {this.showClassifications(hitsDetails)}
+                {this.showClassifications(hitsDetails, projectDetails.task_type)}
               </Segment>
             </Segment.Group>
           )}

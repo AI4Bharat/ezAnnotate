@@ -60,7 +60,7 @@ import {
   ENTITY_COLORS,
   createEntities,
   createEntitiesJson,
-  getDetaultShortcuts,
+  getDefaultShortcuts,
   convertKeyToString,
   POS_TAGGING,
   TEXT_SUMMARIZATION,
@@ -204,7 +204,7 @@ export default class TaggerSpace extends Component {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
       const entities = createEntitiesJson(this.props.projectDetails.taskRules).entities;
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -324,7 +324,7 @@ export default class TaggerSpace extends Component {
         this.props.projectDetails.task_type === SENTENCE_TRANSLATION)
     ) {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
-      let shortcuts = getDetaultShortcuts(this.props.projectDetails.task_type);
+      let shortcuts = getDefaultShortcuts(this.props.projectDetails.task_type);
       if ("shortcuts" in rules) {
         shortcuts = rules.shortcuts;
       }
@@ -365,7 +365,7 @@ export default class TaggerSpace extends Component {
     ) {
       const rules = JSON.parse(this.props.projectDetails.taskRules);
       const entities = createEntitiesJson(this.props.projectDetails.taskRules).entities;
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -428,7 +428,7 @@ export default class TaggerSpace extends Component {
       const entities = createEntities(this.props.projectDetails.taskRules).entities;
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
       const hits = [];
-      let shortcuts = getDetaultShortcuts(
+      let shortcuts = getDefaultShortcuts(
         this.props.projectDetails.task_type,
         entities
       );
@@ -885,7 +885,7 @@ export default class TaggerSpace extends Component {
           }}
         >
           <Form
-            size="mini"
+            size="medium"
             style={{
               border: "2px solid",
               padding: "2em",
@@ -1126,9 +1126,9 @@ export default class TaggerSpace extends Component {
       const status = hit.status;
       return (
         <div>
-            {fileName && <Label title="File Name" size="mini">{fileName}</Label>}
-            {status && <Label title="HIT status" style={{ textTransform: 'capitalize' }} size="mini">{hitStateNameMap[status]}</Label>}
-            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="mini">{'Currently Done: '+ (this.state.hitIDsDone.size)}</Label>}
+            {fileName && <Label title="File Name" size="medium">{fileName}</Label>}
+            {status && <Label title="HIT status" style={{ textTransform: 'capitalize' }} size="medium">{hitStateNameMap[status]}</Label>}
+            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="medium">{'Currently Done: '+ (this.state.hitIDsDone.size)}</Label>}
         </div>
       );
     }
@@ -1162,9 +1162,9 @@ export default class TaggerSpace extends Component {
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            {status && <Label size="mini">{hitStateNameMap[status]}</Label>}
-            {evaluation && <Label style={{ textTransform: 'capitalize' }} color="green" size="mini">{evaluation}</Label>}
-          <Label size="mini" color="teal" attached="top right">
+            {status && <Label size="medium">{hitStateNameMap[status]}</Label>}
+            {evaluation && <Label style={{ textTransform: 'capitalize' }} color="green" size="medium">{evaluation}</Label>}
+          <Label size="medium" color="teal" attached="top right">
             Annotator Info
           </Label>
           </Card.Content>
@@ -1468,6 +1468,7 @@ export default class TaggerSpace extends Component {
       }
     }
     this.setState({ loading: true, action: 'moveToDone' });
+    this.state.hitIDsDone.delete(currentHit.id); // Just in-case it was added
     updateHitStatus(currentHit.id, this.props.currentProject, HIT_STATE_SKIPPED, result, this.moveToDoneCallback.bind(this));
   }
 
@@ -1592,7 +1593,7 @@ export default class TaggerSpace extends Component {
       const entitiesObject = createEntitiesJson(projectDetails.taskRules);
       const entities = entitiesObject.entities;
       const entityJson = entitiesObject.entityJson;
-      let shortcuts = getDetaultShortcuts(projectDetails.task_type, entities);
+      let shortcuts = getDefaultShortcuts(projectDetails.task_type, entities);
       const entityColorMap = createDocEntityColorMap(entities, ENTITY_COLORS);
       this.state.entityColorMap = entityColorMap;
       if ("shortcuts" in rules) {
@@ -2153,7 +2154,7 @@ export default class TaggerSpace extends Component {
     logEvent("buttons", "Skip hit");
     logEvent("Mark As", 'Skipped');
     this.setState({ loading: true, action: "next", changesInSession: 0 });
-    this.state.hitIDsDone.delete(currentHit.id); // Just in-case it was added
+    this.state.hitIDsDone.delete(this.state.currentHit.id); // Just in-case it was added
     skipHits(
       this.state.currentHit.id,
       this.props.currentProject,
@@ -3187,7 +3188,7 @@ export default class TaggerSpace extends Component {
               backgroundColor: this.state.entityColorMap[entity]
             }}
             compact
-            size="mini"
+            size="medium"
             name={entity}
             className={styles.clickableLabel}
             onClick={this.setClassification.bind(this, entity)}
@@ -3213,12 +3214,12 @@ export default class TaggerSpace extends Component {
                             backgroundColor: '#f5f9fa', border: '1px solid #eaf2f4', boxSizing: 'border-box',
                             display: 'flex', justifyContent: 'flex-start', flexDirection: 'column',
                             height: `${height}`, overflow: 'auto' }}>
-                <Label size="mini" attached="top left">
+                <Label size="medium" attached="top left" >
                   Select Label
                 </Label>
                 <div>
                   { entiti.length > minSearchEntities &&
-                    <Input size="mini" value={this.state.searchQuery} onChange={(event) => this.setState({searchQuery: event.target.value })} placeholder="Search..." />
+                    <Input size="medium" value={this.state.searchQuery} onChange={(event) => this.setState({searchQuery: event.target.value })} placeholder="Search..." />
                   }
                 </div>
                 {renderArrs}
@@ -3263,7 +3264,7 @@ export default class TaggerSpace extends Component {
             this.state.type === HIT_STATE_REQUEUED) && (
             <Button
               compact
-              size="mini"
+              size="medium"
               color="blue"
               icon
               onClick={this.moveToDone.bind(this, "moveToDone")}
@@ -3279,7 +3280,7 @@ export default class TaggerSpace extends Component {
             this.state.type === HIT_STATE_DELETED) && (
             <Button
               compact
-              size="mini"
+              size="medium"
               color="blue"
               title="Mark as skipped"
               icon
@@ -3296,7 +3297,7 @@ export default class TaggerSpace extends Component {
               this.state.type === HIT_STATE_REQUEUED) && (
             <Button
               compact
-              size="mini"
+              size="medium"
               color="red"
               icon
               onClick={this.deleteItem.bind(this)}
@@ -3313,7 +3314,7 @@ export default class TaggerSpace extends Component {
             <Button
               title="Move HIT to Re-tagging Queue"
               compact
-              size="mini"
+              size="medium"
               color="blue"
               icon
               onClick={this.retagHit.bind(this)}
@@ -3338,7 +3339,7 @@ export default class TaggerSpace extends Component {
   showEvaluationButtons() {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button.Group size="mini">
+        <Button.Group size="medium">
           <Button onClick={this.evaluateHit.bind(this, 'incorrect')} color="blue">Incorrect</Button>
           <Button.Or />
           <Button onClick={this.evaluateHit.bind(this, 'correct')} color="blue">Correct</Button>
@@ -3416,7 +3417,7 @@ export default class TaggerSpace extends Component {
         >
           <Button
             title="Previous Element"
-            size="mini"
+            size="medium"
             color="grey"
             icon
             loading={this.state.loading}
@@ -3427,7 +3428,7 @@ export default class TaggerSpace extends Component {
           </Button>
           { (this.state.changesInSession > 0 && this.state.type === HIT_STATE_DONE) && (
             <Button
-              size="mini"
+              size="medium"
               color="green"
               title="Save Changes"
               icon
@@ -3440,7 +3441,7 @@ export default class TaggerSpace extends Component {
           )}
           {this.state.type === "notDone" && (
             <Button
-              size="mini"
+              size="medium"
               color="grey"
               icon
               loading={this.state.loading}
@@ -3452,7 +3453,7 @@ export default class TaggerSpace extends Component {
           )}
           <Button
             title="Next Element"
-            size="mini"
+            size="medium"
             color="blue"
             icon
             loading={this.state.loading}
@@ -3538,7 +3539,7 @@ export default class TaggerSpace extends Component {
           { showPrevButton &&
           <div title={prevButton}>
             <Button
-              size="mini"
+              size="medium"
               color="grey"
               labelPosition="left"
               loading={this.state.loading}
@@ -3555,7 +3556,7 @@ export default class TaggerSpace extends Component {
           { showNextButton &&
           <div title={nextButton}>
             <Button
-              size="mini"
+              size="medium"
               color="blue"
               loading={this.state.loading}
               icon
@@ -3573,7 +3574,7 @@ export default class TaggerSpace extends Component {
         <br />
         <div title={moveToDoneButton}>
           <Button
-            size="mini"
+            size="medium"
             color="blue"
             loading={this.state.loading}
             icon
@@ -3587,7 +3588,7 @@ export default class TaggerSpace extends Component {
         <br />
         <div title={skipButton}>
           <Button
-            size="mini"
+            size="medium"
             color="grey"
             loading={this.state.loading}
             icon
@@ -3612,7 +3613,7 @@ export default class TaggerSpace extends Component {
       >
         { showPrevButton &&
         <Button
-          size="mini"
+          size="medium"
           color="grey"
           loading={this.state.loading}
           icon
@@ -3626,7 +3627,7 @@ export default class TaggerSpace extends Component {
         }
         <br />
         <Button
-          size="mini"
+          size="medium"
           color="grey"
           loading={this.state.loading}
           icon
@@ -3639,7 +3640,7 @@ export default class TaggerSpace extends Component {
         </Button>
         <br />
         <Button
-          size="mini"
+          size="medium"
           color="blue"
           loading={this.state.loading}
           icon
@@ -3652,7 +3653,7 @@ export default class TaggerSpace extends Component {
         <br />
         { showNextButton &&
         <Button
-          size="mini"
+          size="medium"
           color="blue"
           loading={this.state.loading}
           icon
@@ -3772,7 +3773,7 @@ export default class TaggerSpace extends Component {
           onClick={this.handleClick}
         >
           <Icon name="dropdown" />
-          <Label size="mini" style={{ background: "#a9d5de" }}>
+          <Label size="medium" style={{ background: "#a9d5de" }}>
             Project Guidelines
           </Label>
         </Accordion.Title>
@@ -4080,21 +4081,21 @@ export default class TaggerSpace extends Component {
                   !this.state.hitsCompleted && (
                     <div className="text-center" style={{}}>
                       <Checkbox
-                        size="mini"
+                        size="medium"
                         checked={this.state.notes}
                         onClick={this.toggleNotes.bind(this)}
                         label="Show Notes"
                       />
                       &nbsp; &nbsp;
                       <Checkbox
-                        size="mini"
+                        size="medium"
                         checked={this.state.hideLabels}
                         onClick={this.toggleHideLabels.bind(this)}
                         label="Hide Labels"
                       />
                       &nbsp; &nbsp;
                       <Checkbox
-                        size="mini"
+                        size="medium"
                         checked={this.state.autoClose}
                         onClick={this.toggleAutoClose.bind(this)}
                         label="AutoClose"
@@ -4106,7 +4107,7 @@ export default class TaggerSpace extends Component {
                   !this.state.hitsCompleted && (
                     <div className="text-center" style={{}}>
                       <Checkbox
-                        size="mini"
+                        size="medium"
                         checked={this.state.keepEntitySelected}
                         onClick={this.toggleEntitySelected.bind(this)}
                         label="Keep Entity Selected"
@@ -4134,7 +4135,7 @@ export default class TaggerSpace extends Component {
                       &nbsp; &nbsp;
                       <Button
                         disabled={this.state.undoButton}
-                        size="mini"
+                        size="medium"
                         icon
                         onClick={() => this.docAnnotator.undo()}
                       >
@@ -4142,7 +4143,7 @@ export default class TaggerSpace extends Component {
                       </Button>
                       &nbsp; &nbsp;
                       <Button
-                        size="mini"
+                        size="medium"
                         icon
                         onClick={() => this.docAnnotator.clearAll()}
                       >
@@ -4160,7 +4161,7 @@ export default class TaggerSpace extends Component {
                           overlay={popoverTop}
                         >
                           <Icon
-                            size="mini"
+                            size="medium"
                             name="help circle"
                             color="teal"
                             size="large"
@@ -4181,7 +4182,7 @@ export default class TaggerSpace extends Component {
                           overlay={keyobardPopover}
                         >
                           <Button
-                            size="mini"
+                            size="medium"
                             icon
                             onClick={() =>
                               this.props.pushState(
@@ -4221,7 +4222,7 @@ export default class TaggerSpace extends Component {
                           >
                             <Button
                               compact
-                              size="mini"
+                              size="medium"
                               icon
                               onClick={() => {
                                 if (!this.state.fullScreen)
