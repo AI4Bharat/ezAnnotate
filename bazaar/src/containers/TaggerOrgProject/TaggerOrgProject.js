@@ -176,13 +176,15 @@ export default class TaggerOrgProject extends Component {
 
   onChange = date => 
   {
-    this.setState({date})
+    this.setState({date});
     getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
   }
   setInitialDate(){
     const date = new Date();
     this.setState({date:date});
+    if(this.props.currentProject){
     getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+    }
   }
   componentWillMount() {
     console.log("TaggerStats componentWillMount");
@@ -199,11 +201,7 @@ export default class TaggerOrgProject extends Component {
     }
     this.setState({ hitsDetails: undefined, isMounted: true });
   }
-  componentDidUpdate(prevState) {
-    // if(prevState.date!=this.state.date){
-    //     getStatsForDate(this.props.currentProject,this.state.date.toLocaleDateString(),this.dateStatsFetched);
-    //   }   
-  }
+
   componentDidMount() {
     console.log("Did mount TaggerStats ", this.state.projectDetails);
     if (
@@ -231,7 +229,7 @@ export default class TaggerOrgProject extends Component {
         "done"
       );  
     }
-    
+    this.setInitialDate();
     // if (this.props.currentProject) {
     //   this.loadProjectDetails();
     //   fetchHitsDetails(this.props.currentProject, 0, 10, this.hitsFetched);
@@ -297,7 +295,7 @@ export default class TaggerOrgProject extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].userDetails.firstName}</td>
+            <td>{data[index].userDetails.firstName+" "+data[index].userDetails.secondName}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
           </tr>
@@ -448,6 +446,7 @@ export default class TaggerOrgProject extends Component {
         this.setState({ projectDetailsError: "Error in fetching data" });
       }
     }
+    this.setInitialDate();
   }
 
   openInviteModal(event, data) {
@@ -468,7 +467,7 @@ export default class TaggerOrgProject extends Component {
     } else {
       fetchProjectStats(this.props.currentProject, this.projectDetailsFetched);
     }
-    this.setInitialDate();
+    
   }
 
   inviteSent(error, response) { 
@@ -2054,7 +2053,7 @@ export default class TaggerOrgProject extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content>Stats  
+                  <Header.Content>Stats for the selected date
                       <DatePicker 
                       onChange={this.onChange}
                       value={this.state.date}
