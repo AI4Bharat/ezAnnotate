@@ -94,6 +94,8 @@ public class DUtils {
     private static void addContributorPermissions(UserProjectPermissions permissions){
         permissions.setCanCompleteHITs(true);
         permissions.setCanInviteCollaborators(false);
+        permissions.setCanDownloadData(false);
+        permissions.setCanSeeCompletedHITs(false);
     }
 
     private static void addOwnerPermissions(UserProjectPermissions permissions){

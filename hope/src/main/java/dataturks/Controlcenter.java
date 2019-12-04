@@ -491,6 +491,10 @@ public class Controlcenter {
                 }
             }
 
+            // Quick patch to requeue skipped hits
+            if (DConstants.HIT_STATUS_SKIPPED.equalsIgnoreCase(hitStatus)) {
+                hitStatus = DConstants.HIT_STATUS_REQUEUED;
+            }
 
             if (DConstants.HIT_STATUS_DONE.equalsIgnoreCase(hitStatus))
             {
