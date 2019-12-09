@@ -1390,7 +1390,7 @@ export default class TaggerSpace extends Component {
 
   checkIfQualityCheckHit(hitData, result) {
     const dataArr = hitData.split('|');
-    if (dataArr[0] !== 'test' || dataArr.length < 4) return;
+    if (!dataArr[0].startsWith('test') || dataArr.length < 4) return;
     const correctAnswer = dataArr[3];
     const alertStr = 'You MAY have done a mistake! \nThe correct answer could have been ' + '"' + correctAnswer + '"';
     switch (this.state.projectDetails.task_type) {
