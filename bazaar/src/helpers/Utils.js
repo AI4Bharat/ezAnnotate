@@ -543,7 +543,7 @@ export const imagePolyBoundingSample = {
   extras: null
 };
 
-export const getStringDiffCount = (a, b) => {
+export const getStringDiffCountNaive = (a, b) => {
   // Src: stackoverflow.com/a/29574724/5002496
   var i = 0;
   var j = 0;
@@ -559,3 +559,46 @@ export const getStringDiffCount = (a, b) => {
   }
   return result.replace(/ /g,'').length;
 };
+
+export const getStringDiffChars = (a, b) => {
+  // Inspired from: codereview.stackexchange.com/a/133654
+
+  function largestMatch(a, b) {
+
+    if (b.length < a.length)
+      return largestMatch(b, a);
+
+    var matchingLength = b.length,
+      possibleMatch, index;
+
+    while (matchingLength) {
+      index = 0;
+      while (index + matchingLength <= b.length) {
+        possibleMatch = b.substr(index, matchingLength);
+        if (~a.indexOf(possibleMatch))
+          return b.substr(index, matchingLength);
+        index++;
+      }
+      matchingLength--;
+    }
+    return '';
+  };
+
+  var largestMatch = largestMatch(a, b),
+        preNew, postNew, preOld, postOld;
+
+  if (!largestMatch) {
+    return a + b;
+  } else {
+    preNew = b.substr(0, b.indexOf(largestMatch));
+    preOld = a.substr(0, a.indexOf(largestMatch));
+    postNew = b.substr(preNew.length + largestMatch.length);
+    postOld = a.substr(preOld.length + largestMatch.length);
+    return getStringDiffChars(preOld, preNew) + getStringDiffChars(postOld, postNew);
+  }
+}
+
+export const getStringDiffCount = (a, b) => {
+  var diff = getStringDiffChars(a, b);
+  return diff.replace(/ /g,'').length;
+}
