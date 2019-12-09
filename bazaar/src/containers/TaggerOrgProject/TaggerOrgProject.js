@@ -51,7 +51,8 @@ import {
   TEXT_MODERATION,
   createDocEntityColorMap,
   TEXT_SUMMARIZATION,
-  SENTENCE_TRANSLATION
+  SENTENCE_TRANSLATION,
+  dateToLocalString
 } from "../../helpers/Utils";
 import { TaggerInvite } from "../../components";
 import { push } from "react-router-redux";
@@ -177,13 +178,13 @@ export default class TaggerOrgProject extends Component {
   onChange = date => 
   {
     this.setState({date});
-    getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+    getStatsForDate(this.props.currentProject, dateToLocalString(date),this.dateStatsFetched);
   }
   setInitialDate(){
     const date = new Date();
     this.setState({date:date});
     if(this.props.currentProject){
-    getStatsForDate(this.props.currentProject, date.toLocaleDateString(),this.dateStatsFetched);
+    getStatsForDate(this.props.currentProject, dateToLocalString(date),this.dateStatsFetched);
     }
   }
   componentWillMount() {

@@ -1394,12 +1394,10 @@ public class Controlcenter {
 
     public static List<ContributorDetails> fetchStatsForDate(List<DHitsResult> results,
             List<DProjectUsers> projectUsers, String inpDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-        String strDate = "";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate="";
         try {
-            strDate = formatter.format(parser.parse(inpDate));
-
+            strDate = formatter.format(formatter.parse(inpDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
