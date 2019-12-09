@@ -178,7 +178,7 @@ export default class TaggerExport extends Component {
                                 <p>Download file would be a tab seperated file with input in first column and output row in second column.</p>
                                 }
                                 { this.props.projectDetails && this.props.projectDetails.task_type === SENTENCE_TRANSLATION &&
-                                <p>Download file would be a tab seperated file with input in first column and output row in second column.</p>
+                                <p>Download file would be a text file where each line is a JSON containing the input text and corresponding translation.</p>
                                 }
                                 { this.props.projectDetails && this.props.projectDetails.task_type === TEXT_MODERATION &&
                                 <p>Download file would be a tab seperated file with input in first column and output row in second column.</p>
