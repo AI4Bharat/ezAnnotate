@@ -1,15 +1,21 @@
-# Features
-  ## NER tagging in Documents
-	Full length document annotations (PDF, Doc, Text etc).
-  ## Image Segmentation
-        Draw free form polygons and generate image masks.
-  ## POS tagging
-        A super easy interface to tag for PoS/NER in sentences.
-
-
 # DataTurks
+An open-source tool for powering data annotations.
 
-[Note: As on March 2019, please use the branch master_with_dist as the main master branch has some build issues w.r.t dist folder]
+## Features
+  ### NER tagging in Documents
+	Full length document annotations (PDF, Doc, Text etc).
+  ### Image Segmentation, Bounding Boxes & Classification
+        Draw free form polygons and generate image masks.
+  ### POS tagging
+        A super easy interface to tag for PoS/NER in sentences.
+  ### More features listed at www.dataturks.com
+
+
+## Installation
+
+For latest intstructions to build on Linux, check here: [Building_on_Linux.md](docs/Building_on_Linux.md)
+
+### Old build instructions
 
 Can run as a docker image as well. Here is the docker file specifying all the steps for setting things up:
 

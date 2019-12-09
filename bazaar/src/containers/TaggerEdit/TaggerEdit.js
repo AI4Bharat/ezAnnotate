@@ -1011,6 +1011,8 @@ export default class TaggerEdit extends Component {
                                 }
                                 { projectDetails.task_type === SENTENCE_TRANSLATION &&
                                     <p>Please upload a text file with each line in file having sentence to be translated.<br />
+                                    Or you can also upload a bar-separated file, with each line in format:<br />
+                                          sentence_id|source_sentence|machine_translation_to_repair(Optional)<br />
                                                            <strong> OR </strong> <br />
                                     A zip file of all the text documents to be translated. Max file size is 100 MB for free plans</p>
                                 }
@@ -1026,6 +1028,7 @@ export default class TaggerEdit extends Component {
                                 }
                                 { projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER &&
                                     <p>Please upload a text file with each line in file having the text pairs to be compared and classified.<br />
+                                                      Format Expected: pair_id|textA|textB
                                                            <strong> OR </strong> <br />
                                     A zip file of all the text documents to be classified. Max file size is 100 MB for free plans</p>
                                 }
