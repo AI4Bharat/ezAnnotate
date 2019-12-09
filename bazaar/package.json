@@ -244,7 +244,7 @@
     "concurrently": "^0.1.1",
     "cross-env": "^5.2.0",
     "css-loader": "^0.23.1",
-    "eslint": "1.10.3",
+    "eslint": "4.18.2",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-config-airbnb-standard": "^2.1.6",
     "eslint-loader": "^1.0.0",
