@@ -36,7 +36,6 @@ public class ProjectDetails {
     private java.util.Date created_timestamp;
 
     private List<ContributorDetails> contributorDetails;
-    private Map<String, List<ContributorDetails>> contributorDailyStats;
 
     // Possible permissions for the user context this project object is being sent.
     // not sure if this is a right place to add this.
@@ -221,13 +220,5 @@ public class ProjectDetails {
 
     public void setPermissions(UserProjectPermissions permissions) {
         this.permissions = permissions;
-    }
-
-    public Map<String, List<ContributorDetails>> getContributorDailyStats() {
-        return contributorDailyStats;
-    }
-
-    public void setContributorDailyStats(Map<String, List<ContributorDetails>> contributorDailyStats) {
-        this.contributorDailyStats = contributorDailyStats;
     }
 }

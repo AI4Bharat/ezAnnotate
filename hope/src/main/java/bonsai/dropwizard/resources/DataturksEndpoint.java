@@ -777,18 +777,26 @@ public class DataturksEndpoint {
             throw e;
         }
     }
+    
     @POST
     @Path("/{projectId}/fetchStatsForDate")
     public List<ContributorDetails> fetchStatsForDate(@NotNull @HeaderParam("token") String token,
             @NotNull @HeaderParam("uid") String id, @NotNull @PathParam("projectId") String projectId,
-            @NotNull @QueryParam("date") String date) throws ParseException {
+            @NotNull @QueryParam("date") String ddMMyyyy) throws ParseException {
 
         LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
-        List<ContributorDetails> details=Controlcenter.fetchStatsForDateInternal(projectId, date);
-        return details;
+        return Controlcenter.fetchStatsForDateInternal(projectId, ddMMyyyy);
     }
     
+    @POST
+    @Path("/profile/{userId}")
+    public List<ProjectsPerUser> fetchProjectStatsForUser(@NotNull @HeaderParam("token") String token,
+        @NotNull @HeaderParam("uid") String id, @NotNull @PathParam("userId") String userId,
+        @QueryParam("date") String ddMMyyyy) {
 
+        LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
+        return Controlcenter.fetchProjectStatsForUser(userId, ddMMyyyy);
+    }
 
         /////////////////////////////// ALL INTERNAL FUNCTIONS /////////////////////////////////////////////////////////
 

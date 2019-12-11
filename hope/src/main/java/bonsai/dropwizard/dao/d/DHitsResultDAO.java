@@ -212,6 +212,39 @@ public class DHitsResultDAO extends AbstractDAO<DHitsResult> implements IDDao<DH
 
     }
 
+    private List<DHitsResult> findAllByUserIdAndProjectId(String userId, String projectId) {
+
+        List<DHitsResult> list =  list(
+                namedQuery("bonsai.dropwizard.dao.d.DHitsResult.findByUserIdAndProjectId")
+                        .setParameter("userId", userId)
+                        .setParameter("projectId", projectId)
+        );
+
+        return list;
+    }
+
+    public List<DHitsResult> findAllByUserIdAndProjectIdInternal(String userId, String projectId) {
+        Session session = sessionFactory.openSession();
+        try {
+            ManagedSessionContext.bind(session);
+            Transaction transaction = session.beginTransaction();
+            try {
+                List<DHitsResult> results = findAllByUserIdAndProjectId(userId, projectId);
+                transaction.commit();
+                return results;
+            }
+            catch (Exception e) {
+                transaction.rollback();
+                throw new RuntimeException(e);
+            }
+        }
+        finally {
+            session.close();
+            ManagedSessionContext.unbind(sessionFactory);
+        }
+
+    }
+
     private long getCountForProject(String projectId) {
         Session session = sessionFactory.openSession();
         try {

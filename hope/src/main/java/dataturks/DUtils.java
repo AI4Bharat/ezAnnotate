@@ -19,6 +19,8 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DUtils {
@@ -233,6 +235,17 @@ public class DUtils {
 
         }
         return false;
+    }
+
+    public static boolean compareDDMMYYYYwithDate(String ddMMyyyy, Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            ddMMyyyy = formatter.format(formatter.parse(ddMMyyyy));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return formatter.format(date).equals(ddMMyyyy);
     }
 
     public static String getURLFilename(DHits hit) {

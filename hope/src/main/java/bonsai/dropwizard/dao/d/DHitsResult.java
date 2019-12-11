@@ -22,7 +22,10 @@ import java.util.Date;
                         + "where e.projectId = :projectId "),
         @NamedQuery(name = "bonsai.dropwizard.dao.d.DHitsResult.findByUserId",
                 query = "select e from DHitsResult e "
-                        + "where e.userId = :userId ")
+                        + "where e.userId = :userId "),
+        @NamedQuery(name = "bonsai.dropwizard.dao.d.DHitsResult.findByUserIdAndProjectId",
+                query = "select e from DHitsResult e "
+                        + "where e.userId = :userId and e.projectId = :projectId ")
 
 })
 public class DHitsResult implements IDdbPojo{

@@ -1205,57 +1205,6 @@ public class Controlcenter {
         return null;
     }
 
-    private static void addContributorStatsPerDay(List<DProjectUsers> projectUsers, List<DHitsResult> results, ProjectDetails details) {
-        if (results == null || details == null)
-            return;
-        
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Map<String, Map<String, Integer>> contributorDailyStats = new HashMap<>();
-        String date;
-        Map<String, Integer> date2user;
-        for (DHitsResult result : results) {
-            date = formatter.format(result.getUpdated_timestamp());
-            if (!contributorDailyStats.containsKey(date))
-                contributorDailyStats.put(date, new HashMap<>());
-            date2user = contributorDailyStats.get(date);
-            if (!date2user.containsKey(result.getUserId())) {
-                date2user.put(result.getUserId(), 0);
-            }
-            date2user.put(result.getUserId(), date2user.get(result.getUserId())+1);
-        }
-
-        if (projectUsers != null) {
-            //also add contributors who might have 0 hits.
-            List<String> allUserDetails = new ArrayList<>();
-            for (DProjectUsers projectUser : projectUsers) {
-                allUserDetails.add(projectUser.getUserId());
-            }
-            for (String dateI : contributorDailyStats.keySet()) {
-                date2user = contributorDailyStats.get(dateI);
-                for (String usr : allUserDetails) {
-                    if (!date2user.containsKey(usr)) {
-                        date2user.put(usr, 0);
-                    }
-                }
-            }
-        }
-        
-        Map<String, List<ContributorDetails>> dailyStats = new HashMap<>();
-        List<ContributorDetails> contributorList;
-        for (String key: contributorDailyStats.keySet()) {
-            contributorList = new ArrayList<>();
-            date2user = contributorDailyStats.get(key);
-            for (String userId : date2user.keySet()) {
-                ContributorDetails contributorDetails = new ContributorDetails(
-                    new UserDetails(AppConfig.getInstance().getdUsersDAO().findByIdInternal(userId)));
-                contributorDetails.setHitsDone(date2user.get(userId));
-                contributorList.add(contributorDetails);
-            }
-            dailyStats.put(key, contributorList);
-        }
-        details.setContributorDailyStats(dailyStats);
-    }
-
     // update the details object with contributor level details like HITS done, average time taken etc.
     private static void addProjectContributorDetails(DProjects project, ProjectDetails details) {
         List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
@@ -1306,7 +1255,6 @@ public class Controlcenter {
                 }
             }
         }
-        addContributorStatsPerDay(projectUsers, results, details);
     }
 
     // don't show user email etc to non-contributors.
@@ -1379,6 +1327,7 @@ public class Controlcenter {
         user.setUpdated_timestamp(new Date());
         AppConfig.getInstance().getdUsersDAO().saveOrUpdateInternal(user);
     }
+
     public static List<ContributorDetails> fetchStatsForDateInternal(String projectId, String date) {
         DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(projectId);
         if (project == null) {
@@ -1392,10 +1341,47 @@ public class Controlcenter {
         return fetchStatsForDate(results, projectUsers, date);
     }
 
+    public static List<ProjectsPerUser> fetchProjectStatsForUser(String userId, String inpDate) {
+        List<DProjectUsers> userProjects = AppConfig.getInstance().getdProjectUsersDAO().findAllByUserIdInternal(userId);
+        List<ProjectsPerUser> stats = new ArrayList<>();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        if (inpDate != null) {
+            try {
+                inpDate = formatter.format(formatter.parse(inpDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (DProjectUsers userProject : userProjects) {
+            DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(userProject.getProjectId());
+            ProjectsPerUser record = new ProjectsPerUser(project);
+            List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO()
+                    .findAllByUserIdAndProjectIdInternal(userId, project.getId());
+            
+            if (inpDate != null) {
+                List<DHitsResult> filteredResults = new ArrayList<>();
+                for (DHitsResult result : results) {
+                    if (inpDate.equals(formatter.format(result.getUpdated_timestamp()))) {
+                        filteredResults.add(result);
+                    }
+                }
+                results = filteredResults;
+            }
+
+            record.setHitsDone(results.size());
+            record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
+            stats.add(record);
+        }
+
+        return stats;
+    }
+
     public static List<ContributorDetails> fetchStatsForDate(List<DHitsResult> results,
             List<DProjectUsers> projectUsers, String inpDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String strDate="";
+        String strDate = "";
         try {
             strDate = formatter.format(formatter.parse(inpDate));
         } catch (ParseException e) {
