@@ -347,9 +347,9 @@ export const fetchProjectStats = (pid, callback) => {
     });
 };
 
-export const getStatsForDate = (pid,date,callback) => {
+export const getStatsForDate = (pid, date, callback) => {
   const { uid, token } = getUidToken();
-  let url= BASE_URL+pid+"/fetchStatsForDate?date="+date;
+  let url = BASE_URL + pid + "/fetchStatsForDate?date=" + date;
   superagent
     .post(url)
     .set("uid", uid)
@@ -357,7 +357,8 @@ export const getStatsForDate = (pid,date,callback) => {
     .end((err, res) => {
       callback(err, res);
     });
-}  
+};
+
 export const fetchHitsDetails = (
   pid,
   start,

@@ -804,7 +804,7 @@ export default class TaggerSpace extends Component {
     const isMutex = this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER;
     if (currentTags.has(entity)) {
       currentTags.delete(entity);
-    } else {
+    } else if (event) {
       if (isMutex) currentTags.clear();
       currentTags.add(entity);
     }
@@ -1127,7 +1127,7 @@ export default class TaggerSpace extends Component {
         <div>
             {fileName && <Label title="File Name" size="medium">{fileName}</Label>}
             {status && <Label title="HIT status" style={{ textTransform: 'capitalize' }} size="medium">{hitStateNameMap[status]}</Label>}
-            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="medium">{'Currently Done: '+ (this.state.hitIDsDone.size)}</Label>}
+            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="medium">{'Currently Done: ' + (this.state.hitIDsDone.size)}</Label>}
         </div>
       );
     }
@@ -1394,7 +1394,7 @@ export default class TaggerSpace extends Component {
     const { currentHit, changesInSession } = this.state;
     console.log('saveElement', currentHit.id);
     let result = '';
-    if (changesInSession > 0) {
+    if (changesInSession > 0 || (currentHit.result && currentHit.result !== null)) {
       result = this.getCurrentResult();
     } else if (currentHit.hitResults && currentHit.hitResults.length > 0) {
       result = currentHit.hitResults[0].result;
@@ -1407,7 +1407,7 @@ export default class TaggerSpace extends Component {
         return false;
       }
     }
-    if (this.state.currentTags.size < 1 && 
+    if (this.state.currentTags.size < 1 &&
       this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
         alert("Please choose atleast one tag");
         return false;
@@ -1415,7 +1415,7 @@ export default class TaggerSpace extends Component {
     if (this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
       this.state.projectDetails.task_type === SENTENCE_TRANSLATION ||
       this.state.projectDetails.task_type === TEXT_MODERATION) {
-      if (result == null || result.length <= 0) {
+      if (result === null || result.length <= 0) {
         alert("Please type something");
         return false;
       }
@@ -2421,14 +2421,14 @@ export default class TaggerSpace extends Component {
           </div>
         </div>
         }
-        <Button
+        {/* <Button
           className={styles.copyButton}
           size="small"
           onClick={this.copyToClipboard}
         >
           <Icon name="copy" color="teal" />
           Copy
-        </Button>
+        </Button> */}
       </div>
     );
   }
@@ -3458,7 +3458,7 @@ export default class TaggerSpace extends Component {
     if ("shortcuts" in this.state) {
       const shortcuts = this.state.shortcuts;
       // Force Mousetrap: stackoverflow.com/questions/21013866/
-      Mousetrap.prototype.stopCallback = function () {
+      Mousetrap.prototype.stopCallback = function stopMouseTrapCallback() {
         return false;
       }
 

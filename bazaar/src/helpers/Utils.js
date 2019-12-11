@@ -549,6 +549,4 @@ export const dateToLocalString = (dateObj)=> {
   var year = dateObj.getFullYear();
 
   return date + "/" + month + "/" + year;
-
-} 
-
+};

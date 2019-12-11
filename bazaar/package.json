@@ -28,6 +28,7 @@
     "start-prod": "better-npm-run start-prod",
     "start-prod-api": "better-npm-run start-prod-api",
     "build": "better-npm-run build",
+    "build-dev": "better-npm-run build-dev",
     "build-onprem": "better-npm-run build-onprem",
     "build-onprem-dev": "better-npm-run build-onprem-dev",
     "start-onprem": "concurrent --kill-others \"better-npm-run start-onprem-prod\"",
@@ -114,6 +115,12 @@
       "command": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
       "env": {
         "NODE_ENV": "production"
+      }
+    },
+    "build-dev": {
+      "command": "webpack --verbose --colors --display-error-details --config webpack/dev.config.js",
+      "env": {
+        "NODE_ENV": "development"
       }
     },
     "build-onprem": {

@@ -1,11 +1,14 @@
 require('babel-polyfill');
 
-// Webpack config for creating the production bundle.
+// Webpack config for creating the development bundle.
+// Note: Use dev.config.js for proper debugging
 var path = require('path');
 var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
+var host = (process.env.HOST || 'localhost');
+var port = (+process.env.PORT + 1) || 3001;
 
 var projectRootPath = path.resolve(__dirname, '../');
 var assetsPath = path.resolve(projectRootPath, './static/dist');
@@ -19,6 +22,7 @@ module.exports = {
   context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
+      'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
       'bootstrap-sass!./src/theme/bootstrap.config.js',
       'font-awesome-webpack!./src/theme/font-awesome.config.js',
       './src/client.js'
@@ -26,8 +30,8 @@ module.exports = {
   },
   output: {
     path: assetsPath,
-    filename: '[name]-[hash].js',
-    chunkFilename: '[name]-[chunkhash].js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
     publicPath: '/dist/'
   },
   module: {
@@ -55,9 +59,10 @@ module.exports = {
   },
   plugins: [
     new CleanPlugin([assetsPath], { root: projectRootPath }),
+    new webpack.HotModuleReplacementPlugin(),
 
     // css files from the extract-text-plugin loader
-    new ExtractTextPlugin('[name]-[contenthash].css', {allChunks: true}),
+    new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"development"',
@@ -90,6 +95,6 @@ module.exports = {
     //   }
     // }),
 
-    webpackIsomorphicToolsPlugin
+    webpackIsomorphicToolsPlugin.development()
   ]
 };
