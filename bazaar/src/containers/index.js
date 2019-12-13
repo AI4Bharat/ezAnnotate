@@ -21,4 +21,4 @@ export TaggerError from './TaggerError/TaggerError';
 export TaggerOrgProject from './TaggerOrgProject/TaggerOrgProject';
 export TaggerKeyBind from './TaggerKeyBind/TaggerKeyBind';
 export TaggerContributors from './TaggerContributors/TaggerContributors';
-
+export UserProfile from "./UserProfile/UserProfile";

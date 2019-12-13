@@ -789,13 +789,12 @@ public class DataturksEndpoint {
     }
     
     @POST
-    @Path("/profile/{userId}")
+    @Path("/fetchProjectStatsForUser")
     public List<ProjectsPerUser> fetchProjectStatsForUser(@NotNull @HeaderParam("token") String token,
-        @NotNull @HeaderParam("uid") String id, @NotNull @PathParam("userId") String userId,
+        @NotNull @HeaderParam("uid") String id,
         @QueryParam("date") String ddMMyyyy) {
-
         LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
-        return Controlcenter.fetchProjectStatsForUser(userId, ddMMyyyy);
+        return Controlcenter.fetchProjectStatsForUser(id, ddMMyyyy);
     }
 
         /////////////////////////////// ALL INTERNAL FUNCTIONS /////////////////////////////////////////////////////////

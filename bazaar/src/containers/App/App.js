@@ -85,6 +85,7 @@ export default class App extends Component {
     this.selectMenu = this.selectMenu.bind(this);
     this.getProjectNames = this.getProjectNames.bind(this);
     this.selectProjectMenu = this.selectProjectMenu.bind(this);
+    this.goToUserProfile = this.goToUserProfile.bind(this);
   }
 
   state = {
@@ -287,8 +288,12 @@ export default class App extends Component {
     } else {
       this.setState({ apiKeyError: undefined, apiKeyResponse: response.body });
     }
-  }
+  } 
 
+  goToUserProfile = (uid, event) => {
+    this.props.pushState('/profile/'+uid);
+  }
+  
   render() {
     console.error('version is 1.6');
     const {user} = this.props;
@@ -401,7 +406,9 @@ export default class App extends Component {
             {this.props.menuHidden && <Icon name="toggle on" onClick={() => { this.props.toggleMenu(false);}}/> }
             {!this.props.menuHidden && <Icon name="toggle off" onClick={() => {this.props.toggleMenu(true);}}/> }
           </div>
-          {
+        
+            <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
+            <Menu.Item name="profile" onClick={this.goToUserProfile.bind(this,user.uid) }>
               <div className="text-center">
               { user.profilePic &&
                 <Image avatar src={user.profilePic} size={imageSize} />
@@ -412,11 +419,12 @@ export default class App extends Component {
                 {!this.props.menuHidden &&
                 <p> {user.firstName}</p> }
               </div>
-          }
+            </Menu.Item>
+           </Menu>
+
             <br />
             <br />
           <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
-
             <Menu.Item name="home"
                   active={activeMenu === 'projects'}
                   onClick={this.selectMenu}>
