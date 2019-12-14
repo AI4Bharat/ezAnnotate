@@ -16,7 +16,7 @@
             <meta property="og:image:height"           content="630" /> -->
             <meta property="og:description" content="Just upload your data, invite your team members and start tagging. The best way to tag training/evaluation data for your machine learning projects."/>
             
-            <title>Dataturks – Online tool to build Image Bounding Box, NER, NLP and other ML datasets.</title>
+            <title>EZAnnotate – Online tool to build Image Bounding Box, NER, NLP and other ML datasets.</title>
             <link rel="icon" type="image/png" href="/img/xdataturks_icon.png.pagespeed.ic.BmDiJPJ9lq.webp">
         
             
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>                        
           </button>-->
-          <a class="navbar-brand navbar-brand-imp" href="/">Dataturks</a>
+          <a class="navbar-brand navbar-brand-imp" href="/">EZAnnotate</a>
         </div>
         <!--<div class="collapse navbar-collapse" id="pageNavBar">
         <ul class="nav navbar-nav navbar-right">
@@ -151,7 +151,7 @@
               <div class="form-group">
                 <label for="license">License (for verification)</label>
                 <textarea type="text" rows="3" class="form-control" id="changePasswordLicenseVal" aria-describedby="licenseHelp" placeholder="Enter License"></textarea>
-                <small id="licenseHelp" class="form-text text-muted">Copy paste your cuurent Dataturks License.</small>
+                <small id="licenseHelp" class="form-text text-muted">Copy paste your current Dataturks License.</small>
               </div>
               <button type="submit" class="btn btn-primary" id="changePasswordSubmit" >Submit</button>
             </form>

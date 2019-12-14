@@ -358,7 +358,7 @@ export default class App extends Component {
 
           <Navbar.Collapse eventKey={0}>
             <Nav navbar pullRight>
-            {<li role="presentation" className="logout-link">
+            {/* {<li role="presentation" className="logout-link">
             <a href="https://dataturks.com/help/help.php" target="_blank">
               <h4 className="nav-link">Documentation</h4>
             </a>
@@ -375,7 +375,7 @@ export default class App extends Component {
                   Try Demo
                 </h4>
                 </NavItem>
-              </LinkContainer>}
+              </LinkContainer>} */}
 
               {!user &&
               <LinkContainer to="/projects/login">
@@ -512,7 +512,7 @@ export default class App extends Component {
                       {JSON.stringify(this.state.apiKeyResponse, null, 2)}
                     </pre>
                     <br />
-                    API Documentation : <a href="https://docs.dataturks.com/" target="_blank">Docs</a>
+                    API Documentation : <a>Docs</a>
                   </p>
                 }
               </Modal.Body>
@@ -545,16 +545,16 @@ export default class App extends Component {
           <div className="footer-links">
             <a href="/" className="brand footer-brand w-nav-brand">
             <h4>
-            Dataturks
+            EZAnnotate
             </h4>
             </a>
-            <a target="_blank" href="https://dataturks.com/blog/blog.php" className="footer-link w-inline-block">
+            <a target="_blank" href="" className="footer-link w-inline-block">
                 <div>Blog</div>
             </a>
-            <a target="_blank" href="mailto:support@dataturks.com?subject=Hey%2C%20Turk!" className="footer-link w-inline-block">
+            <a target="_blank" href="mailto:contact@onefourthlabs.com?subject=Hey%2C%20Turk!" className="footer-link w-inline-block">
                 <div>Contact</div>
             </a>
-            <a target="_blank" href="https://dataturks.com/privacy.php" className="footer-link w-inline-block">
+            <a target="_blank" href="" className="footer-link w-inline-block">
                 <div>Privacy Policy</div>
             </a>
           </div>

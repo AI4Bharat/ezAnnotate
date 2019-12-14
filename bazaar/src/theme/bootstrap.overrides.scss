@@ -1040,7 +1040,7 @@ box-shadow: 2px 2px 0px 0px rgba(94,93,102,0.08), 4px 4px 4px 0px rgba(92,90,100
     margin-top: 10px;
 }
 .navbar-collapse {
-  background-color: #5cc1bb;
+  background-color: #64b5f6;
 }
 
 .img-respons {
@@ -1283,6 +1283,12 @@ box-shadow: 2px 2px 0px 0px rgba(94,93,102,0.08), 4px 4px 4px 0px rgba(92,90,100
     background-color: #373a3c;
     padding: 2em;
     color: white;
+    position: fixed;
+    height: 70px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
 }
 .brand {
   margin-top: 17px;
@@ -1336,7 +1342,7 @@ box-shadow: 2px 2px 0px 0px rgba(94,93,102,0.08), 4px 4px 4px 0px rgba(92,90,100
   height: 70px;
   padding-right: 30px;
   padding-left: 50px;
-  background-color: #5cc1bb;
+  background-color: #64b5f6;
   box-shadow: 0 5px 15px 0 rgba(95, 112, 134, .06);
 }
 
