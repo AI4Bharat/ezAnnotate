@@ -741,7 +741,7 @@ export default class TaggerSpace extends Component {
       logEvent("buttons", "Labeled Data");
     }
     this.setState({ hitsCompleted: false });
-    if (this.state.newEntities && this.state.newEntities.length > 0) {
+    if (this.state.newEntities && this.state.newEntities.length > 0) {                                                                                                                                                                                                                                                                                                                                                                          
       logEvent("buttons", "New Entities");
       console.log("edit", this.state.newEntities);
       const { taskRules } = this.props.projectDetails;
@@ -765,6 +765,7 @@ export default class TaggerSpace extends Component {
           return false;
         }
       }
+      if (JSON.parse(resultString)["labels"].length > 0) {
       tagString = tagString.trim();
       console.log(" tagged String is ", tagString);
       this.state.currentHit.result = resultString;
@@ -779,6 +780,7 @@ export default class TaggerSpace extends Component {
         this.props.currentProject,
         this.hitAddCallback
       );
+      }
     } else {
       this.setState({
         action: "previous",

@@ -116,7 +116,7 @@
               <div class="form-group">
                 <label for="license">License</label>
                 <textarea type="text" rows="3" class="form-control" id="licenseVal" aria-describedby="licenseHelp" placeholder="Enter License"></textarea>
-                <small id="licenseHelp" class="form-text text-muted">Copy paste your Dataturks License.</small>
+                <small id="licenseHelp" class="form-text text-muted">Copy paste your License.</small>
               </div>
               <button type="submit" class="btn btn-primary" id="licenseSubmit" >Submit</button>
             </form>
@@ -151,7 +151,7 @@
               <div class="form-group">
                 <label for="license">License (for verification)</label>
                 <textarea type="text" rows="3" class="form-control" id="changePasswordLicenseVal" aria-describedby="licenseHelp" placeholder="Enter License"></textarea>
-                <small id="licenseHelp" class="form-text text-muted">Copy paste your current Dataturks License.</small>
+                <small id="licenseHelp" class="form-text text-muted">Copy paste your current License.</small>
               </div>
               <button type="submit" class="btn btn-primary" id="changePasswordSubmit" >Submit</button>
             </form>
@@ -276,10 +276,10 @@
                     <p class="text-center title-widget" style="color:#fff"><strong>Say Hi:</strong></p>
                     <div class="text-right">
                         <ul class="social-network social-circle text-right">
-                            <li><a href="https://www.facebook.com/Datatrks/" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="https://twitter.com/dataturks" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="https://aimlhandson.slack.com/join/shared_invite/enQtMzc0NTk0MzQ3Mzc2LWVlOWE5MzdmMTNjOWY3ODhjODI5ODAyZjgxMTE1MDNiZGMwYzk1NDNmNmQwYzhhNTE2NGY4NjQ2YmZmY2FhMDA" class="icoSlack" title="Slack" target="_blank"><i class="fa fa-slack"></i></a></li>
-                            <li><a href="https://www.linkedin.com/company/dataturks/" class="icoLinkedin" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="" class="icoSlack" title="Slack" target="_blank"><i class="fa fa-slack"></i></a></li>
+                            <li><a href="" class="icoLinkedin" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                         </ul>
                     </div>
                   </div>
@@ -288,7 +288,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center">
                 <hr class="small">
-                    <p class="text-muted">Copyright &copy; Trilldata Technologies Pvt Ltd 2018</p>
+                    <p class="text-muted">Copyright 2019</p>
                 </div>
             </div>
         </div>

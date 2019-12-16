@@ -9,7 +9,7 @@ public class UserDetails {
     public String profilePic;
     public String email;
 
-    public UserDetails(){
+    public UserDetails() {
 
     }
 

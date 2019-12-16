@@ -366,7 +366,7 @@ export default class TaggerLogin extends Component {
           <div className="col-md-7 text-left" style={{marginBottom: '10%'}}>
               <h1 style={{fontSize: '3em', letterSpacing: 'normal' }}> Super Easy Data Annotations </h1>
               <p style={{fontSize: '1.4em'}}>Invite your team and generate high quality labeled data in minutes</p>
-              <p style={{fontSize: '0.8em', color: 'lightslategray'}}>By signing up on Dataturks, you agree with our privacy policy and terms. </p>
+              <p style={{fontSize: '0.8em', color: 'lightslategray'}}>By signing up, you agree with our privacy policy and terms. </p>
           </div>
         <Transition visible animation="browse" duration={2000}>
 

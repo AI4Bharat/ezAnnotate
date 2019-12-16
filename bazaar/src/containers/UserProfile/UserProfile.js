@@ -10,11 +10,11 @@ import {
 } from "../../helpers/dthelper";
 import Table from "react-bootstrap/lib/Table";
 import DatePicker from "react-date-picker";
-
+import { dateToLocalString } from "../../helpers/Utils";
 
 export default class UserProfile extends Component {
   static propTypes = {
-    user: PropTypes.object,
+    params: PropTypes.object,
   };
 
   constructor(props) {
@@ -36,30 +36,38 @@ export default class UserProfile extends Component {
     userProjectStats: null,
     userProjectStatsOnDate: null,
     date: null,
+    fullName: "Profile Details",
+    userEmail: null
   };
 
-  componentWillMount(){
+  componentWillMount() {
     this.setInitialDate();
-    getProjectStatsForUser(this.updateProjectStatsForUser);
+    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsForUser);
   }
 
-  updateProjectStatsForUser(error,response){
-    this.setState({userProjectStats: response.body})
+  updateProjectStatsForUser(error, response) {
+    response = response.body;
+    this.setState({
+      userProjectStats: response.projectStats,
+      fullName: response.userDetails.firstName + ' ' + response.userDetails.secondName,
+      userEmail: response.userDetails.email
+    })
   }
 
-  updateProjectStatsOnDate(error,response){
-    this.setState({userProjectStatsOnDate:response.body, loading: false})
+  updateProjectStatsOnDate(error, response) {
+    response = response.body;
+    this.setState({userProjectStatsOnDate: response.projectStats, loading: false})
   }
   
   onChangeDate = date => {
     this.setState({date : date});
-    getProjectStatsForUser(this.updateProjectStatsOnDate, date.toLocaleDateString());
+    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date));
   }
 
   setInitialDate() {
     const date = new Date();
     this.setState({date: date, loading:true});
-    getProjectStatsForUser(this.updateProjectStatsOnDate, date.toLocaleDateString());
+    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date));
   };
 
   getProjectsData = data => {
@@ -73,7 +81,7 @@ export default class UserProfile extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].userDetails.name}</td>
+            <td>{data[index].projectDetails.name}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
           </tr>
@@ -88,7 +96,9 @@ export default class UserProfile extends Component {
       <div>
         <Helmet title="My Profile" />
         <div className="text-center">
-          <h2 style={{ padding:"1em" }}> My Profile </h2>
+          <h2 style={{ paddingTop:"1em" }}> {this.state.fullName} </h2>
+          { this.state.userEmail &&
+          <p> {this.state.userEmail} </p>}
         </div>
         <br/>
         <br/>
@@ -106,7 +116,7 @@ export default class UserProfile extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content>Stats for your Projects</Header.Content>
+                  <Header.Content>Projects Stats</Header.Content>
                 </Header>
                 <Table striped bordered condensed hover responsive>
                   <thead>
@@ -135,7 +145,7 @@ export default class UserProfile extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content> Stats for Projects on selected Date
+                  <Header.Content> Projects Stats for date:
                       <DatePicker
                       onChange={this.onChangeDate}
                       value={this.state.date}

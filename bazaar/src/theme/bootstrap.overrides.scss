@@ -1281,10 +1281,8 @@ box-shadow: 2px 2px 0px 0px rgba(94,93,102,0.08), 4px 4px 4px 0px rgba(92,90,100
 
 .footer {
     background-color: #373a3c;
-    padding: 2em;
     color: white;
     position: fixed;
-    height: 70px;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -1305,11 +1303,10 @@ box-shadow: 2px 2px 0px 0px rgba(94,93,102,0.08), 4px 4px 4px 0px rgba(92,90,100
 }
 
 .footer.centered {
-  padding-bottom: 30px;
+  padding: 1px;
 }
 
 .brand.footer-brand {
-  margin-top: -18px;
   margin-right: 41px;
   color: #FFFFFF;
 }

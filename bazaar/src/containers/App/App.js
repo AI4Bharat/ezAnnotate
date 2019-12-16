@@ -443,7 +443,7 @@ export default class App extends Component {
                   </div>}
             <br />
 
-          { !this.props.menuHidden && this.props.labelsAllowed &&
+          {/* { !this.props.menuHidden && this.props.labelsAllowed &&
           <div>
           <Divider small />
             { !this.props.plan &&
@@ -466,7 +466,7 @@ export default class App extends Component {
               </div>
             <Divider small />
           </div>
-          }
+          } */}
 
             <br />
                 {!this.props.menuHidden &&
@@ -534,7 +534,7 @@ export default class App extends Component {
             </ErrorBoundary>
             </Segment>
         </Segment.Group>
-        </div>
+      </div>
 
         {/*
         <div className="text-center">
@@ -543,12 +543,12 @@ export default class App extends Component {
         */}
         <div className="centered footer">
           <div className="footer-links">
-            <a href="/" className="brand footer-brand w-nav-brand">
             <h4>
-            EZAnnotate
+              <a target="_blank" href="mailto:contact@onefourthlabs.com?subject=Support%20EZAnnotate" className="footer-link w-inline-block">
+                  <div>Contact us - One Fourth Labs</div>
+              </a>
             </h4>
-            </a>
-            <a target="_blank" href="" className="footer-link w-inline-block">
+            {/* <a target="_blank" href="" className="footer-link w-inline-block">
                 <div>Blog</div>
             </a>
             <a target="_blank" href="mailto:contact@onefourthlabs.com?subject=Hey%2C%20Turk!" className="footer-link w-inline-block">
@@ -556,7 +556,7 @@ export default class App extends Component {
             </a>
             <a target="_blank" href="" className="footer-link w-inline-block">
                 <div>Privacy Policy</div>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
