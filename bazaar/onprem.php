@@ -16,7 +16,7 @@
             <meta property="og:image:height"           content="630" /> -->
             <meta property="og:description" content="Just upload your data, invite your team members and start tagging. The best way to tag training/evaluation data for your machine learning projects."/>
             
-            <title>Dataturks – Online tool to build Image Bounding Box, NER, NLP and other ML datasets.</title>
+            <title>EZAnnotate – Online tool to build Image Bounding Box, NER, NLP and other ML datasets.</title>
             <link rel="icon" type="image/png" href="/img/xdataturks_icon.png.pagespeed.ic.BmDiJPJ9lq.webp">
         
             
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>                        
           </button>-->
-          <a class="navbar-brand navbar-brand-imp" href="/">Dataturks</a>
+          <a class="navbar-brand navbar-brand-imp" href="/">EZAnnotate</a>
         </div>
         <!--<div class="collapse navbar-collapse" id="pageNavBar">
         <ul class="nav navbar-nav navbar-right">
@@ -116,7 +116,7 @@
               <div class="form-group">
                 <label for="license">License</label>
                 <textarea type="text" rows="3" class="form-control" id="licenseVal" aria-describedby="licenseHelp" placeholder="Enter License"></textarea>
-                <small id="licenseHelp" class="form-text text-muted">Copy paste your Dataturks License.</small>
+                <small id="licenseHelp" class="form-text text-muted">Copy paste your License.</small>
               </div>
               <button type="submit" class="btn btn-primary" id="licenseSubmit" >Submit</button>
             </form>
@@ -151,7 +151,7 @@
               <div class="form-group">
                 <label for="license">License (for verification)</label>
                 <textarea type="text" rows="3" class="form-control" id="changePasswordLicenseVal" aria-describedby="licenseHelp" placeholder="Enter License"></textarea>
-                <small id="licenseHelp" class="form-text text-muted">Copy paste your cuurent Dataturks License.</small>
+                <small id="licenseHelp" class="form-text text-muted">Copy paste your current License.</small>
               </div>
               <button type="submit" class="btn btn-primary" id="changePasswordSubmit" >Submit</button>
             </form>
@@ -276,10 +276,10 @@
                     <p class="text-center title-widget" style="color:#fff"><strong>Say Hi:</strong></p>
                     <div class="text-right">
                         <ul class="social-network social-circle text-right">
-                            <li><a href="https://www.facebook.com/Datatrks/" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="https://twitter.com/dataturks" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="https://aimlhandson.slack.com/join/shared_invite/enQtMzc0NTk0MzQ3Mzc2LWVlOWE5MzdmMTNjOWY3ODhjODI5ODAyZjgxMTE1MDNiZGMwYzk1NDNmNmQwYzhhNTE2NGY4NjQ2YmZmY2FhMDA" class="icoSlack" title="Slack" target="_blank"><i class="fa fa-slack"></i></a></li>
-                            <li><a href="https://www.linkedin.com/company/dataturks/" class="icoLinkedin" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="" class="icoFacebook" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="" class="icoTwitter" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="" class="icoSlack" title="Slack" target="_blank"><i class="fa fa-slack"></i></a></li>
+                            <li><a href="" class="icoLinkedin" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                         </ul>
                     </div>
                   </div>
@@ -288,7 +288,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center">
                 <hr class="small">
-                    <p class="text-muted">Copyright &copy; Trilldata Technologies Pvt Ltd 2018</p>
+                    <p class="text-muted">Copyright 2019</p>
                 </div>
             </div>
         </div>

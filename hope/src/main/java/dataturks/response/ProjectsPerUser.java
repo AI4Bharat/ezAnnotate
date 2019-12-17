@@ -15,11 +15,11 @@ public class ProjectsPerUser {
         this.projectDetails = projectDetails;
     }
 
-    public DProjects getUserDetails() {
+    public DProjects getProjectDetails() {
         return projectDetails;
     }
 
-    public void setUserDetails(DProjects projectDetails) {
+    public void setProjectDetails(DProjects projectDetails) {
         this.projectDetails = projectDetails;
     }
 

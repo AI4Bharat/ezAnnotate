@@ -46,10 +46,10 @@ module.exports = Object.assign({
   apiURL: process.env.BASE_URL || 'https://dataturks.com/dataturks/',
   servingEnv: process.env.NODE_DEST || 'online',
   app: {
-    title: 'Dataturks',
+    title: 'EZAnnotate',
     description: 'Just upload your data, invite your team members and start tagging. The best way to tag training/evaluation data for your machine learning projects.',
     head: {
-      titleTemplate: 'Dataturks: %s',
+      titleTemplate: 'EZAnnotate: %s',
       meta: [
         {name: 'description',
         content: 'Image Bounding Box, Image Classification, Text Classification, NER, NLP and other Machine Learning datasets'},

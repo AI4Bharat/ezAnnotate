@@ -543,7 +543,7 @@ export const imagePolyBoundingSample = {
   extras: null
 };
 
-export const dateToLocalString = (dateObj)=> {
+export const dateToLocalString = (dateObj) => {
   var date = dateObj.getDate();
   var month = dateObj.getMonth() + 1;
   var year = dateObj.getFullYear();

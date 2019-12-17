@@ -285,6 +285,10 @@ export default class TaggerOrgProject extends Component {
     }
   }
 
+  userAnchor(userDetails) {
+    return <a href={window.location.origin + "/profile/" + userDetails.uid}>{userDetails.firstName + " " + userDetails.secondName}</a>
+  }
+
   getContributorsData = data => {
     const arrs = [];
     console.log("getContributorsData ", data);
@@ -296,7 +300,7 @@ export default class TaggerOrgProject extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].userDetails.firstName + " " + data[index].userDetails.secondName}</td>
+            <td>{this.userAnchor(data[index].userDetails)}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
           </tr>

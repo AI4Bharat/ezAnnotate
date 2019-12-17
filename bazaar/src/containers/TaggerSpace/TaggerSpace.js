@@ -765,6 +765,7 @@ export default class TaggerSpace extends Component {
           return false;
         }
       }
+      
       tagString = tagString.trim();
       console.log(" tagged String is ", tagString);
       this.state.currentHit.result = resultString;

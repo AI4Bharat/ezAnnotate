@@ -5,7 +5,6 @@ import {
     App,
     Home,
     NotFound,
-
     TaggerLogin,
     TaggerSpace,
     TaggerCreate,
@@ -21,7 +20,8 @@ import {
     TaggerOrgProject,
     TaggerError,
     TaggerKeyBind,
-    TaggerContributors
+    TaggerContributors,
+    UserProfile
   } from 'containers';
 
 export default (store) => {
@@ -62,7 +62,6 @@ export default (store) => {
       <Route path="projects/add" component={TaggerAdd}/>
       <Route path="projects/overview" component={TaggerOveriew}/>
       <Route path="projects/visualize" component={TaggerVisualize}/>
-
       <Route path="projects/errors" component={TaggerError}/>
       <Route path="projects/:orgName" component={TaggerOrg} />
       <Route path="projects/:orgName/:projectName" component={TaggerOrgProject} />
@@ -71,8 +70,7 @@ export default (store) => {
       <Route path="projects/:orgName/:projectName/overview" component={TaggerOveriew}/>
       <Route path="projects/:orgName/:projectName/visualize" component={TaggerVisualize}/>
       <Route path="projects/:orgName/:projectName/contributors" component={TaggerContributors}/>
-
-
+      <Route path="profile/:userId" component={UserProfile}/>
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
     </Route>

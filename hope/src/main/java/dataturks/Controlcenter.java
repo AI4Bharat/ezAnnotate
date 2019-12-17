@@ -1290,7 +1290,7 @@ public class Controlcenter {
 
     private static int getAvrgTimePerHit(List<DHitsResult> userHits) {
         int totalTimeInSec = 0;
-        if (userHits != null) {
+        if (userHits != null && !userHits.isEmpty()) {
             for (DHitsResult result : userHits) {
                 totalTimeInSec += result.getTimeTakenToLabelInSec();
             }
@@ -1344,7 +1344,6 @@ public class Controlcenter {
     public static List<ProjectsPerUser> fetchProjectStatsForUser(String userId, String inpDate) {
         List<DProjectUsers> userProjects = AppConfig.getInstance().getdProjectUsersDAO().findAllByUserIdInternal(userId);
         List<ProjectsPerUser> stats = new ArrayList<>();
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         if (inpDate != null) {
             try {
@@ -1353,13 +1352,11 @@ public class Controlcenter {
                 e.printStackTrace();
             }
         }
-
         for (DProjectUsers userProject : userProjects) {
             DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(userProject.getProjectId());
             ProjectsPerUser record = new ProjectsPerUser(project);
             List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO()
                     .findAllByUserIdAndProjectIdInternal(userId, project.getId());
-            
             if (inpDate != null) {
                 List<DHitsResult> filteredResults = new ArrayList<>();
                 for (DHitsResult result : results) {
@@ -1369,12 +1366,10 @@ public class Controlcenter {
                 }
                 results = filteredResults;
             }
-
             record.setHitsDone(results.size());
             record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
             stats.add(record);
         }
-
         return stats;
     }
 
