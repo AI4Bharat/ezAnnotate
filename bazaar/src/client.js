@@ -8,7 +8,7 @@ import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
 // import io from 'socket.io-client';
 import {Provider} from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect } from 'redux-async-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
@@ -17,7 +17,7 @@ import getRoutes from './routes';
 import { Segment } from 'semantic-ui-react';
 
 const client = new ApiClient();
-const _browserHistory = useScroll(() => browserHistory)();
+const _browserHistory = useScroll(() => hashHistory)();
 // const dest = document.getElementById('content');
 console.log('window data is', window._data);
 const store = createStore(_browserHistory, client, window.__data);
@@ -53,7 +53,8 @@ class AppProvider extends React.Component {
 
   render() {
     const component = (
-              <Router render={(props) =>
+              <Router history={hashHistory}
+                  render={(props) =>
                     <ReduxAsyncConnect {...props} helpers={{client}} filter={item => !item.deferred} />
                   } history={history}>
                 {getRoutes(store)}
