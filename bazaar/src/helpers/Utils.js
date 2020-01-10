@@ -344,6 +344,9 @@ export const getDefaultShortcuts = (type, entities) => {
     clearAll: { qualifier: "ctrl", key: "x" },
     undo: { qualifier: "ctrl", key: "z" }
   };
+  const multiTextKeys = {
+    add_new_textbox: { qualifier: "ctrl", key: "]"}
+  };
   const boundKeys = { tool: { qualifier: "", key: "space" } };
   const entityKeys = {};
   if (entities) {
@@ -371,6 +374,8 @@ export const getDefaultShortcuts = (type, entities) => {
     return { ...commonKeys, ...boundKeys };
   }  else if (type === VIDEO_BOUNDING_BOX) {
     return { ...commonKeys, ...videoKeys };
+  } else if (type === SENTENCE_TRANSLATION) {
+    return {...commonKeys, ...multiTextKeys};
   }
   return { ...commonKeys, ...entityKeys };
 };

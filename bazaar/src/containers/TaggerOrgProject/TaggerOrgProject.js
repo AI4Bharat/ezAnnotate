@@ -10,6 +10,7 @@ import {
 } from "redux/modules/dataturks";
 // import { GoogleLogin } from 'react-google-login';
 // import FontAwesome from 'react-fontawesome';
+import { Link } from 'react-router';
 import {
   Segment,
   Table as STable,
@@ -286,7 +287,8 @@ export default class TaggerOrgProject extends Component {
   }
 
   userAnchor(userDetails) {
-    return <a href={window.location.origin + "/profile/" + userDetails.uid}>{userDetails.firstName + " " + userDetails.secondName}</a>
+    
+    return <Link to={`/profile/${userDetails.uid}`}>{userDetails.firstName + " " + userDetails.secondName}</Link>
   }
 
   getContributorsData = data => {
