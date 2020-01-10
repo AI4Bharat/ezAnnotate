@@ -544,8 +544,8 @@ export default class App extends Component {
         <div className="centered footer">
           <div className="footer-links">
             <h4>
-              <a target="_blank" href="mailto:contact@onefourthlabs.com?subject=Support%20EZAnnotate" className="footer-link w-inline-block">
-                  <div>Contact us - One Fourth Labs</div>
+              <a target="_blank" href="mailto:contact@ai4bharat.org?subject=Support%20EZAnnotate" className="footer-link w-inline-block">
+                  <div>Contact us - Ai4Bharat</div>
               </a>
             </h4>
             {/* <a target="_blank" href="" className="footer-link w-inline-block">

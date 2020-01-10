@@ -313,7 +313,8 @@ export default class TaggerSpace extends Component {
         currentStart: 0,
         currentCount: 1,
         hitIDsDone: new Set(),
-        startTime: new Date().getTime()
+        startTime: new Date().getTime(),
+        translateValues: [""],
       };
     } else if (
       this.props.projectDetails &&
@@ -334,6 +335,10 @@ export default class TaggerSpace extends Component {
       if (ch.hitResults) {
         result = ch.hitResults[0].result;
       }
+      let translateValues = [""]
+      if (this.props.projectDetails.task_type === SENTENCE_TRANSLATION && result) {
+        translateValues = result.split("\n");
+      }
       this.state = {
         type,
         contributorId,
@@ -352,8 +357,10 @@ export default class TaggerSpace extends Component {
         currentStart: 0,
         currentCount: 1,
         hitIDsDone: new Set(),
-        startTime: new Date().getTime()
+        startTime: new Date().getTime(),
+        translateValues: translateValues,
       };
+      
     } else if (
       this.props.projectDetails &&
       this.props.currentHit &&
@@ -411,7 +418,8 @@ export default class TaggerSpace extends Component {
         currentStart: 0,
         currentCount: 1,
         hitIDsDone: new Set(),
-        startTime: new Date().getTime()
+        startTime: new Date().getTime(),
+        translateValues: [""]
       };
     } else if (
       this.props.projectDetails &&
@@ -505,7 +513,8 @@ export default class TaggerSpace extends Component {
         currentStart: 0,
         currentCount: 1,
         hitIDsDone: new Set(),
-        startTime: new Date().getTime()
+        startTime: new Date().getTime(),
+        translateValues: [""],
       };
     } else {
       this.state = {
@@ -542,7 +551,8 @@ export default class TaggerSpace extends Component {
         startTime: new Date().getTime(),
         changesInSession: 0,
         shortcuts: {},
-        isFullscreenEnabled: false
+        isFullscreenEnabled: false,
+        translateValues: [""]
       };
     }
     this.props.setCurrentHit(undefined);
@@ -659,11 +669,15 @@ export default class TaggerSpace extends Component {
   }
 
   componentDidUpdate() {
-    const editor = document.getElementById("write_text");
+    let editor = document.getElementById("write_text");
     console.log("editor is ", editor);
     if (editor !== null) {
       editor.focus();
       editor.setAttribute("data-gramm", "false");
+    }
+
+    if (this.currentTextBox) {
+      this.currentTextBox.focus();
     }
   }
 
@@ -1252,11 +1266,18 @@ export default class TaggerSpace extends Component {
       return tagString.trim();
     } else if (
       this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-      this.state.projectDetails.task_type === TEXT_MODERATION ||
-      this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+      this.state.projectDetails.task_type === TEXT_MODERATION
     ) {
       return this.state.textSummary;
-    } else if (
+    } else if(
+        this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+    ) {
+        const mergedText = this.state.translateValues.filter(function (el) {
+          return el != "";
+        }).join("\n");
+        return mergedText;
+      }
+      else if (
       this.state.projectDetails.task_type === TEXT_CLASSIFICATION ||
       this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
       this.state.projectDetails.task_type === IMAGE_CLASSIFICATION ||
@@ -1424,6 +1445,9 @@ export default class TaggerSpace extends Component {
     }
     this.state.action = action ? action : 'moveToDone';
     this.state.changesInSession = 0;
+    // if (this.state.projectDetails.task_type === SENTENCE_TRANSLATION) {
+    //   this.setState({translateValues:[""]})
+    // }
     this.setState({ loading: true, action: action ? action : 'moveToDone' });
     updateHitStatus(currentHit.id, this.props.currentProject, HIT_STATE_DONE, result, this.moveToDoneCallback.bind(this));
   }
@@ -1630,6 +1654,9 @@ export default class TaggerSpace extends Component {
               if (currentHit.hitResults !== null) {
                 textSummary = currentHit.hitResults[0].result;
               }
+              let translateValues = ['']
+              if (projectDetails.task_type === SENTENCE_TRANSLATION && textSummary)
+                translateValues = textSummary.split("\n");
               this.setState({
                 rules,
                 shortcuts,
@@ -1637,9 +1664,10 @@ export default class TaggerSpace extends Component {
                 hits: currentHits,
                 currentHit,
                 textSummary,
+                translateValues,
                 projectDetails,
                 loading: false,
-                action: ""
+                action: "",
               });
             }
           } else if (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) {
@@ -1962,6 +1990,7 @@ export default class TaggerSpace extends Component {
         let currentNote = "";
         let textSummary = "";
         let boundingBoxMap = [];
+        let translateValues = [""];
         let classificationResponse = {};
         if (this.state.projectDetails.task_type === POS_TAGGING) {
           console.log("currenhit", currentHit);
@@ -1993,10 +2022,13 @@ export default class TaggerSpace extends Component {
             }
           } else if (
             this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-            this.state.projectDetails.task_type === TEXT_MODERATION ||
-            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+            this.state.projectDetails.task_type === TEXT_MODERATION
           ) {
             textSummary = currentHit.result;
+          } else if (
+            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+          ) {
+            translateValues=currentHit.result.split("\n");
           } else if (
             this.state.projectDetails.task_type === IMAGE_BOUNDING_BOX ||
             this.state.projectDetails.task_type ===
@@ -2024,10 +2056,13 @@ export default class TaggerSpace extends Component {
         } else if (currentHit.hitResults !== null) {
           if (
             this.state.projectDetails.task_type === TEXT_SUMMARIZATION ||
-            this.state.projectDetails.task_type === TEXT_MODERATION ||
-            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+            this.state.projectDetails.task_type === TEXT_MODERATION 
           ) {
             textSummary = currentHit.hitResults[0].result;
+          } else if (
+            this.state.projectDetails.task_type === SENTENCE_TRANSLATION
+          ) {
+            translateValues=currentHit.hitResults[0].result.split("\n");
           } else if (
             this.state.projectDetails.task_type === TEXT_CLASSIFICATION ||
             this.state.projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER ||
@@ -2085,7 +2120,8 @@ export default class TaggerSpace extends Component {
           currentHit,
           selectIds: [],
           tagSelected: false,
-          loading: false
+          loading: false,
+          translateValues
         });
       } else {
         const { currentStart, currentCount } = this.state;
@@ -2425,9 +2461,7 @@ export default class TaggerSpace extends Component {
         }
         {/* <Button
           className={styles.copyButton}
-          size="small"
-          onClick={this.copyToClipboard}
-        >
+          size="small"https://ezannotate.onefourthlabs.com/
           <Icon name="copy" color="teal" />
           Copy
         </Button> */}
@@ -2471,6 +2505,46 @@ export default class TaggerSpace extends Component {
       event.preventDefault();
     }
   }
+  
+  createListOfTextBox(){
+    
+    return this.state.translateValues.map((elem, i) => 
+        <div key={i} style={{marginBottom: 15}}>
+         <Input 
+          value={elem||''} 
+          ref={(input) => { this.currentTextBox = input; }}
+          onChange={this.handleTextChange.bind(this, i)}
+          style={{"width":"70%","padding":"2px"}}
+         />
+         <Button
+          type="button"
+          size="medium"
+          color="red"
+          icon
+          onClick={this.removeTextBox.bind(this, i)}
+          >
+          <Icon name="delete"/>
+          </Button>
+        </div>          
+    )
+  }
+  
+  handleTextChange(i, event) {
+    let translateValues = [...this.state.translateValues];
+    translateValues[i] = event.target.value;
+    const changesInSession = this.state.changesInSession + 1;
+    this.setState({ translateValues,changesInSession });
+  }
+ 
+  addNewTextBox() {
+    this.setState(prevState => ({ translateValues: [...prevState.translateValues, '']}))
+  }
+ 
+  removeTextBox(i){
+    let translateValues = [...this.state.translateValues];
+    translateValues.splice(i,1);
+    this.setState({ translateValues });
+  }
 
   showWriteText(type) {
     if (type === TEXT_SUMMARIZATION) {
@@ -2504,20 +2578,34 @@ export default class TaggerSpace extends Component {
         />
       );
     } else if (type === SENTENCE_TRANSLATION) {
+      let addMoreButtonName = 'Add more';
+      if ("shortcuts" in this.state) {
+        const shortcuts = this.state.shortcuts;
+        // Force Mousetrap: stackoverflow.com/questions/21013866/
+        Mousetrap.prototype.stopCallback = function stopMouseTrapCallback() {
+          return false;
+        }
+  
+        if ("add_new_textbox" in shortcuts) {
+          const combo = convertKeyToString(shortcuts.add_new_textbox);
+          addMoreButtonName = "Add more (" + combo + ")";
+          Mousetrap.bind(combo, this.addNewTextBox.bind(this));
+        }
+      }
       return (
-        <Form.Field
-          id="write_text"
-          control={TextArea}
-          onChange={this.handleChange.bind(this, "summary")}
-          label="Translated Text"
-          value={this.state.textSummary}
-          placeholder="Write translated text here..."
-          onKeyPress={(e) => { this.handleWriteTextOnKeyPress(e) }}
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        />
+        <form>
+            {this.createListOfTextBox()}
+            <Button 
+            type="button"
+            size="medium"
+            color="blue"
+            icon
+            onClick={this.addNewTextBox.bind(this)}
+            >
+            <Icon name="add square"/>
+            {addMoreButtonName}
+            </Button>
+        </form>
       );
     }
   }
