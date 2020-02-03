@@ -330,7 +330,7 @@ export default class TaggerCreate extends Component {
                       <br />
                       <br />
 
-                        <Card disabled green raised dimmed green centered style={{ padding: '1%', margin: '1%'}}>
+                        {/* <Card disabled green raised dimmed green centered style={{ padding: '1%', margin: '1%'}}>
                             <Card.Header className="text-center">
                               <h3> Email us for Custom Annotations</h3>
                             </Card.Header>
@@ -341,7 +341,7 @@ export default class TaggerCreate extends Component {
                                 &nbsp;
                             </Card.Description>
                           </Card.Content>
-                        </Card>
+                        </Card> */}
 
 
                     </Card.Group>
@@ -374,7 +374,7 @@ export default class TaggerCreate extends Component {
                       {
                           <div className="text-center">
                             <h1>Create Dataset</h1>
-                              <p>How to create a dataset?<a href="https://dataturks.com/help/help.php" target="_blank"> See Demo Videos </a> </p>
+                              {/* <p>How to create a dataset?<a href="https://dataturks.com/help/help.php" target="_blank"> See Demo Videos </a> </p> */}
                               <div className={styles.card + ' text-center'}>
                                   {this.getImport()}
                               </div>
