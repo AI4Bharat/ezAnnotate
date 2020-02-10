@@ -14,12 +14,17 @@ const environment = {
 
 // SELF_INSTALL_UPDATE : Put firebase config here
 
- const config = {
-  apiKey: 'XXXXXXXXXX',
-  authDomain: 'XXXXXXXX',
-  databaseURL: 'XXXXX',
- };
+//  const config = {
+//   apiKey: 'XXXXXXXXXX',
+//   authDomain: 'XXXXXXXX',
+//   databaseURL: 'XXXXX',
+//  };
 
+ const config = {
+  apiKey: "AIzaSyCU2-pstffCMuYvwi3U8mdTCLLWfkVPfjA",
+  authDomain: "dataturks-platform.firebaseapp.com",
+  databaseURL: "https://dataturks-platform.firebaseio.com"
+ };
 
 firebase.initializeApp(config);
 
@@ -44,7 +49,7 @@ module.exports = Object.assign({
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   apiURL: process.env.BASE_URL || 'https://dataturks.com/dataturks/',
-  servingEnv: process.env.NODE_DEST || 'online',
+  servingEnv: 'online',
   app: {
     title: 'EZAnnotate',
     description: 'Just upload your data, invite your team members and start tagging. The best way to tag training/evaluation data for your machine learning projects.',

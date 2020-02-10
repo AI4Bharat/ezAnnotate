@@ -176,7 +176,7 @@ export default class TaggerLogin extends Component {
         console.log('Verification email sent');
       }, function(error) {
         // An error happened.
-        console.log('couldnt sent verification emailSignu', error);
+        console.log('couldnt sent verification emailSignup', error);
       });
     } else if (this.state.emailSignIn) {
       logEvent('buttons', 'Old User firebase success');
@@ -399,7 +399,7 @@ export default class TaggerLogin extends Component {
                             <Message negative hidden={!this.state.error}>
                               <p>{this.state.error}</p>
                             </Message>
-                           {config.servingEnv === 'online' && <div>
+                           {/* {config.servingEnv === 'online' && <div>
                           <Divider style={{ padding: '5%', backgroundColor: 'black', color: 'white'}} horizontal>Or</Divider>
                         <br />
 
@@ -414,7 +414,7 @@ export default class TaggerLogin extends Component {
                                     <Icon name="google plus" /> Sign in with Google
                                   </Button>
                               </div>
-                          </div> }
+                          </div> } */}
                     </div> }
                     { this.state.emailSignup &&
                       <div style={{ marginTope: '-10%'}}>
