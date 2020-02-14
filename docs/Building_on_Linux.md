@@ -28,6 +28,7 @@ sudo mysql -u root hope -p < docker/mysqlInit.sql
 
 #### Building `hope` (DataTurk's Java backend)
 ```
+sudo apt update
 sudo apt install -y openjdk-8-jdk openjdk-8-jre maven
 mvn package -DskipTests
 ```
@@ -56,9 +57,13 @@ sudo service apache2 restart
 
 sudo cp ../hope/docker/onprem-dataturks.com.conf /etc/apache2/sites-available/
 sudo sed -i "s|/home/dataturks/bazaar|`pwd`|g" /etc/apache2/sites-available/onprem-dataturks.com.conf
-sudo cp /etc/apache2/sites-available/onprem-dataturks.com.conf /etc/apache2/sites-available/000-default.conf
 sudo a2ensite onprem-dataturks.com.conf
-sudo service apache2 reload
+
+sudo cp ../hope/docker/dataturks-ssl.conf /etc/apache2/sites-available/
+sudo sed -i "s|/home/dataturks/bazaar|`pwd`|g" /etc/apache2/sites-available/dataturks-ssl.conf
+sudo a2ensite default-ssl.conf
+
+sudo service apache2 restart
 ```
 
 #### Setting up NodeJS
@@ -109,6 +114,10 @@ sudo service apache2 reload
 ```
 
 Now you can visit http://localhost/phpmyadmin to access it (Use DB's root username and password to login)
+
+#### Installing SSL (Let's Encrypt)
+- Follow this: [Secure Apache with Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-16-04)
+- `sudo a2ensite le-redirect-*.conf`
 
 #### Disable firewall
 ```
