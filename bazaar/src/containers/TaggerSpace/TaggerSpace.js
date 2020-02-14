@@ -314,7 +314,7 @@ export default class TaggerSpace extends Component {
         currentCount: 1,
         hitIDsDone: new Set(),
         startTime: new Date().getTime(),
-        translateValues: [""],
+        translateValues: ["","",""],
       };
     } else if (
       this.props.projectDetails &&
@@ -335,7 +335,7 @@ export default class TaggerSpace extends Component {
       if (ch.hitResults) {
         result = ch.hitResults[0].result;
       }
-      let translateValues = [""]
+      let translateValues = ["","",""]
       if (this.props.projectDetails.task_type === SENTENCE_TRANSLATION && result) {
         translateValues = result.split("\n");
       }
@@ -419,7 +419,7 @@ export default class TaggerSpace extends Component {
         currentCount: 1,
         hitIDsDone: new Set(),
         startTime: new Date().getTime(),
-        translateValues: [""]
+        translateValues: ["","",""]
       };
     } else if (
       this.props.projectDetails &&
@@ -514,7 +514,7 @@ export default class TaggerSpace extends Component {
         currentCount: 1,
         hitIDsDone: new Set(),
         startTime: new Date().getTime(),
-        translateValues: [""],
+        translateValues: ["","",""],
       };
     } else {
       this.state = {
@@ -552,7 +552,7 @@ export default class TaggerSpace extends Component {
         changesInSession: 0,
         shortcuts: {},
         isFullscreenEnabled: false,
-        translateValues: [""]
+        translateValues: ["","",""]
       };
     }
     this.props.setCurrentHit(undefined);
@@ -596,6 +596,7 @@ export default class TaggerSpace extends Component {
       editor.focus();
       editor.setAttribute("data-gramm", "false");
     }
+    
     // this.loadData()
     // .then((data) => {
     //   console.log('Data loaded');
@@ -675,9 +676,10 @@ export default class TaggerSpace extends Component {
       editor.focus();
       editor.setAttribute("data-gramm", "false");
     }
-
-    if (this.currentTextBox) {
-      this.currentTextBox.focus();
+    let textbox_0 = document.getElementById("textbox_0");
+    if (textbox_0 !== null) {
+      textbox_0.focus();
+      textbox_0.setAttribute("data-gramm", "false");
     }
   }
 
@@ -1653,7 +1655,7 @@ export default class TaggerSpace extends Component {
               if (currentHit.hitResults !== null) {
                 textSummary = currentHit.hitResults[0].result;
               }
-              let translateValues = ['']
+              let translateValues = ['','','']
               if (projectDetails.task_type === SENTENCE_TRANSLATION && textSummary)
                 translateValues = textSummary.split("\n");
               this.setState({
@@ -1989,7 +1991,7 @@ export default class TaggerSpace extends Component {
         let currentNote = "";
         let textSummary = "";
         let boundingBoxMap = [];
-        let translateValues = [""];
+        let translateValues = ["","",""];
         let classificationResponse = {};
         if (this.state.projectDetails.task_type === POS_TAGGING) {
           console.log("currenhit", currentHit);
@@ -2503,15 +2505,21 @@ export default class TaggerSpace extends Component {
     if (event.key === "Enter") {
       event.preventDefault();
     }
-  }
-  
+  };
+
+  //  focusInputField = input => {
+  //   if (input) {
+  //     setTimeout(() => {input.focus()}, 100);
+  //   }
+  // };
+
   createListOfTextBox(){
-    
     return this.state.translateValues.map((elem, i) => 
         <div key={i} style={{marginBottom: 15}}>
          <Input 
           value={elem||''} 
-          ref={(input) => { this.currentTextBox = input; }}
+          id={"textbox_"+i}
+          //ref={this.focusInputField}
           onChange={this.handleTextChange.bind(this, i)}
           style={{"width":"70%","padding":"2px"}}
          />
@@ -2538,7 +2546,30 @@ export default class TaggerSpace extends Component {
   addNewTextBox() {
     this.setState(prevState => ({ translateValues: [...prevState.translateValues, '']}))
   }
- 
+  
+  moveAboveBox() {
+    var currStr = document.querySelector(":focus").id;
+    var curr_id = parseInt(currStr.charAt(currStr.length-1));
+    if(curr_id >= 1){
+      let textbox = document.getElementById("textbox_"+(curr_id-1));
+      if (textbox !== null) {
+        textbox.focus();
+        textbox.setAttribute("data-gramm", "false");
+      }
+    } 
+  }
+  moveBelowBox() {
+    var currStr = document.querySelector(":focus").id;
+    var curr_id = parseInt(currStr.charAt(currStr.length-1));
+    if(curr_id < this.state.translateValues.length){
+      let textbox = document.getElementById("textbox_"+(curr_id+1));
+      if (textbox !== null) {
+        textbox.focus();
+        textbox.setAttribute("data-gramm", "false");
+      }
+    }
+  }
+
   removeTextBox(i){
     let translateValues = [...this.state.translateValues];
     translateValues.splice(i,1);
@@ -2589,6 +2620,14 @@ export default class TaggerSpace extends Component {
           const combo = convertKeyToString(shortcuts.add_new_textbox);
           addMoreButtonName = "Add more (" + combo + ")";
           Mousetrap.bind(combo, this.addNewTextBox.bind(this));
+        }
+        if("move_above_box" in shortcuts) {
+          const combo = convertKeyToString(shortcuts.move_above_box);
+          Mousetrap.bind(combo, this.moveAboveBox.bind(this));
+        }
+        if("move_below_box" in shortcuts) {
+          const combo = convertKeyToString(shortcuts.move_below_box);
+          Mousetrap.bind(combo, this.moveBelowBox.bind(this));
         }
       }
       return (

@@ -345,7 +345,9 @@ export const getDefaultShortcuts = (type, entities) => {
     undo: { qualifier: "ctrl", key: "z" }
   };
   const multiTextKeys = {
-    add_new_textbox: { qualifier: "ctrl", key: "space"}
+    add_new_textbox: { qualifier: "ctrl", key: "space"},
+    move_above_box: {qualifier: "", key: "up"},
+    move_below_box: {qualifier: "", key: "down"}
   };
   const boundKeys = { tool: { qualifier: "", key: "space" } };
   const entityKeys = {};
