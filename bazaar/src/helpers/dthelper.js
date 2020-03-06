@@ -7,14 +7,7 @@ import config from '../config'
 
 const superagent = require("superagent");
 
-// export const BASE_URL = (config.servingEnv === 'online' ? config.apiURL : window.location.protocol + "//" + window.location.hostname + '/dataturks/');
-
-export const BASE_URL = window.location.protocol + "//" + window.location.hostname + '/dataturks/';
-// export const BASE_URL = 'http://localhost:8080/dataturks/';
-
-// const uid = '2c9fafb06185d9b3016185dbb66a0000';
-// const token = '1234';
-// const pid = '4028808361a21a9e0161a3b0c881000c';
+export const BASE_URL = (config.servingEnv === 'online' ? config.apiURL : window.location.protocol + "//" + window.location.hostname + '/dataturks/');
 
 export const logEvent = (category, action, label) => {
   try {
