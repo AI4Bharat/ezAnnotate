@@ -958,6 +958,7 @@ export default class TaggerSpace extends Component {
       onClick: () => {
         logEvent("buttons", "Select Skipped");
         this.resetFilterState();
+        this.state.contributorId = undefined;
         this.props.pushState(
           this.getUrl(HIT_STATE_SKIPPED)
         );
@@ -969,6 +970,7 @@ export default class TaggerSpace extends Component {
       onClick: () => {
         logEvent("buttons", "Select Deleted");
         this.resetFilterState();
+        this.state.contributorId = undefined;
         this.props.pushState(
           this.getUrl(HIT_STATE_DELETED)
         );
@@ -980,6 +982,7 @@ export default class TaggerSpace extends Component {
       onClick: () => {
         logEvent("buttons", "Select Pre-Tagged");
         this.resetFilterState();
+        this.state.contributorId = undefined;
         this.props.pushState(
           this.getUrl(HIT_STATE_PRE_TAGGED)
         );
@@ -991,6 +994,7 @@ export default class TaggerSpace extends Component {
       onClick: () => {
         logEvent("buttons", "Select Re-queued");
         this.resetFilterState();
+        this.state.contributorId = undefined;
         this.props.pushState(
           this.getUrl(HIT_STATE_REQUEUED)
         );
@@ -4044,6 +4048,7 @@ export default class TaggerSpace extends Component {
     // const docLabels = this.docAnnotator ? this.docAnnotator.getLabels() : undefined;
     // console.log('doclabels ', docLabels);
     // const { tagLine } = this.state;
+
     return (
       <div>
         {!this.props.projectDetails && <Segment basic vertical loading />}
