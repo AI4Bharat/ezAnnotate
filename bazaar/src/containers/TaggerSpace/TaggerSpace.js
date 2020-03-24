@@ -596,7 +596,6 @@ export default class TaggerSpace extends Component {
       editor.focus();
       editor.setAttribute("data-gramm", "false");
     }
-    
     // this.loadData()
     // .then((data) => {
     //   console.log('Data loaded');
@@ -606,7 +605,13 @@ export default class TaggerSpace extends Component {
     //   });
     // });
   }
-
+  componentWillUpdate() {
+    let textbox_0 = document.getElementById("textbox_0");
+    if (textbox_0 !== null) {
+      textbox_0.focus();
+      textbox_0.setAttribute("data-gramm", "false");
+    }	
+ }
   componentWillReceiveProps(props) {
     console.log("TaggerSpace received props ", this.props, props, this.state);
     if (
@@ -675,11 +680,6 @@ export default class TaggerSpace extends Component {
     if (editor !== null) {
       editor.focus();
       editor.setAttribute("data-gramm", "false");
-    }
-    let textbox_0 = document.getElementById("textbox_0");
-    if (textbox_0 !== null) {
-      textbox_0.focus();
-      textbox_0.setAttribute("data-gramm", "false");
     }
   }
 
@@ -3610,7 +3610,7 @@ export default class TaggerSpace extends Component {
       }
       if ("skip" in shortcuts) {
         const combo = convertKeyToString(shortcuts.skip);
-        skipButton = "Skip (" + combo + ")";
+        skipButton = "Skip for Review (" + combo + ")";
         console.log("setting skip shortcut", combo);
         if (this.state.currentIndex >= 0) {
           Mousetrap.bind(combo, this.skipRow);
