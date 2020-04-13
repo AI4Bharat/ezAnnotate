@@ -47,13 +47,9 @@ cd bazaar/
 chmod -R 777 *
 ```
 
-#### Setting up the server stack
+#### Setting up the server stack [To install php 7.0 go to this link](https://tecadmin.net/install-php-7-on-ubuntu/)
 ```
 sudo apt install -y apache2 php7.0 libapache2-mod-php7.0 
-```
-[To install php 7.0 go to this link](https://tecadmin.net/install-php-7-on-ubuntu/)
-
-```
 sudo a2enmod proxy_http
 sudo a2enmod php7.0
 sudo service apache2 restart
