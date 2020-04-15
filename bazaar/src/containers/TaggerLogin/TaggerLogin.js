@@ -277,7 +277,7 @@ export default class TaggerLogin extends Component {
     console.log('create account ', event, this.email, this.password);
     if (this.state.email.length === 0 || !this.state.email.includes('@')) {
       this.setState({ error: 'Invalid Email'});
-    } else if (this.state.password.length <= 6) {
+    } else if (this.state.password.length < 6) {
       this.setState({ error: 'Password should be atleast 6 letters long'});
     } else if (this.state.fname.length < 2) {
       this.setState({ error: 'Please enter first name'});

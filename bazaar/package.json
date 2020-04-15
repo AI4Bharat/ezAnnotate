@@ -24,7 +24,7 @@
   ],
   "main": "bin/server.js",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
+    "start": "nodemon ./bin/server.js \"concurrent --kill-others\" \"npm run start-prod\" \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "start-prod-api": "better-npm-run start-prod-api",
     "build": "better-npm-run build",
@@ -294,6 +294,7 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.3.3",
     "node-sass": "^3.4.2",
+    "nodemon": "^2.0.3",
     "phantomjs": "^1.9.18",
     "phantomjs-polyfill": "0.0.1",
     "react-a11y": "^0.2.6",
