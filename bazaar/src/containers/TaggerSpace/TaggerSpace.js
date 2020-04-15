@@ -1008,7 +1008,7 @@ export default class TaggerSpace extends Component {
 
   getEvaluations() {
     const options = [];
-    let selected = this.state.evaluationType;
+    let selected = (this.state.evaluationType == undefined) ? "ALL" : this.state.evaluationType;
     options.push({
       text: "Correct",
       value: "correct",
@@ -1037,7 +1037,7 @@ export default class TaggerSpace extends Component {
     });
     options.push({
       text: "Not Evaluated",
-      value: "none",
+      value: "NONE",
       onClick: () => {
         logEvent("buttons", "Select None");
         this.resetFilterState();
@@ -1050,7 +1050,7 @@ export default class TaggerSpace extends Component {
     });
     options.push({
       text: "All",
-      value: undefined,
+      value: "ALL",
       onClick: () => {
         logEvent("buttons", "Select All Evaluation");
         this.resetFilterState();
@@ -1062,7 +1062,6 @@ export default class TaggerSpace extends Component {
     });
     return (
       <Dropdown
-        compact
         value={selected}
         placeholder="Filter By Evaluation Status"
         selection
