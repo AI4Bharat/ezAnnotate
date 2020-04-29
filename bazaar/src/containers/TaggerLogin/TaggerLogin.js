@@ -283,7 +283,7 @@ export default class TaggerLogin extends Component {
       this.setState({ error: 'Please enter first name'});
     } else if (this.state.lname.length < 2) {
       this.setState({ error: 'Please enter last name'});
-    } else if (this.state.email.length > 0 && this.state.email.includes('@') && this.state.password.length > 6) {
+    } else if (this.state.email.length > 0 && this.state.email.includes('@') && this.state.password.length >= 6) {
       this.setState({ loading: true});
       if (config.servingEnv === 'online') {
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).

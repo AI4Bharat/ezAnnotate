@@ -1073,6 +1073,11 @@ export default class TaggerSpace extends Component {
   getContributors(contributorDetails) {
     const options = [];
     let selected = "";
+
+    // To select current logged in user
+    let currUserData= getUidToken();
+    selected = currUserData.uid;
+
     if (contributorDetails) {
       for (
         let index = 0;
@@ -1126,6 +1131,7 @@ export default class TaggerSpace extends Component {
         <Dropdown
           value={selected}
           placeholder="Filter by Contributor"
+          style={{ display: 'none' }}
           selection
           options={options}
         />
