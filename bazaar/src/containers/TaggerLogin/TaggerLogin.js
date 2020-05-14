@@ -51,6 +51,7 @@ export default class TaggerLogin extends Component {
     fname: '',
     lname: '',
     password: '',
+    repassword: '',
     error: undefined
   }
 
@@ -274,15 +275,27 @@ export default class TaggerLogin extends Component {
   }
 
   createAccount(event) {
-    console.log('create account ', event, this.email, this.password);
-    if (this.state.email.length === 0 || !this.state.email.includes('@')) {
-      this.setState({ error: 'Invalid Email'});
-    } else if (this.state.password.length < 6) {
-      this.setState({ error: 'Password should be atleast 6 letters long'});
-    } else if (this.state.fname.length < 2) {
+    // console.log('create account ', event, this.email, this.password);
+
+    if (this.state.fname.length < 2) {
       this.setState({ error: 'Please enter first name'});
+      this.fname.focus();
     } else if (this.state.lname.length < 2) {
       this.setState({ error: 'Please enter last name'});
+      this.lname.focus();
+    } else if (this.state.email.length === 0 || !this.state.email.includes('@')) {
+      this.setState({ error: 'Invalid Email'});
+      this.email.focus();
+    } else if (this.state.password.length < 6) {
+      this.setState({ error: 'Password should be atleast 6 letters long'});
+      this.password.focus();
+    } else if (this.state.repassword.length == 0) {
+      this.setState({ error: 'Please re-enter password'});
+      this.repassword.focus();
+    } else if (this.state.repassword != this.state.password) {
+      this.setState({ error: 'Those passwords didn\'t match, try again'});
+      this.state.repassword = "";
+      this.repassword.focus();
     } else if (this.state.email.length > 0 && this.state.email.includes('@') && this.state.password.length >= 6) {
       this.setState({ loading: true});
       if (config.servingEnv === 'online') {
@@ -334,6 +347,8 @@ export default class TaggerLogin extends Component {
       this.setState({ fname: event.target.value });
     } else if (event.target.name === 'lname') {
       this.setState({ lname: event.target.value });
+    } else if (event.target.name === 'repassword') {
+      this.setState({ repassword: event.target.value });
     }
   }
 
@@ -438,8 +453,15 @@ export default class TaggerLogin extends Component {
                               <label>Password</label>
                               <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type="password" placeholder="Create a password" />
                             </Form.Field>
+
+                            {/* Re-enter password */}
+                            <Form.Field>
+                              <label>Re-enter password</label>
+                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type="password" placeholder="Re-enter password" />
+                            </Form.Field>
+
                             <Button type="submit" onClick={this.createAccount.bind(this)}>Sign Up</Button>
-                            <Message negative hidden={!this.state.error}>
+                            <Message negative hidden={!this.state.error} style={{ marginLeft: '20%'}}>
                               <p>{this.state.error}</p>
                             </Message>
                           </Form>
