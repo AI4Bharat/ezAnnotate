@@ -141,6 +141,11 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "aws-sdk": "^2.165.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.1",
@@ -204,6 +209,7 @@
     "react-draggable": "^3.0.5",
     "react-draggable-svg": "0.0.3",
     "react-element-pan": "^1.0.9",
+    "react-fontawesome": "^1.7.1",
     "react-fullscreen-crossbrowser": "^1.0.9",
     "react-fullstory-component": "^2.1.0",
     "react-ga": "^2.3.5",

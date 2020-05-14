@@ -6,6 +6,12 @@ import { login, signIn, logout, resetFlags } from 'redux/modules/auth';
 import { replace } from 'react-router-redux';
 // import { GoogleLogin } from 'react-google-login';
 // import FontAwesome from 'react-fontawesome';
+// import faStyles from 'font-awesome/css/font-awesome.css'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+
+
 // import { Header } from 'semantic-ui-react';
 import { Button, Icon, Message, Transition, Segment, Form, Divider, Label } from 'semantic-ui-react';
 import { refreshToken, logEvent, createUserWithPassword, dtLogin } from '../../helpers/dthelper';
@@ -52,6 +58,7 @@ export default class TaggerLogin extends Component {
     lname: '',
     password: '',
     repassword: '',
+    passType: true,
     error: undefined
   }
 
@@ -336,6 +343,13 @@ export default class TaggerLogin extends Component {
     firebase.auth().signInWithPopup(provider).then(this.firebaseCallback).catch(this.errorCallback);
   }
 
+  toggleShow = (e) => {
+    // alert(this.state.passType);
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ passType: !this.state.passType });
+  }
+
   handleCreateChange = (event) => {
     console.log('handleCreateChange ', event.target.name, event.target.value);
     // this.setState({ eventtarget.name: event.target.value });
@@ -457,8 +471,16 @@ export default class TaggerLogin extends Component {
                             {/* Re-enter password */}
                             <Form.Field>
                               <label>Re-enter password</label>
-                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type="password" placeholder="Re-enter password" />
+
+                              
+
+
+                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type={this.state.passType ? "password" : "text"} placeholder="Re-enter password" />
+
+                              <button onClick={this.toggleShow}>Show / Hide</button>
                             </Form.Field>
+
+                            <FontAwesomeIcon icon={faCoffee} />
 
                             <Button type="submit" onClick={this.createAccount.bind(this)}>Sign Up</Button>
                             <Message negative hidden={!this.state.error} style={{ marginLeft: '20%'}}>
