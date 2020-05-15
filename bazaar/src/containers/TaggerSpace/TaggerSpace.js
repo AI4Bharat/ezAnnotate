@@ -2514,18 +2514,21 @@ export default class TaggerSpace extends Component {
     
     return this.state.translateValues.map((elem, i) => 
         <div key={i} style={{marginBottom: 15}}>
-         <Input 
-          value={elem||''} 
+         <TextArea 
+          rows="1"
+          value={elem||''}
           ref={(input) => { this.currentTextBox = input; }}
           onChange={this.handleTextChange.bind(this, i)}
-          style={{"width":"70%","padding":"2px"}}
-         />
+          className="form-control"
+          style={{ "display": "inline-block", "width":"70%", "fontSize": "25px" }}
+         ></TextArea>
          <Button
           type="button"
           size="medium"
           color="red"
           icon
           onClick={this.removeTextBox.bind(this, i)}
+          style={{ "marginLeft": "1%", "marginTop": "0.5rem", "position": "absolute" }}
           >
           <Icon name="delete"/>
           </Button>
