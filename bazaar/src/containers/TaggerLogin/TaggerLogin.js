@@ -8,9 +8,6 @@ import { replace } from 'react-router-redux';
 // import FontAwesome from 'react-fontawesome';
 // import faStyles from 'font-awesome/css/font-awesome.css'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-
 
 // import { Header } from 'semantic-ui-react';
 import { Button, Icon, Message, Transition, Segment, Form, Divider, Label } from 'semantic-ui-react';
@@ -21,6 +18,7 @@ import firebase from 'firebase';
 import ReactGA from 'react-ga';
 import swot from 'swot-simple';
 import config from '../../config';
+import 'font-awesome/css/font-awesome.min.css';
 
 @connect(
   state => ({user: state.auth.user, userCreated: state.auth.userCreated}),
@@ -58,7 +56,9 @@ export default class TaggerLogin extends Component {
     lname: '',
     password: '',
     repassword: '',
+    logPassType: true,
     passType: true,
+    rePassType: true,
     error: undefined
   }
 
@@ -344,10 +344,16 @@ export default class TaggerLogin extends Component {
   }
 
   toggleShow = (e) => {
-    // alert(this.state.passType);
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ passType: !this.state.passType });
+
+    if(e.target.dataset.txt == "logPassType") {
+      this.setState({ logPassType: !this.state.logPassType });
+    } else if(e.target.dataset.txt == "passType") {
+      this.setState({ passType: !this.state.passType });
+    } else if(e.target.dataset.txt == "rePassType") {
+      this.setState({ rePassType: !this.state.rePassType });
+    }
   }
 
   handleCreateChange = (event) => {
@@ -412,7 +418,10 @@ export default class TaggerLogin extends Component {
                             </Form.Field>
                             <Form.Field>
                               <label>Password</label>
-                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type="password" placeholder="Enter Password" />
+
+                              <i data-txt="logPassType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '43%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+
+                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.logPassType ? "password" : "text"} placeholder="Enter Password" />
                             </Form.Field>
                             </Form.Group>
                             <br />
@@ -422,7 +431,7 @@ export default class TaggerLogin extends Component {
                               <a as="a" onClick={this.forgotPassword.bind(this)} style={{ color: 'white'}}>Forgot Password ?</a>
                               <br />
                               <h6 style={{ color: 'white'}}> Don't have an account yet? &nbsp;
-                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true});}}>  Sign Up</Label>
+                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true}); this.setState({password: ''}); }}>  Sign Up</Label>
                               </h6>
                           </Form>
                             <Message negative hidden={!this.state.error}>
@@ -465,22 +474,20 @@ export default class TaggerLogin extends Component {
                             </Form.Field>
                             <Form.Field>
                               <label>Password</label>
-                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type="password" placeholder="Create a password" />
+
+                              <i data-txt="passType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+
+                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.passType ? "password" : "text"} placeholder="Create a password" />
                             </Form.Field>
 
                             {/* Re-enter password */}
                             <Form.Field>
                               <label>Re-enter password</label>
-
                               
+                              <i data-txt="rePassType" className={'fa' + (this.state.rePassType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
 
-
-                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type={this.state.passType ? "password" : "text"} placeholder="Re-enter password" />
-
-                              <button onClick={this.toggleShow}>Show / Hide</button>
+                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type={this.state.rePassType ? "password" : "text"} placeholder="Re-enter password" />
                             </Form.Field>
-
-                            <FontAwesomeIcon icon={faCoffee} />
 
                             <Button type="submit" onClick={this.createAccount.bind(this)}>Sign Up</Button>
                             <Message negative hidden={!this.state.error} style={{ marginLeft: '20%'}}>
