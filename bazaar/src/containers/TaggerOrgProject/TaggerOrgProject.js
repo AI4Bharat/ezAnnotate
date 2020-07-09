@@ -1587,11 +1587,19 @@ export default class TaggerOrgProject extends Component {
       extra = JSON.parse(hitsDetails[this.state.start].extras);
     }
     if (projectDetails && projectDetails.permissions) {
-      taggingProgress = Number(
+      /*taggingProgress = Number(
         ((projectDetails.totalHitsDone + projectDetails.totalHitsSkipped) *
           100) /
           projectDetails.totalHits
+      ).toFixed(0);*/
+
+      // Only Hits done should be considered as progress
+      taggingProgress = Number(
+        ((projectDetails.totalHitsDone) *
+          100) /
+          projectDetails.totalHits
       ).toFixed(0);
+
       if (projectDetails.totalHits === 0) taggingProgress = 0;
       permissions = projectDetails.permissions;
       if (projectDetails.created_timestamp) {
