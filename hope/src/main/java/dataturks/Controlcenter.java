@@ -1341,6 +1341,13 @@ public class Controlcenter {
         return fetchStatsForDate(results, projectUsers, date);
     }
 
+    /**
+     * This function fatches user based project details and stat
+     *  
+     * @param userId
+     * @param inpDate
+     * @return stats
+     */
     public static List<ProjectsPerUser> fetchProjectStatsForUser(String userId, String inpDate) {
         List<DProjectUsers> userProjects = AppConfig.getInstance().getdProjectUsersDAO().findAllByUserIdInternal(userId);
         List<ProjectsPerUser> stats = new ArrayList<>();
@@ -1368,6 +1375,24 @@ public class Controlcenter {
             }
             record.setHitsDone(results.size());
             record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
+            record.setHitsDone(results.size());
+
+            /*Delete*/
+            long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectDeleted(project.getId());
+            record.setHitsDeleted(dataDeleted);
+
+            // System.out.println("=============");
+            // System.out.println(project.getId());
+            // System.out.println(userId);
+            // System.out.println("=============");
+            
+            /*Evaluated*/
+            long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId);
+            long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationInCorrect(project.getId());
+
+            record.setEvaluationCorrect(dataEvaluationCorrect);
+            record.setEvaluationInCorrect(dataEvaluationInCorrect);
+
             stats.add(record);
         }
         return stats;

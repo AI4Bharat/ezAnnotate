@@ -248,6 +248,51 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
             ManagedSessionContext.unbind(sessionFactory);
         }
     }
+    
+    /**
+     * Get project evaluation details per user
+     * 
+     * @param projectId
+     * @param evaluation
+     * @return count
+     */
+    private long getCountForProjectEvaluationDetailsByUser(String projectId, String userId, DTypes.HIT_Evaluation_Type evaluation) {
+        Session session = sessionFactory.openSession();
+        try {
+            ManagedSessionContext.bind(session);
+            org.hibernate.Transaction transaction = session.beginTransaction();
+            try {
+                // System.out.println("=============");
+                // System.out.println(projectId);
+                // System.out.println(userId);
+                // System.out.println("=============");
+
+                Query query = null;
+                query = session.createQuery("select count(*) from DHits e where e.projectId=:projectId AND e.evaluation=:evaluation" +
+                        " AND (e.status=:status1 OR e.status=:status2)");
+                query.setParameter("evaluation", evaluation);
+                query.setParameter("projectId", projectId);
+
+                // if (userId != null) {
+                //     query.setParameter("uid", userId);
+                // }
+
+                query.setParameter("status1", DConstants.HIT_STATUS_DONE);
+                query.setParameter("status2", DConstants.HIT_STATUS_PRE_TAGGED);
+                Long count = (Long)query.uniqueResult();
+                transaction.commit();
+                return count != null? count : 0;
+            }
+            catch (Exception e) {
+                transaction.rollback();
+                throw new RuntimeException(e);
+            }
+        }
+        finally {
+            session.close();
+            ManagedSessionContext.unbind(sessionFactory);
+        }
+    }
 
     public long getCountForProject(String projectId) {
         return getCountForProjectForStatus(projectId, null);
@@ -272,6 +317,10 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
     public long getCountForProjectEvaluationInCorrect(String projectId) {
         return getCountForProjectForEvaluation(projectId, DTypes.HIT_Evaluation_Type.INCORRECT);
+    }
+
+    public long getCountForProjectEvaluationDetailsByUser(String projectId, String userId) {
+        return getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.INCORRECT);
     }
 
     // get count rows for tagging from the project selected randomly.

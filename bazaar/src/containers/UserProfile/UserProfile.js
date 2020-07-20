@@ -84,6 +84,9 @@ export default class UserProfile extends Component {
             <td>{data[index].projectDetails.name}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeleted}</td>
+            <td>{data[index].evaluationCorrect}</td>
+            <td>{data[index].evaluationInCorrect}</td>
           </tr>
         );
       }
@@ -124,6 +127,9 @@ export default class UserProfile extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
                   {this.getProjectsData(this.state.userProjectStats)}
@@ -160,6 +166,9 @@ export default class UserProfile extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
                   {this.getProjectsData(this.state.userProjectStatsOnDate)}
