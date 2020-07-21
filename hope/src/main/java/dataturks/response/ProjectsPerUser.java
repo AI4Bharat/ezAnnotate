@@ -6,9 +6,14 @@ public class ProjectsPerUser {
     private DProjects projectDetails;
     private long hitsDone;
     private long avrTimeTakenInSec;
+
     private long dataDeleted;
     private long dataEvaluationCorrect;
     private long dataEvaluationInCorrect;
+
+    private long dataDeletedByDate;
+    private long dataEvaluationCorrectByDate;
+    private long dataEvaluationInCorrectByDate;
 
     public ProjectsPerUser() {
         
@@ -64,5 +69,29 @@ public class ProjectsPerUser {
 
     public void setEvaluationInCorrect(long dataEvaluationInCorrect) {
         this.dataEvaluationInCorrect = dataEvaluationInCorrect;
+    }
+
+    public long getHitsDeletedByDate() {
+        return dataDeletedByDate;
+    }
+
+    public void setHitsDeletedByDate(long dataDeletedByDate) {
+        this.dataDeletedByDate = dataDeletedByDate;
+    }
+
+    public long getEvaluationCorrectByDate() {
+        return dataEvaluationCorrectByDate;
+    }
+
+    public void setEvaluationCorrectByDate(long dataEvaluationCorrectByDate) {
+        this.dataEvaluationCorrectByDate = dataEvaluationCorrectByDate;
+    }
+
+    public long getEvaluationInCorrectByDate() {
+        return dataEvaluationInCorrectByDate;
+    }
+
+    public void setEvaluationInCorrectByDate(long dataEvaluationInCorrectByDate) {
+        this.dataEvaluationInCorrectByDate = dataEvaluationInCorrectByDate;
     }
 }

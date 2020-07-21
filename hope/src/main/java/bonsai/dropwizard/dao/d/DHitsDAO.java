@@ -9,7 +9,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
@@ -248,34 +252,125 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
             ManagedSessionContext.unbind(sessionFactory);
         }
     }
-    
+
     /**
-     * Get project evaluation details per user
-     * 
+     * Get project annotation(all type) count details by user or project or both
      * @param projectId
-     * @param evaluation
-     * @return count
+     * @param userId
+     * @param status
+     * @return
      */
-    private long getCountForProjectEvaluationDetailsByUser(String projectId, String userId, DTypes.HIT_Evaluation_Type evaluation) {
+    private long getCountForProjectByStatusAndUser(String projectId, String userId, String status, String inpDate) {
         Session session = sessionFactory.openSession();
         try {
             ManagedSessionContext.bind(session);
             org.hibernate.Transaction transaction = session.beginTransaction();
             try {
-                // System.out.println("=============");
-                // System.out.println(projectId);
-                // System.out.println(userId);
-                // System.out.println("=============");
-
                 Query query = null;
-                query = session.createQuery("select count(*) from DHits e where e.projectId=:projectId AND e.evaluation=:evaluation" +
-                        " AND (e.status=:status1 OR e.status=:status2)");
-                query.setParameter("evaluation", evaluation);
-                query.setParameter("projectId", projectId);
 
-                // if (userId != null) {
-                //     query.setParameter("uid", userId);
-                // }
+                // Define default query string
+                String str = "select count(*) from DHits e where e.projectId=:projectId";
+
+                // Adding conditional placeholder for annotation status by user id
+                if (userId != null)
+                    str += " AND statusByUid=:statusByUid";
+
+                // Adding conditional placeholder for status
+                if (status != null)
+                    str += " AND e.status=:status";
+
+                // Adding conditional placeholder for date (inpDate)
+                if (inpDate != null)
+                    str += " AND e.updated_timestamp=:updated_timestamp";
+                    // str += " AND (e.updated_timestamp>=:updated_timestamp_s AND e.updated_timestamp<=:updated_timestamp_e)";
+
+                query = session.createQuery(str);
+
+                // Setting conditional parameter for annotation status by user id
+                if (userId != null)
+                    query.setParameter("statusByUid", userId);
+
+                // Setting conditional parameter for status
+                if (status != null)
+                    query.setParameter("status", status);
+
+                // Setting conditional parameter for date (inpDate)
+                if (inpDate != null) {
+                    DateFormat originalFormat = new SimpleDateFormat("dd/MM/YYYY", Locale.ENGLISH);
+                    DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = originalFormat.parse(inpDate);
+                    String inpDateFormatted = targetFormat.format(date);
+
+                    System.out.println("CUrrent Formatted Date ==> " + targetFormat.format(date)+" 00:00:00");
+                    System.out.println("CUrrent Formatted Date ==> " + targetFormat.format(date)+" 23:59:59");
+
+                    query.setParameter("updated_timestamp", date);
+                    // query.setParameter("updated_timestamp_e", inpDateFormatted+" 23:59:59");
+                }
+
+                query.setParameter("projectId", projectId);
+                Long count = (Long)query.uniqueResult();
+                transaction.commit();
+                return count != null? count : 0;
+            }
+            catch (Exception e) {
+                transaction.rollback();
+                throw new RuntimeException(e);
+            }
+        }
+        finally {
+            session.close();
+            ManagedSessionContext.unbind(sessionFactory);
+        }
+    }
+    
+    /**
+     * Get project evaluation details by user or project or both
+     * 
+     * @param projectId
+     * @param evaluation
+     * @return count
+     */
+    private long getCountForProjectByEvaluationDetailsAndUser(String projectId, String userId, DTypes.HIT_Evaluation_Type evaluation, String inpDate) {
+        Session session = sessionFactory.openSession();
+        try {
+            ManagedSessionContext.bind(session);
+            org.hibernate.Transaction transaction = session.beginTransaction();
+            try {
+                Query query = null;
+
+                // Define default query string
+                String str = "select count(*) from DHits e where e.projectId=:projectId AND e.evaluation=:evaluation" +
+                        " AND (e.status=:status1 OR e.status=:status2)";
+
+                // Adding conditional placeholder for evaluated by user id
+                if (userId != null)
+                    str += " AND e.evaluatedByUid=:evaluatedByUid";
+
+                // Adding conditional placeholder for date (inpDate)
+                if (inpDate != null)
+                    str += " AND e.updated_timestamp_eval=:updated_timestamp_eval";
+
+                query = session.createQuery(str);
+
+                // Setting conditional parameter for evaluated by user id
+                if (userId != null)
+                    query.setParameter("evaluatedByUid", userId);
+
+                // Setting conditional parameter for date (inpDate)
+                if (inpDate != null) {
+                    DateFormat originalFormat = new SimpleDateFormat("dd/MM/YYYY", Locale.ENGLISH);
+                    DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = originalFormat.parse(inpDate);
+                    String inpDateFormatted = targetFormat.format(date);
+
+                    System.out.println("Current Formatted Date ==> " + inpDateFormatted);
+
+                    query.setParameter("updated_timestamp_eval", inpDateFormatted);
+                }
+
+                query.setParameter("evaluation", evaluation);
+                query.setParameter("projectId", projectId);                
 
                 query.setParameter("status1", DConstants.HIT_STATUS_DONE);
                 query.setParameter("status2", DConstants.HIT_STATUS_PRE_TAGGED);
@@ -319,8 +414,33 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
         return getCountForProjectForEvaluation(projectId, DTypes.HIT_Evaluation_Type.INCORRECT);
     }
 
-    public long getCountForProjectEvaluationDetailsByUser(String projectId, String userId) {
-        return getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.INCORRECT);
+    /**
+     * This function gets the count for different annotation done by specific users
+     * E.g. how many tasks has been deleted or skipped or marked hit or marked requeued 
+     * by an user for a particular project
+     * 
+     * @param projectId
+     * @param userId
+     * @param currAnnotationType
+     * @param inpDate
+     * @return
+     */
+    public long getCountForProjectAnnotationType(String projectId, String userId, String currAnnotationType, String inpDate) {
+        return getCountForProjectByStatusAndUser(projectId, userId, currAnnotationType, inpDate);
+    }
+
+    /**
+     * This function gets the count for correct and incorrect evaluation done by specific user
+     * for a particular project
+     * 
+     * @param projectId
+     * @param userId
+     * @param currEvaluation
+     * @param inpDate
+     * @return
+     */
+    public long getCountForProjectEvaluationDetailsByUser(String projectId, String userId, DTypes.HIT_Evaluation_Type currEvaluation, String inpDate) {
+        return getCountForProjectByEvaluationDetailsAndUser(projectId, userId, currEvaluation, inpDate);
     }
 
     // get count rows for tagging from the project selected randomly.

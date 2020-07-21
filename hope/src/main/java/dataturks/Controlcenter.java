@@ -528,6 +528,7 @@ public class Controlcenter {
 
             // Update the use who has done the hit(all types)
             hit.setStatusByUid(reqObj.getUid());
+            hit.setUpdated_timestamp(new Date());
 
             //update the hit status.
             hit.setStatus(hitStatus);
@@ -559,6 +560,7 @@ public class Controlcenter {
 
                 // Update the use who has done the evaluation(all types)
                 hit.setEvaluatedByUid(reqObj.getUid());
+                hit.setUpdated_timestamp_eval(new Date());
 
                 AppConfig.getInstance().getdHitsDAO().saveOrUpdateInternal(hit);
             }
@@ -1388,21 +1390,38 @@ public class Controlcenter {
             record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
             record.setHitsDone(results.size());
 
-            /*Delete*/
-            long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectDeleted(project.getId());
+            // System.out.println("=============");
+            // System.out.println("Project ID ==> " + project.getId());
+            // System.out.println("User ID ==> " + userId);
+            // System.out.println("=============");
+
+            // Get Delete Count
+            long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+
+            // Set Delete Count
             record.setHitsDeleted(dataDeleted);
-
-            // System.out.println("=============");
-            // System.out.println(project.getId());
-            // System.out.println(userId);
-            // System.out.println("=============");
             
-            /*Evaluated*/
-            long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId);
-            long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationInCorrect(project.getId());
+            // Get Evaluated Count
+            long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
+            long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
 
+            // Set evaluate count
             record.setEvaluationCorrect(dataEvaluationCorrect);
             record.setEvaluationInCorrect(dataEvaluationInCorrect);
+
+            // Get Delete Count by Date
+            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+
+            // Set Delete Count by Date
+            record.setHitsDeletedByDate(dataDeletedByDate);
+
+            // Get Evaluated Count
+            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
+            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
+
+            // Set evaluate count
+            record.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
+            record.setEvaluationInCorrectByDate(dataEvaluationInCorrectByDate);
 
             stats.add(record);
         }

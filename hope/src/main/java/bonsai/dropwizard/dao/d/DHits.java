@@ -49,6 +49,8 @@ public class DHits implements IDdbPojo{
     private java.util.Date created_timestamp;
     private java.util.Date updated_timestamp;
 
+    private java.util.Date updated_timestamp_eval;
+
     public DHits() {
 
     }
@@ -185,5 +187,13 @@ public class DHits implements IDdbPojo{
 
 	public void setEvaluatedByUid(String uid) {
         this.evaluatedByUid = uid;
-	}
+    }
+
+    public Date getUpdated_timestamp_eval() {
+        return updated_timestamp_eval;
+    }
+    
+    public void setUpdated_timestamp_eval(Date upd_ts_eval) {
+        this.updated_timestamp_eval = upd_ts_eval;
+    }
 }
