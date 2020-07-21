@@ -526,6 +526,9 @@ public class Controlcenter {
                 hitStatus = DConstants.HIT_STATUS_DONE;
             }
 
+            // Update the use who has done the hit(all types)
+            hit.setStatusByUid(reqObj.getUid());
+
             //update the hit status.
             hit.setStatus(hitStatus);
             AppConfig.getInstance().getdHitsDAO().saveOrUpdateInternal(hit);
@@ -553,6 +556,10 @@ public class Controlcenter {
             if (reqObj.getReqMap().containsKey("evaluation")) {
                 DTypes.HIT_Evaluation_Type evaluation_type = DTypes.HIT_Evaluation_Type.valueOf(reqObj.getReqMap().get("evaluation").toUpperCase());
                 hit.setEvaluationType(evaluation_type);
+
+                // Update the use who has done the evaluation(all types)
+                hit.setEvaluatedByUid(reqObj.getUid());
+
                 AppConfig.getInstance().getdHitsDAO().saveOrUpdateInternal(hit);
             }
 
@@ -1209,6 +1216,10 @@ public class Controlcenter {
     private static void addProjectContributorDetails(DProjects project, ProjectDetails details) {
         List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
         List<DProjectUsers> projectUsers = AppConfig.getInstance().getdProjectUsersDAO().findAllByProjectIdInternal(project.getId());
+
+        // System.out.println("=================================");
+        // System.out.println(Arrays.toString(results.toArray()));
+        // System.out.println("=================================");
 
         Map<String, List<DHitsResult>> contributorMap = new HashMap<>();
         if (results != null) {

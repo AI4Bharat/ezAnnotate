@@ -33,6 +33,9 @@ public class DHits implements IDdbPojo{
     private String extras;
 
     private String status = DConstants.HIT_STATUS_NOT_DONE;
+    private String statusByUid;
+    private String evaluatedByUid;
+
     private boolean isGoldenHIT;
 
     private Boolean isURL;
@@ -167,4 +170,20 @@ public class DHits implements IDdbPojo{
     public void setUpdated_timestamp(Date updated_timestamp) {
         this.updated_timestamp = updated_timestamp;
     }
+
+    public String getStatusByUid() {
+        return statusByUid;
+    }
+
+	public void setStatusByUid(String uid) {
+        this.statusByUid = uid;
+    }
+    
+    public String getEvaluatedByUid() {
+        return evaluatedByUid;
+    }
+
+	public void setEvaluatedByUid(String uid) {
+        this.evaluatedByUid = uid;
+	}
 }
