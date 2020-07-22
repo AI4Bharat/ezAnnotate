@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.sql.Timestamp;
 
 public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
@@ -281,10 +282,12 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Adding conditional placeholder for date (inpDate)
                 if (inpDate != null)
-                    str += " AND e.updated_timestamp=:updated_timestamp";
-                    // str += " AND (e.updated_timestamp>=:updated_timestamp_s AND e.updated_timestamp<=:updated_timestamp_e)";
+                    str += " AND (e.updated_timestamp>=:updated_timestamp_s AND e.updated_timestamp<=:updated_timestamp_e)";
 
                 query = session.createQuery(str);
+
+                // Setting base parameter
+                query.setParameter("projectId", projectId);
 
                 // Setting conditional parameter for annotation status by user id
                 if (userId != null)
@@ -296,22 +299,41 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Setting conditional parameter for date (inpDate)
                 if (inpDate != null) {
-                    DateFormat originalFormat = new SimpleDateFormat("dd/MM/YYYY", Locale.ENGLISH);
-                    DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = originalFormat.parse(inpDate);
-                    String inpDateFormatted = targetFormat.format(date);
+                    String inpDate_s = inpDate + " 00:00:00";
+                    String inpDate_e = inpDate + " 23:59:59";
 
-                    System.out.println("CUrrent Formatted Date ==> " + targetFormat.format(date)+" 00:00:00");
-                    System.out.println("CUrrent Formatted Date ==> " + targetFormat.format(date)+" 23:59:59");
+                    // System.out.println("inpDate_s ==> " + inpDate_s);
+                    // System.out.println("inpDate_e ==> " + inpDate_e);
 
-                    query.setParameter("updated_timestamp", date);
-                    // query.setParameter("updated_timestamp_e", inpDateFormatted+" 23:59:59");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                    Date parsedDate_s = dateFormat.parse(inpDate_s);
+                    Timestamp timestamp_s = new java.sql.Timestamp(parsedDate_s.getTime());
+
+                    Date parsedDate_e = dateFormat.parse(inpDate_e);
+                    Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
+
+                    // System.out.println("parsedDate_s ==> " + parsedDate_s);
+                    // System.out.println("timestamp_s ==> " + timestamp_s);
+
+                    // System.out.println("parsedDate_e ==> " + parsedDate_e);
+                    // System.out.println("timestamp_e ==> " + timestamp_e);
+
+                    query.setParameter("updated_timestamp_s", timestamp_s);
+                    query.setParameter("updated_timestamp_e", timestamp_e);
                 }
 
-                query.setParameter("projectId", projectId);
                 Long count = (Long)query.uniqueResult();
                 transaction.commit();
-                return count != null? count : 0;
+                Long finalCount = count != null? count : 0;
+
+                // System.out.println("Curr del count ==>" + finalCount);
+                // System.out.println("projectId ==>" + projectId);
+                // System.out.println("statusByUid ==>" + userId);
+                // System.out.println("status ==>" + status);
+                // System.out.println("==========================");
+
+                return finalCount;
             }
             catch (Exception e) {
                 transaction.rollback();
@@ -349,7 +371,7 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Adding conditional placeholder for date (inpDate)
                 if (inpDate != null)
-                    str += " AND e.updated_timestamp_eval=:updated_timestamp_eval";
+                    str += " AND (e.updated_timestamp_eval>=:updated_timestamp_eval_s AND e.updated_timestamp_eval<=:updated_timestamp_eval_e)";
 
                 query = session.createQuery(str);
 
@@ -359,14 +381,28 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Setting conditional parameter for date (inpDate)
                 if (inpDate != null) {
-                    DateFormat originalFormat = new SimpleDateFormat("dd/MM/YYYY", Locale.ENGLISH);
-                    DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = originalFormat.parse(inpDate);
-                    String inpDateFormatted = targetFormat.format(date);
+                    String inpDate_s = inpDate + " 00:00:00";
+                    String inpDate_e = inpDate + " 23:59:59";
 
-                    System.out.println("Current Formatted Date ==> " + inpDateFormatted);
+                    // System.out.println("inpDate_s ==> " + inpDate_s);
+                    // System.out.println("inpDate_e ==> " + inpDate_e);
 
-                    query.setParameter("updated_timestamp_eval", inpDateFormatted);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                    Date parsedDate_s = dateFormat.parse(inpDate_s);
+                    Timestamp timestamp_s = new java.sql.Timestamp(parsedDate_s.getTime());
+
+                    Date parsedDate_e = dateFormat.parse(inpDate_e);
+                    Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
+
+                    // System.out.println("parsedDate_s ==> " + parsedDate_s);
+                    // System.out.println("timestamp_s ==> " + timestamp_s);
+
+                    // System.out.println("parsedDate_e ==> " + parsedDate_e);
+                    // System.out.println("timestamp_e ==> " + timestamp_e);
+
+                    query.setParameter("updated_timestamp_eval_s", timestamp_s);
+                    query.setParameter("updated_timestamp_eval_e", timestamp_e);
                 }
 
                 query.setParameter("evaluation", evaluation);

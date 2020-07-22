@@ -94,6 +94,30 @@ export default class UserProfile extends Component {
     return <tbody>{arrs}</tbody>;
   };
 
+  getProjectsDataByDate = data => {
+    const arrs = [];
+    console.log("getProjectsDataByDate ", data);
+    let showZero = true;
+    if (data && data.length > 10) {
+      showZero = false;
+    }
+    for (let index = 0; index < data.length; index++) {
+      if (data[index].hitsDone > 0 || showZero) {
+        arrs.push(
+          <tr key={index}>
+            <td>{data[index].projectDetails.name}</td>
+            <td>{data[index].avrTimeTakenInSec}</td>
+            <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeletedByDate}</td>
+            <td>{data[index].evaluationCorrectByDate}</td>
+            <td>{data[index].evaluationInCorrectByDate}</td>
+          </tr>
+        );
+      }
+    }
+    return <tbody>{arrs}</tbody>;
+  };
+
   render(){
     return(
       <div>
@@ -171,7 +195,7 @@ export default class UserProfile extends Component {
                       <th>#HITs incorrect</th>
                     </tr>
                   </thead>
-                  {this.getProjectsData(this.state.userProjectStatsOnDate)}
+                  {this.getProjectsDataByDate(this.state.userProjectStatsOnDate)}
                 </Table>
                 )}
               </Segment.Group>

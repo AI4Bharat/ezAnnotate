@@ -1410,14 +1410,14 @@ public class Controlcenter {
             record.setEvaluationInCorrect(dataEvaluationInCorrect);
 
             // Get Delete Count by Date
-            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, inpDate);
 
             // Set Delete Count by Date
             record.setHitsDeletedByDate(dataDeletedByDate);
 
             // Get Evaluated Count
-            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
-            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
+            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
+            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
 
             // Set evaluate count
             record.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
