@@ -1287,3 +1287,5 @@ VALUES
 ALTER TABLE d_hits ADD COLUMN `statusByUid` varchar(36) NULL AFTER `evaluation`, ADD COLUMN `evaluatedByUid` VARCHAR(36) NULL AFTER `statusByUid`;
 
 ALTER TABLE d_hits ADD COLUMN `updated_timestamp_eval` timestamp NULL AFTER `updated_timestamp`;
+
+ALTER TABLE d_hits_result MODIFY userId varchar(36) NULL;

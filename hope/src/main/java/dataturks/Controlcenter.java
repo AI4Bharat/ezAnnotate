@@ -533,6 +533,26 @@ public class Controlcenter {
             //update the hit status.
             hit.setStatus(hitStatus);
             AppConfig.getInstance().getdHitsDAO().saveOrUpdateInternal(hit);
+
+            /** 
+             * If the current hit has removed from the hit list i.e. it's being deleted or requeued
+             * or skipped, then it should be removed from the hit count/list of the user who has originaly
+             * did this hit.
+             */  
+            if(hitStatus != DConstants.HIT_STATUS_DONE) {
+                // The hit should exist in the DB. I.e. some user should have done this hit(mark as done).
+                DHitsResultDAO updateDao = AppConfig.getInstance().getdHitsResultDAO();
+                DHitsResult updateResult = null;
+
+                List<DHitsResult> updateResults = updateDao.findByHitIdInternal(hit.getId());
+                if (updateResults != null && !updateResults.isEmpty()) updateResult = updateResults.get(0);
+
+                if (updateResult != null) {
+                    // remove the user who has originaly did this hit.
+                    updateResult.setUserId(null);
+                    AppConfig.getInstance().getdHitsResultDAO().saveOrUpdateInternal(updateResult);
+                }
+            }
         }
 
         return true;
@@ -1219,10 +1239,6 @@ public class Controlcenter {
         List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO().findAllByProjectIdInternal(project.getId());
         List<DProjectUsers> projectUsers = AppConfig.getInstance().getdProjectUsersDAO().findAllByProjectIdInternal(project.getId());
 
-        // System.out.println("=================================");
-        // System.out.println(Arrays.toString(results.toArray()));
-        // System.out.println("=================================");
-
         Map<String, List<DHitsResult>> contributorMap = new HashMap<>();
         if (results != null) {
             for (DHitsResult result : results) {
@@ -1234,12 +1250,45 @@ public class Controlcenter {
 
             contributorMap = sortByHitsDone(contributorMap);
             for (String userId : contributorMap.keySet()) {
+                /**
+                * There is a chance that we might get userId as NULL. Because now when a hit is getting
+                * removed from hitlist by delete or requeue or skipped actions, then we are removing
+                * the hit from the original user (hence setting userid=null in d_hits_result table because 
+                * we have to show the inserted/annotated data in requeue or delete or skip list, so we cannot 
+                * remove the whole entry, hence just the userid is being updated as null to do the trick).
+                *
+                * So if null userId is being encountered, we'll simply skip that (whole iteration).
+                */
+                if(userId == null) {
+                    continue;
+                }
+
                 DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(userId);
                 List<DHitsResult> userHits = contributorMap.get(userId);
 
                 ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
                 contributorDetails.setHitsDone(userHits.size());
                 contributorDetails.setAvrTimeTakenInSec(getAvrgTimePerHit(userHits));
+
+                // Get Delete Count
+                long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+
+                // Set Delete Count
+                contributorDetails.setHitsDeleted(dataDeleted);
+
+                // Get Skipped Count
+                long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null);
+
+                // Set Skipped Count
+                contributorDetails.setHitsSkipped(dataSkipped);
+
+                // Get Evaluated Count
+                long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
+                long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
+
+                // Set evaluate count
+                contributorDetails.setEvaluationCorrect(dataEvaluationCorrect);
+                contributorDetails.setEvaluationInCorrect(dataEvaluationInCorrect);
 
                 //get user role.
                 if (projectUsers != null) {
@@ -1257,12 +1306,46 @@ public class Controlcenter {
         //also add contributors who might have 0 hits.
         if (projectUsers != null) {
             for (DProjectUsers projectUser : projectUsers) {
+                /**
+                * There is a chance that we might get userId as NULL. Because now when a hit is getting
+                * removed from hitlist by delete or requeue or skipped actions, then we are removing
+                * the hit from the original user (hence setting userid=null in d_hits_result table because 
+                * we have to show the inserted/annotated data in requeue or delete or skip list, so we cannot 
+                * remove the whole entry, hence just the userid is being updated as null to do the trick).
+                *
+                * So if null userId is being encountered, we'll simply skip that (whole iteration).
+                */
+                if(projectUser.getUserId() == null) {
+                    continue;
+                }
+
                 if (!contributorMap.containsKey(projectUser.getUserId())) {
                     DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(projectUser.getUserId());
                     if (user == null) {
                         continue;
                     }
                     ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
+
+                    // Get Delete Count
+                    long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, null);
+
+                    // Set Delete Count
+                    contributorDetails.setHitsDeleted(dataDeleted);
+
+                    // Get Skipped Count
+                    long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, null);
+
+                    // Set Skipped Count
+                    contributorDetails.setHitsSkipped(dataSkipped);
+
+                    // Get Evaluated Count
+                    long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, null);
+                    long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, null);
+
+                    // Set evaluate count
+                    contributorDetails.setEvaluationCorrect(dataEvaluationCorrect);
+                    contributorDetails.setEvaluationInCorrect(dataEvaluationInCorrect);
+                    
                     contributorDetails.setRole(projectUser.getRole());
                     details.addContributorDetails(contributorDetails);
                 }
@@ -1351,7 +1434,7 @@ public class Controlcenter {
         List<DProjectUsers> projectUsers = AppConfig.getInstance().getdProjectUsersDAO()
                 .findAllByProjectIdInternal(project.getId());
 
-        return fetchStatsForDate(results, projectUsers, date);
+        return fetchStatsForDate(results, projectUsers, date, projectId);
     }
 
     /**
@@ -1390,17 +1473,18 @@ public class Controlcenter {
             record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
             record.setHitsDone(results.size());
 
-            // System.out.println("=============");
-            // System.out.println("Project ID ==> " + project.getId());
-            // System.out.println("User ID ==> " + userId);
-            // System.out.println("=============");
-
             // Get Delete Count
             long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
 
             // Set Delete Count
             record.setHitsDeleted(dataDeleted);
             
+            // Get Skipped Count
+            long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null);
+
+            // Set Skipped Count
+            record.setHitsSkipped(dataSkipped);
+
             // Get Evaluated Count
             long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
             long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
@@ -1414,6 +1498,12 @@ public class Controlcenter {
 
             // Set Delete Count by Date
             record.setHitsDeletedByDate(dataDeletedByDate);
+
+            // Get Skipped Count by Date
+            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, inpDate);
+
+            // Set Skipped Count by Date
+            record.setHitsSkippedByDate(dataSkippedByDate);
 
             // Get Evaluated Count
             long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
@@ -1429,7 +1519,7 @@ public class Controlcenter {
     }
 
     public static List<ContributorDetails> fetchStatsForDate(List<DHitsResult> results,
-            List<DProjectUsers> projectUsers, String inpDate) {
+            List<DProjectUsers> projectUsers, String inpDate, String projectId) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = "";
         try {
@@ -1450,13 +1540,47 @@ public class Controlcenter {
             }
         }
         contributorsMapForDate = sortByHitsDone(contributorsMapForDate);
+
         for (String userId : contributorsMapForDate.keySet()) {
+            /**
+            * There is a chance that we might get userId as NULL. Because now when a hit is getting
+            * removed from hitlist by delete or requeue or skipped actions, then we are removing
+            * the hit from the original user (hence setting userid=null in d_hits_result table because 
+            * we have to show the inserted/annotated data in requeue or delete or skip list, so we cannot 
+            * remove the whole entry, hence just the userid is being updated as null to do the trick).
+            *
+            * So if null userId is being encountered, we'll simply skip that (whole iteration).
+            */
+            if(userId == null) {
+                continue;
+            }
+
             DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(userId);
             List<DHitsResult> userHits = contributorsMapForDate.get(userId);
 
             ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
             contributorDetails.setHitsDone(userHits.size());
             contributorDetails.setAvrTimeTakenInSec(getAvrgTimePerHit(userHits));
+
+            // Get Delete Count by Date
+            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_DELETED, inpDate);
+
+            // Set Delete Count by Date
+            contributorDetails.setHitsDeletedByDate(dataDeletedByDate);
+
+            // Get Skipped Count by Date
+            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_SKIPPED, inpDate);
+
+            // Set Skipped Count by Date
+            contributorDetails.setHitsSkippedByDate(dataSkippedByDate);
+
+            // Get Evaluated Count
+            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
+            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
+
+            // Set evaluate count
+            contributorDetails.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
+            contributorDetails.setEvaluationInCorrectByDate(dataEvaluationInCorrectByDate);
 
             // get user role.
             if (projectUsers != null) {
@@ -1471,17 +1595,51 @@ public class Controlcenter {
         // also add contributors who might have 0 hits.
         if (projectUsers != null) {
             for (DProjectUsers projectUser : projectUsers) {
+                /**
+                * There is a chance that we might get userId as NULL. Because now when a hit is getting
+                * removed from hitlist by delete or requeue or skipped actions, then we are removing
+                * the hit from the original user (hence setting userid=null in d_hits_result table because 
+                * we have to show the inserted/annotated data in requeue or delete or skip list, so we cannot 
+                * remove the whole entry, hence just the userid is being updated as null to do the trick).
+                *
+                * So if null userId is being encountered, we'll simply skip that (whole iteration).
+                */
+                if(projectUser.getUserId() == null) {
+                    continue;
+                }
+
                 if (!contributorsMapForDate.containsKey(projectUser.getUserId())) {
                     DUsers user = AppConfig.getInstance().getdUsersDAO().findByIdInternal(projectUser.getUserId());
                     if (user == null) {
                         continue;
                     }
+
                     ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
+
+                    // Get Delete Count by Date
+                    long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, inpDate);
+
+                    // Set Delete Count by Date
+                    contributorDetails.setHitsDeletedByDate(dataDeletedByDate);
+
+                    // Get Skipped Count by Date
+                    long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, inpDate);
+
+                    // Set Skipped Count by Date
+                    contributorDetails.setHitsSkippedByDate(dataSkippedByDate);
+
+                    // Get Evaluated Count
+                    long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
+                    long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
+
+                    // Set evaluate count
+                    contributorDetails.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
+                    contributorDetails.setEvaluationInCorrectByDate(dataEvaluationInCorrectByDate);
+
                     contributorDetails.setRole(projectUser.getRole());
                     detailsForDate.add(contributorDetails);
                 }
-            }
-           
+            }           
         }
         return detailsForDate;
     }

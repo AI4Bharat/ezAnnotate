@@ -284,6 +284,9 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 if (inpDate != null)
                     str += " AND (e.updated_timestamp>=:updated_timestamp_s AND e.updated_timestamp<=:updated_timestamp_e)";
 
+                // System.out.println("==========================");
+                // System.out.println("Query String ==> " + str);
+
                 query = session.createQuery(str);
 
                 // Setting base parameter
@@ -327,7 +330,7 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 transaction.commit();
                 Long finalCount = count != null? count : 0;
 
-                // System.out.println("Curr del count ==>" + finalCount);
+                // System.out.println("Curr " + status + " count ==>" + finalCount);
                 // System.out.println("projectId ==>" + projectId);
                 // System.out.println("statusByUid ==>" + userId);
                 // System.out.println("status ==>" + status);

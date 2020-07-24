@@ -305,6 +305,35 @@ export default class TaggerOrgProject extends Component {
             <td>{this.userAnchor(data[index].userDetails)}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeleted}</td>
+            <td>{data[index].hitsSkipped}</td>
+            <td>{data[index].evaluationCorrect}</td>
+            <td>{data[index].evaluationInCorrect}</td>
+          </tr>
+        );
+      }
+    }
+    return <tbody>{arrs}</tbody>;
+  };
+
+  getContributorsDataByDate = data => {
+    const arrs = [];
+    console.log("getContributorsDataByDate ", data);
+    let showZero = true;
+    if (data && data.length > 10) {
+      showZero = false;
+    }
+    for (let index = 0; index < data.length; index++) {
+      if (data[index].hitsDone > 0 || showZero) {
+        arrs.push(
+          <tr key={index}>
+            <td>{this.userAnchor(data[index].userDetails)}</td>
+            <td>{data[index].avrTimeTakenInSec}</td>
+            <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeletedByDate}</td>
+            <td>{data[index].hitsSkippedByDate}</td>
+            <td>{data[index].evaluationCorrectByDate}</td>
+            <td>{data[index].evaluationInCorrectByDate}</td>
           </tr>
         );
       }
@@ -708,6 +737,7 @@ export default class TaggerOrgProject extends Component {
               Previous
             </Button>
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -826,6 +856,7 @@ export default class TaggerOrgProject extends Component {
           </div>
           <div className="col-md-6">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -874,6 +905,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -965,6 +997,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1085,6 +1118,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1176,6 +1210,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1271,6 +1306,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1354,6 +1390,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1529,6 +1566,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -2045,6 +2083,10 @@ export default class TaggerOrgProject extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs skipped</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
                   {this.getContributorsData(projectDetails.contributorDetails)}
@@ -2082,9 +2124,13 @@ export default class TaggerOrgProject extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs skipped</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
-                  {this.getContributorsData(this.state.dateStats)}
+                  {this.getContributorsDataByDate(this.state.dateStats)}
                 </Table>
                 )}
               </Segment.Group>
