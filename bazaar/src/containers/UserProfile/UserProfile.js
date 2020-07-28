@@ -39,6 +39,7 @@ export default class UserProfile extends Component {
       userProjectStats: null,
       userProjectStatsOnDate: null,
       date: null,
+      enddate: new Date(),
     }; 
     
     // FOR BAR CHART
@@ -190,6 +191,7 @@ export default class UserProfile extends Component {
     userProjectStats: null,
     userProjectStatsOnDate: null,
     date: null,
+    enddate: new Date(),
     fullName: "Profile Details",
     userEmail: null
   };
@@ -214,15 +216,27 @@ export default class UserProfile extends Component {
   }
   
   onChangeDate = date => {
-    this.setState({date : date});
+    console.log("Onchange Dates ==> " + date);
+    console.log("Is dates rae array ==> " + Array.isArray(date));
     window.chartByDate = "Y";
-    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date));
+
+    if(Array.isArray(date)) {
+      this.setState({date : date[0]});
+      this.setState({enddate : date[1]});
+      getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date[0]), dateToLocalString(date[1]));
+    } else {
+      this.setState({date : date});
+      this.setState({enddate : date});
+      getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date), dateToLocalString(date));
+    }
   }
 
   setInitialDate() {
     const date = new Date();
     this.setState({date: date, loading:true});
-    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date));
+    this.setState({enddate: date, loading:true});
+    // getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date));
+    getProjectStatsForUser(this.props.params.userId, this.updateProjectStatsOnDate, dateToLocalString(date), dateToLocalString(date));
   };
 
   getProjectsData = data => {
@@ -335,16 +349,17 @@ export default class UserProfile extends Component {
                 style={{ width: "60%" }}
                 centered
               >
-                <Header attached="top" block as="h4">
-                  <Icon name="line chart" disabled />
-                  <Header.Content> Projects Stats for date:
+                  <Header attached="top" block as="h4">
+                    <Icon name="line chart" disabled />
+                    <Header.Content> Projects Stats for date from  
                       <DatePicker
                       onChange={this.onChangeDate}
-                      value={this.state.date}
+                      value={[this.state.date, this.state.enddate]}
                       maxDate={new Date()}
-                      />
-                  </Header.Content>
-                </Header>
+                      selectRange="true"
+                      />  to  {dateToLocalString(this.state.enddate)}
+                    </Header.Content>
+                  </Header>
                 {this.state.userProjectStatsOnDate && this.state.userProjectStatsOnDate.length > 0 &&(
                 <Table striped bordered condensed hover responsive>
                   <thead>

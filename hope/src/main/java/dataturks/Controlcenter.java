@@ -1271,20 +1271,20 @@ public class Controlcenter {
                 contributorDetails.setAvrTimeTakenInSec(getAvrgTimePerHit(userHits));
 
                 // Get Delete Count
-                long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+                long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null, null);
 
                 // Set Delete Count
                 contributorDetails.setHitsDeleted(dataDeleted);
 
                 // Get Skipped Count
-                long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null);
+                long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null, null);
 
                 // Set Skipped Count
                 contributorDetails.setHitsSkipped(dataSkipped);
 
                 // Get Evaluated Count
-                long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
-                long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
+                long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null, null);
+                long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null, null);
 
                 // Set evaluate count
                 contributorDetails.setEvaluationCorrect(dataEvaluationCorrect);
@@ -1327,20 +1327,20 @@ public class Controlcenter {
                     ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
 
                     // Get Delete Count
-                    long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, null);
+                    long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, null, null);
 
                     // Set Delete Count
                     contributorDetails.setHitsDeleted(dataDeleted);
 
                     // Get Skipped Count
-                    long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, null);
+                    long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, null, null);
 
                     // Set Skipped Count
                     contributorDetails.setHitsSkipped(dataSkipped);
 
                     // Get Evaluated Count
-                    long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, null);
-                    long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, null);
+                    long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, null, null);
+                    long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, null, null);
 
                     // Set evaluate count
                     contributorDetails.setEvaluationCorrect(dataEvaluationCorrect);
@@ -1424,7 +1424,7 @@ public class Controlcenter {
         AppConfig.getInstance().getdUsersDAO().saveOrUpdateInternal(user);
     }
 
-    public static List<ContributorDetails> fetchStatsForDateInternal(String projectId, String date) {
+    public static List<ContributorDetails> fetchStatsForDateInternal(String projectId, String date, String enddate) {
         DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(projectId);
         if (project == null) {
             throw new WebApplicationException("No such project found", Response.Status.NOT_FOUND);
@@ -1434,7 +1434,7 @@ public class Controlcenter {
         List<DProjectUsers> projectUsers = AppConfig.getInstance().getdProjectUsersDAO()
                 .findAllByProjectIdInternal(project.getId());
 
-        return fetchStatsForDate(results, projectUsers, date, projectId);
+        return fetchStatsForDate(results, projectUsers, date, projectId, enddate);
     }
 
     /**
@@ -1444,7 +1444,7 @@ public class Controlcenter {
      * @param inpDate
      * @return stats
      */
-    public static List<ProjectsPerUser> fetchProjectStatsForUser(String userId, String inpDate) {
+    public static List<ProjectsPerUser> fetchProjectStatsForUser(String userId, String inpDate, String inpEndDate) {
         List<DProjectUsers> userProjects = AppConfig.getInstance().getdProjectUsersDAO().findAllByUserIdInternal(userId);
         List<ProjectsPerUser> stats = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -1455,59 +1455,124 @@ public class Controlcenter {
                 e.printStackTrace();
             }
         }
+        
+        // Format end date [if !null]
+        if (inpEndDate != null) {
+            try {
+                inpEndDate = formatter.format(formatter.parse(inpEndDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         for (DProjectUsers userProject : userProjects) {
             DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(userProject.getProjectId());
             ProjectsPerUser record = new ProjectsPerUser(project);
             List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO()
                     .findAllByUserIdAndProjectIdInternal(userId, project.getId());
-            if (inpDate != null) {
-                List<DHitsResult> filteredResults = new ArrayList<>();
-                for (DHitsResult result : results) {
-                    if (inpDate.equals(formatter.format(result.getUpdated_timestamp()))) {
+
+            List<DHitsResult> filteredResults = new ArrayList<>();
+            SimpleDateFormat sdformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date compInpDate = null;
+            Date compInpEndDate = null;
+
+            if (inpDate != null && inpEndDate != null) {
+                String f_inpDate = inpDate + " 00:00:00";
+                String f_inpEndDate = inpEndDate + " 23:59:59";
+                
+                try {                    
+                    compInpDate = sdformat.parse(f_inpDate);
+                    compInpEndDate = sdformat.parse(f_inpEndDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }           
+
+                for (DHitsResult result : results) {                    
+                    Date compRecDate = result.getUpdated_timestamp();
+
+                    if(compInpDate.compareTo(compRecDate) <= 0 && compInpEndDate.compareTo(compRecDate) >= 0) {
                         filteredResults.add(result);
                     }
                 }
+
+                results = filteredResults;
+            } else if (inpDate != null) {
+                String f_inpDate = inpDate + " 00:00:00";
+
+                try {                    
+                    compInpDate = sdformat.parse(f_inpDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } 
+
+                for (DHitsResult result : results) {
+                    Date compRecDate = result.getUpdated_timestamp();
+
+                    if(compInpDate.compareTo(compRecDate) <= 0) {
+                        filteredResults.add(result);
+                    }
+                }
+
+                results = filteredResults;
+            } else if (inpEndDate != null) {
+                String f_inpEndDate = inpEndDate + " 23:59:59";
+
+                try {                    
+                    compInpEndDate = sdformat.parse(f_inpEndDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } 
+
+                for (DHitsResult result : results) {
+                    Date compRecDate = result.getUpdated_timestamp();
+
+                    if(compInpEndDate.compareTo(compRecDate) >= 0) {
+                        filteredResults.add(result);
+                    }
+                }
+
                 results = filteredResults;
             }
+
             record.setHitsDone(results.size());
             record.setAvrTimeTakenInSec(getAvrgTimePerHit(results));
             record.setHitsDone(results.size());
 
             // Get Delete Count
-            long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null);
+            long dataDeleted = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, null, null);
 
             // Set Delete Count
             record.setHitsDeleted(dataDeleted);
             
             // Get Skipped Count
-            long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null);
+            long dataSkipped = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, null, null);
 
             // Set Skipped Count
             record.setHitsSkipped(dataSkipped);
 
             // Get Evaluated Count
-            long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null);
-            long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null);
+            long dataEvaluationCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, null, null);
+            long dataEvaluationInCorrect = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, null, null);
 
             // Set evaluate count
             record.setEvaluationCorrect(dataEvaluationCorrect);
             record.setEvaluationInCorrect(dataEvaluationInCorrect);
 
             // Get Delete Count by Date
-            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, inpDate);
+            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_DELETED, inpDate, inpEndDate);
 
             // Set Delete Count by Date
             record.setHitsDeletedByDate(dataDeletedByDate);
 
             // Get Skipped Count by Date
-            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, inpDate);
+            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(project.getId(), userId, DConstants.HIT_STATUS_SKIPPED, inpDate, inpEndDate);
 
             // Set Skipped Count by Date
             record.setHitsSkippedByDate(dataSkippedByDate);
 
             // Get Evaluated Count
-            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
-            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
+            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate, inpEndDate);
+            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(project.getId(), userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate, inpEndDate);
 
             // Set evaluate count
             record.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
@@ -1519,7 +1584,7 @@ public class Controlcenter {
     }
 
     public static List<ContributorDetails> fetchStatsForDate(List<DHitsResult> results,
-            List<DProjectUsers> projectUsers, String inpDate, String projectId) {
+            List<DProjectUsers> projectUsers, String inpDate, String projectId, String inpEndDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = "";
         try {
@@ -1527,18 +1592,81 @@ public class Controlcenter {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        try {
+            inpEndDate = formatter.format(formatter.parse(inpEndDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Map<String, List<DHitsResult>> contributorsMapForDate = new HashMap<>();
         List<ContributorDetails> detailsForDate = new ArrayList<ContributorDetails>();
-        for (DHitsResult result : results) {
 
-            String date = formatter.format(result.getUpdated_timestamp());
+        SimpleDateFormat sdformat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date compInpDate = null;
+        Date compInpEndDate = null;
+
+        for (DHitsResult result : results) {
+            Date compRecDate = result.getUpdated_timestamp();
+
+            if (inpDate != null && inpEndDate != null) {
+                String f_inpDate = inpDate + " 00:00:00";
+                String f_inpEndDate = inpEndDate + " 23:59:59";
+                
+                try {                    
+                    compInpDate = sdformat.parse(f_inpDate);
+                    compInpEndDate = sdformat.parse(f_inpEndDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(compInpDate.compareTo(compRecDate) <= 0 && compInpEndDate.compareTo(compRecDate) >= 0) {
+                    if (!contributorsMapForDate.containsKey(result.getUserId())) {
+                        contributorsMapForDate.put(result.getUserId(), new ArrayList<>());
+                    }
+                    contributorsMapForDate.get(result.getUserId()).add(result);
+                }
+            } else if (inpDate != null) {
+                String f_inpDate = inpDate + " 00:00:00";
+
+                try {                    
+                    compInpDate = sdformat.parse(f_inpDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(compInpDate.compareTo(compRecDate) <= 0) {
+                    if (!contributorsMapForDate.containsKey(result.getUserId())) {
+                        contributorsMapForDate.put(result.getUserId(), new ArrayList<>());
+                    }
+                    contributorsMapForDate.get(result.getUserId()).add(result);
+                }
+            } else if (inpEndDate != null) {
+                String f_inpEndDate = inpEndDate + " 23:59:59";
+
+                try {                    
+                    compInpEndDate = sdformat.parse(f_inpEndDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(compInpEndDate.compareTo(compRecDate) >= 0) {
+                    if (!contributorsMapForDate.containsKey(result.getUserId())) {
+                        contributorsMapForDate.put(result.getUserId(), new ArrayList<>());
+                    }
+                    contributorsMapForDate.get(result.getUserId()).add(result);
+                }
+            }
+
+            /*String date = formatter.format(result.getUpdated_timestamp());
             if (date.equals(strDate)) {
                 if (!contributorsMapForDate.containsKey(result.getUserId())) {
                     contributorsMapForDate.put(result.getUserId(), new ArrayList<>());
                 }
                 contributorsMapForDate.get(result.getUserId()).add(result);
-            }
+            }*/
         }
+
         contributorsMapForDate = sortByHitsDone(contributorsMapForDate);
 
         for (String userId : contributorsMapForDate.keySet()) {
@@ -1563,20 +1691,20 @@ public class Controlcenter {
             contributorDetails.setAvrTimeTakenInSec(getAvrgTimePerHit(userHits));
 
             // Get Delete Count by Date
-            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_DELETED, inpDate);
+            long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_DELETED, inpDate, inpEndDate);
 
             // Set Delete Count by Date
             contributorDetails.setHitsDeletedByDate(dataDeletedByDate);
 
             // Get Skipped Count by Date
-            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_SKIPPED, inpDate);
+            long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, userId, DConstants.HIT_STATUS_SKIPPED, inpDate, inpEndDate);
 
             // Set Skipped Count by Date
             contributorDetails.setHitsSkippedByDate(dataSkippedByDate);
 
             // Get Evaluated Count
-            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
-            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
+            long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.CORRECT, inpDate, inpEndDate);
+            long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, userId, DTypes.HIT_Evaluation_Type.INCORRECT, inpDate, inpEndDate);
 
             // Set evaluate count
             contributorDetails.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);
@@ -1617,20 +1745,20 @@ public class Controlcenter {
                     ContributorDetails contributorDetails = new ContributorDetails(new UserDetails(user));
 
                     // Get Delete Count by Date
-                    long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, inpDate);
+                    long dataDeletedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_DELETED, inpDate, inpEndDate);
 
                     // Set Delete Count by Date
                     contributorDetails.setHitsDeletedByDate(dataDeletedByDate);
 
                     // Get Skipped Count by Date
-                    long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, inpDate);
+                    long dataSkippedByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectAnnotationType(projectId, projectUser.getUserId(), DConstants.HIT_STATUS_SKIPPED, inpDate, inpEndDate);
 
                     // Set Skipped Count by Date
                     contributorDetails.setHitsSkippedByDate(dataSkippedByDate);
 
                     // Get Evaluated Count
-                    long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, inpDate);
-                    long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, inpDate);
+                    long dataEvaluationCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.CORRECT, inpDate, inpEndDate);
+                    long dataEvaluationInCorrectByDate = AppConfig.getInstance().getdHitsDAO().getCountForProjectEvaluationDetailsByUser(projectId, projectUser.getUserId(), DTypes.HIT_Evaluation_Type.INCORRECT, inpDate, inpEndDate);
 
                     // Set evaluate count
                     contributorDetails.setEvaluationCorrectByDate(dataEvaluationCorrectByDate);

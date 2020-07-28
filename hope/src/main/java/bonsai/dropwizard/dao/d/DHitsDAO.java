@@ -261,7 +261,7 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
      * @param status
      * @return
      */
-    private long getCountForProjectByStatusAndUser(String projectId, String userId, String status, String inpDate) {
+    private long getCountForProjectByStatusAndUser(String projectId, String userId, String status, String inpDate, String inpEndDate) {
         Session session = sessionFactory.openSession();
         try {
             ManagedSessionContext.bind(session);
@@ -282,7 +282,11 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Adding conditional placeholder for date (inpDate)
                 if (inpDate != null)
-                    str += " AND (e.updated_timestamp>=:updated_timestamp_s AND e.updated_timestamp<=:updated_timestamp_e)";
+                    str += " AND e.updated_timestamp>=:updated_timestamp_s";
+
+                // Adding conditional placeholder for end date (inpEndDate)
+                if (inpEndDate != null)
+                    str += " AND e.updated_timestamp<=:updated_timestamp_e";
 
                 // System.out.println("==========================");
                 // System.out.println("Query String ==> " + str);
@@ -300,29 +304,36 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 if (status != null)
                     query.setParameter("status", status);
 
+                // Common pre-requisites for date (inpDate or inpEndDate or both)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
                 // Setting conditional parameter for date (inpDate)
                 if (inpDate != null) {
                     String inpDate_s = inpDate + " 00:00:00";
-                    String inpDate_e = inpDate + " 23:59:59";
 
-                    // System.out.println("inpDate_s ==> " + inpDate_s);
-                    // System.out.println("inpDate_e ==> " + inpDate_e);
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    System.out.println("inpDate_s ==> " + inpDate_s);
 
                     Date parsedDate_s = dateFormat.parse(inpDate_s);
                     Timestamp timestamp_s = new java.sql.Timestamp(parsedDate_s.getTime());
 
+                    System.out.println("parsedDate_s ==> " + parsedDate_s);
+                    System.out.println("timestamp_s ==> " + timestamp_s);
+
+                    query.setParameter("updated_timestamp_s", timestamp_s);
+                }
+
+                // Setting conditional parameter for end date (inpDate)
+                if (inpEndDate != null) {
+                    String inpDate_e = inpEndDate + " 23:59:59";
+
+                    System.out.println("inpDate_e ==> " + inpDate_e);
+
                     Date parsedDate_e = dateFormat.parse(inpDate_e);
                     Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
 
-                    // System.out.println("parsedDate_s ==> " + parsedDate_s);
-                    // System.out.println("timestamp_s ==> " + timestamp_s);
+                    System.out.println("parsedDate_e ==> " + parsedDate_e);
+                    System.out.println("timestamp_e ==> " + timestamp_e);
 
-                    // System.out.println("parsedDate_e ==> " + parsedDate_e);
-                    // System.out.println("timestamp_e ==> " + timestamp_e);
-
-                    query.setParameter("updated_timestamp_s", timestamp_s);
                     query.setParameter("updated_timestamp_e", timestamp_e);
                 }
 
@@ -356,7 +367,7 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
      * @param evaluation
      * @return count
      */
-    private long getCountForProjectByEvaluationDetailsAndUser(String projectId, String userId, DTypes.HIT_Evaluation_Type evaluation, String inpDate) {
+    private long getCountForProjectByEvaluationDetailsAndUser(String projectId, String userId, DTypes.HIT_Evaluation_Type evaluation, String inpDate, String inpEndDate) {
         Session session = sessionFactory.openSession();
         try {
             ManagedSessionContext.bind(session);
@@ -374,7 +385,15 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
 
                 // Adding conditional placeholder for date (inpDate)
                 if (inpDate != null)
-                    str += " AND (e.updated_timestamp_eval>=:updated_timestamp_eval_s AND e.updated_timestamp_eval<=:updated_timestamp_eval_e)";
+                    str += " AND e.updated_timestamp_eval>=:updated_timestamp_eval_s";
+
+                // Adding conditional placeholder for end date (inpEndDate)
+                if (inpEndDate != null)
+                    str += " AND e.updated_timestamp_eval<=:updated_timestamp_eval_e";
+
+
+                // System.out.println("==========================");
+                // System.out.println("Query String ==> " + str);
 
                 query = session.createQuery(str);
 
@@ -382,29 +401,36 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 if (userId != null)
                     query.setParameter("evaluatedByUid", userId);
 
+                // Common pre-requisites for date (inpDate or inpEndDate or both)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
                 // Setting conditional parameter for date (inpDate)
                 if (inpDate != null) {
                     String inpDate_s = inpDate + " 00:00:00";
-                    String inpDate_e = inpDate + " 23:59:59";
 
                     // System.out.println("inpDate_s ==> " + inpDate_s);
-                    // System.out.println("inpDate_e ==> " + inpDate_e);
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
                     Date parsedDate_s = dateFormat.parse(inpDate_s);
                     Timestamp timestamp_s = new java.sql.Timestamp(parsedDate_s.getTime());
 
-                    Date parsedDate_e = dateFormat.parse(inpDate_e);
-                    Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
-
                     // System.out.println("parsedDate_s ==> " + parsedDate_s);
                     // System.out.println("timestamp_s ==> " + timestamp_s);
+
+                    query.setParameter("updated_timestamp_eval_s", timestamp_s);
+                }
+
+                // Setting conditional parameter for end date (inpEndDate)
+                if (inpEndDate != null) {
+                    String inpDate_e = inpEndDate + " 23:59:59";
+
+                    // System.out.println("inpDate_e ==> " + inpDate_e);
+
+                    Date parsedDate_e = dateFormat.parse(inpDate_e);
+                    Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
 
                     // System.out.println("parsedDate_e ==> " + parsedDate_e);
                     // System.out.println("timestamp_e ==> " + timestamp_e);
 
-                    query.setParameter("updated_timestamp_eval_s", timestamp_s);
                     query.setParameter("updated_timestamp_eval_e", timestamp_e);
                 }
 
@@ -462,10 +488,11 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
      * @param userId
      * @param currAnnotationType
      * @param inpDate
+     * @param inpEndDate
      * @return
      */
-    public long getCountForProjectAnnotationType(String projectId, String userId, String currAnnotationType, String inpDate) {
-        return getCountForProjectByStatusAndUser(projectId, userId, currAnnotationType, inpDate);
+    public long getCountForProjectAnnotationType(String projectId, String userId, String currAnnotationType, String inpDate, String inpEndDate) {
+        return getCountForProjectByStatusAndUser(projectId, userId, currAnnotationType, inpDate, inpEndDate);
     }
 
     /**
@@ -476,10 +503,11 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
      * @param userId
      * @param currEvaluation
      * @param inpDate
+     * @param inpEndDate
      * @return
      */
-    public long getCountForProjectEvaluationDetailsByUser(String projectId, String userId, DTypes.HIT_Evaluation_Type currEvaluation, String inpDate) {
-        return getCountForProjectByEvaluationDetailsAndUser(projectId, userId, currEvaluation, inpDate);
+    public long getCountForProjectEvaluationDetailsByUser(String projectId, String userId, DTypes.HIT_Evaluation_Type currEvaluation, String inpDate, String inpEndDate) {
+        return getCountForProjectByEvaluationDetailsAndUser(projectId, userId, currEvaluation, inpDate, inpEndDate);
     }
 
     // get count rows for tagging from the project selected randomly.

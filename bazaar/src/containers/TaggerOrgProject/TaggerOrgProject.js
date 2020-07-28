@@ -155,6 +155,7 @@ export default class TaggerOrgProject extends Component {
       successModal: false,
       selectedLabel: undefined,
       date: null,
+      enddate: new Date(),
       dateStats: null,
       dateStatsError: undefined
     };
@@ -171,6 +172,7 @@ export default class TaggerOrgProject extends Component {
     projectDetailsError: undefined,
     hitsDetails: undefined,
     date: null,
+    enddate: new Date(),
     dateStats: null,
     dateStatsError: undefined
   };
@@ -274,15 +276,26 @@ export default class TaggerOrgProject extends Component {
   }
 
   onChangeDate = date => {
-    this.setState({date});
-    getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
+    if(Array.isArray(date)) {
+      this.setState({date : date[0]});
+      this.setState({enddate : date[1]});
+      getStatsForDate(this.props.currentProject, dateToLocalString(date[0]), this.dateStatsFetched, dateToLocalString(date[1]));
+    } else {
+      this.setState({date : date});
+      this.setState({enddate : date});
+      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched, dateToLocalString(date));
+    }
+    
+    // this.setState({date});
+    // getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
   }
 
   setInitialDate() {
     const date = new Date();
     this.setState({date: date});
+    this.setState({enddate: date});
     if (this.props.currentProject) {
-      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
+      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched, dateToLocalString(date));
     }
   }
 
@@ -2109,12 +2122,13 @@ export default class TaggerOrgProject extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content>Stats for the selected date
+                  <Header.Content>Stats for the selected date from  
                       <DatePicker
                       onChange={this.onChangeDate}
-                      value={this.state.date}
+                      value={[this.state.date, this.state.enddate]}
                       maxDate={new Date()}
-                      />
+                      selectRange="true"
+                      />  to  {dateToLocalString(this.state.enddate)}
                   </Header.Content>
                 </Header>
                 {this.state.dateStats && (

@@ -341,9 +341,9 @@ export const fetchProjectStats = (pid, callback) => {
     });
 };
 
-export const getStatsForDate = (pid,date,callback) => {
+export const getStatsForDate = (pid,date,callback, enddate=null) => {
   const { uid, token } = getUidToken();
-  let url= BASE_URL + pid + "/fetchStatsForDate?date=" + date;
+  let url= BASE_URL + pid + "/fetchStatsForDate?date=" + date + "&enddate=" + enddate;
   superagent
     .post(url)
     .set("uid", uid)
@@ -353,11 +353,11 @@ export const getStatsForDate = (pid,date,callback) => {
     });
 }  
 
-export const getProjectStatsForUser = (userId, callback, date) => {
+export const getProjectStatsForUser = (userId, callback, date, enddate=null) => {
   const { uid, token } = getUidToken();
   let url = "";
   url = BASE_URL + "fetchUserProfile/" + userId;
-  if (typeof(date) !== 'undefined') url += "?date=" + date;
+  if (typeof(date) !== 'undefined') url += "?date=" + date + "&enddate=" + enddate;
   superagent
     .post(url)
     .set("uid", uid)
