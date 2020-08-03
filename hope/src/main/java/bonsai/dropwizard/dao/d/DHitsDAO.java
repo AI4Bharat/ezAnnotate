@@ -311,13 +311,13 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 if (inpDate != null) {
                     String inpDate_s = inpDate + " 00:00:00";
 
-                    System.out.println("inpDate_s ==> " + inpDate_s);
+                    // System.out.println("inpDate_s ==> " + inpDate_s);
 
                     Date parsedDate_s = dateFormat.parse(inpDate_s);
                     Timestamp timestamp_s = new java.sql.Timestamp(parsedDate_s.getTime());
 
-                    System.out.println("parsedDate_s ==> " + parsedDate_s);
-                    System.out.println("timestamp_s ==> " + timestamp_s);
+                    // System.out.println("parsedDate_s ==> " + parsedDate_s);
+                    // System.out.println("timestamp_s ==> " + timestamp_s);
 
                     query.setParameter("updated_timestamp_s", timestamp_s);
                 }
@@ -326,13 +326,13 @@ public class DHitsDAO extends AbstractDAO<DHits> implements IDDao<DHits>{
                 if (inpEndDate != null) {
                     String inpDate_e = inpEndDate + " 23:59:59";
 
-                    System.out.println("inpDate_e ==> " + inpDate_e);
+                    // System.out.println("inpDate_e ==> " + inpDate_e);
 
                     Date parsedDate_e = dateFormat.parse(inpDate_e);
                     Timestamp timestamp_e = new java.sql.Timestamp(parsedDate_e.getTime());
 
-                    System.out.println("parsedDate_e ==> " + parsedDate_e);
-                    System.out.println("timestamp_e ==> " + timestamp_e);
+                    // System.out.println("parsedDate_e ==> " + parsedDate_e);
+                    // System.out.println("timestamp_e ==> " + timestamp_e);
 
                     query.setParameter("updated_timestamp_e", timestamp_e);
                 }

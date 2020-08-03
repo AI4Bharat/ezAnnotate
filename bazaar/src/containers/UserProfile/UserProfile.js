@@ -138,7 +138,7 @@ export default class UserProfile extends Component {
         else if(key == "hitsSkipped")
           typeName = "#HITs skipped";
         else if(key == "evaluationCorrect")
-          typeName = "#HITs correctr";
+          typeName = "#HITs correct";
         else if(key == "evaluationInCorrect")
           typeName = "#HITs incorrect";
 

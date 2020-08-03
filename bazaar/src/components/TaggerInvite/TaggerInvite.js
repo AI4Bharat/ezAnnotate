@@ -20,23 +20,34 @@ export default class TaggerInvite extends Component {
     console.log('TaggerInvite called ', props);
   }
 
-  state = { modalOpen: true, formValue: '', owner: false };
+  state = { modalOpen: true, formValue: '', owner: false, invuserrole: 'ANNOTATOR' };
 
   handleOpen = () => this.setState({ modalOpen: true })
 
   handleClose = () => { this.setState({ modalOpen: false }); this.props.modalClose(); }
 
   handleSubmit = () => {
-    this.props.submitEmail(this.state.formValue, this.state.owner);
+    this.props.submitEmail(this.state.formValue, this.state.owner, this.state.invuserrole);
   }
 
   handleChange = (field, element) => {
     console.log(' handle change ', field, element);
     if (field === 'role') {
-      if (this.state.owner) {
+      /*if (this.state.owner) {
         this.setState({ owner: false});
       } else {
         this.setState({ owner: true});
+      }*/
+
+      // Set user's role
+      if(typeof element == "string") {
+        this.setState({ invuserrole: element});
+
+        if (element == "OWNER") {
+          this.setState({ owner: true});
+        } else {
+          this.setState({ owner: false});
+        }
       }
     } else {
       this.setState({ formValue: element.target.value });
@@ -61,16 +72,30 @@ export default class TaggerInvite extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              Annotator can view, tag or update HIT tags.
+              Annotators can only annotate i.e. make HITs.
+              <br />
+              <br />
+              Moderators can view, tag or update HIT tags.
               <br />
               <br />
               Admins have all permissions: modify or add data to the project, and add other contributors.
               <Form size="small" key="import">
                 <Form.Field id="tags" onChange={this.handleChange.bind(this, 'tags')} label="Email" control="input" type="email" placeholder="Enter email id" />
                     <Form.Field>
-                      <Checkbox checked={this.state.owner} onChange={this.handleChange.bind(this, 'role')} label="Admin" />
+                      <Checkbox 
+                      // checked={this.state.owner} 
+                      checked={this.state.invuserrole == "OWNER"}  
+                      onChange={this.handleChange.bind(this, 'role', 'OWNER')} label="Admin" value="OWNER" />
                       <br />
-                      <Checkbox checked={!this.state.owner} onChange={this.handleChange.bind(this, 'role')} label="Annotator" />
+                      <Checkbox 
+                      // checked={!this.state.owner} 
+                      checked={this.state.invuserrole == "CONTRIBUTOR"}  
+                      onChange={this.handleChange.bind(this, 'role', 'CONTRIBUTOR')} label="Moderator" value="CONTRIBUTOR" />
+                      <br />
+                      <Checkbox 
+                      // checked={!this.state.owner} 
+                      checked={this.state.invuserrole == "ANNOTATOR"}  
+                      onChange={this.handleChange.bind(this, 'role', 'ANNOTATOR')} label="Annotator" value="ANNOTATOR" />
                     </Form.Field>
               </Form>
           </Modal.Body>

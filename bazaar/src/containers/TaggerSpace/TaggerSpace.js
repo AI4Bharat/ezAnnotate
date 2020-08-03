@@ -4017,7 +4017,7 @@ export default class TaggerSpace extends Component {
                         >
                           Show project stats
                         </Button>
-                        <div style={{ height: "30px" }} />
+                        {/* <div style={{ height: "30px" }} />
                         <Button
                           onClick={() =>
                             this.props.pushState(
@@ -4030,8 +4030,8 @@ export default class TaggerSpace extends Component {
                           }
                         >
                           Show Completed HITs
-                        </Button>
-                        <div style={{ height: "30px" }} />
+                        </Button> */}
+                        {/* <div style={{ height: "30px" }} />
                         <Button
                           onClick={() =>
                             this.props.pushState(
@@ -4044,7 +4044,7 @@ export default class TaggerSpace extends Component {
                           }
                         >
                           Show Skipped HITs
-                        </Button>
+                        </Button> */}
                       </Segment>
                     )}
                   </div>

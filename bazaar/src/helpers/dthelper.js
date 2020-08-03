@@ -305,10 +305,10 @@ export const removeContributor = (pid, email, callback) => {
     });
 };
 
-export const sendInvite = (pid, email, isOwner, callback) => {
+export const sendInvite = (pid, email, isOwner, callback, invuserrole="ANNOTATOR") => {
   console.log("sending invite ", pid, encodeURIComponent(email));
   const { uid, token } = getUidToken();
-  let role = "CONTRIBUTOR";
+  let role = invuserrole;
   if (isOwner) {
     role = "OWNER";
   }

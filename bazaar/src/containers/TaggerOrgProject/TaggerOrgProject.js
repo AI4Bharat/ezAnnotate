@@ -555,11 +555,11 @@ export default class TaggerOrgProject extends Component {
     }
   }
 
-  inviteByEmail(email, isOwner) {
+  inviteByEmail(email, isOwner, invuserrole="ANNOTATOR") {
     logEvent("buttons", "Sending invite");
 
     console.log("inviting by email ", event, event.target.value);
-    sendInvite(this.props.currentProject, email, isOwner, this.inviteSent);
+    sendInvite(this.props.currentProject, email, isOwner, this.inviteSent, invuserrole);
   }
 
   deleteProject() {
@@ -1927,7 +1927,8 @@ export default class TaggerOrgProject extends Component {
                       as="a"
                       href={path + "space?type=all"}
                       onClick={event => {
-                        this.openScreen("overview", "all");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "all");
                         event.preventDefault();
                       }}
                     >
@@ -1944,7 +1945,8 @@ export default class TaggerOrgProject extends Component {
                       size="mini"
                       href={path + "space?type=skipped"}
                       onClick={event => {
-                        this.openScreen("overview", "skipped");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "skipped");
                         event.preventDefault();
                       }}
                     >
@@ -1961,7 +1963,8 @@ export default class TaggerOrgProject extends Component {
                       as="a"
                       href={path + "space?type=deleted"}
                       onClick={event => {
-                        this.openScreen("overview", "deleted");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "deleted");
                         event.preventDefault();
                       }}
                     >
