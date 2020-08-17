@@ -11,6 +11,7 @@ import { getHomeData, getUidToken, refreshUidToken, logEvent } from '../../helpe
 import { timeConverter, taskTypeMap, DUMMY_UID, POS_TAGGING, POS_TAGGING_GENERIC, TEXT_SUMMARIZATION, IMAGE_CLASSIFICATION, TEXT_MODERATION, TEXT_CLASSIFICATION, DOCUMENT_ANNOTATION, IMAGE_POLYGON_BOUNDING_BOX, IMAGE_POLYGON_BOUNDING_BOX_V2, IMAGE_BOUNDING_BOX, SENTENCE_TRANSLATION, SENTENCE_PAIR_CLASSIFIER } from '../../helpers/Utils';
 import { updateHomeData, selectProject, getOrgDetails, updateProjectDetails } from 'redux/modules/dataturks';
 import { signIn } from 'redux/modules/auth';
+import $ from 'jquery';
 
 @connect(
   state => ({user: state.auth.user, projects: state.dataturksReducer.projects}),
@@ -64,6 +65,21 @@ export default class TaggerProjects extends Component {
     //     loading: false
     //   });
     // });
+
+    /**
+     * Page layout level designs goes here
+     */
+    // Set login page backgdount
+    $(document).ready(function(){
+      $('#back-img-area').css({ backgroundImage:  'none' });
+      $('body').css({overflow: 'auto'});
+      $('#datasetmenu').children().css({ 
+        padding: '2%', 
+        color: 'white !important', 
+        fontSize: '1rem', 
+      });
+    });
+    // Layout Design END
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,7 +140,7 @@ export default class TaggerProjects extends Component {
                             </Card.Description>
                           </Card.Content>
                           <Card.Content extra>
-                              <Button primary name="posT" size="mini" onClick={this.openStats.bind(this, 'stats', projects[index].projectDetails.orgName, projects[index].projectDetails.name)} className={overviewClass}>
+                              <Button primary name="posT" style={{ width: '9rem', fontSize: '1.25rem' }} onClick={this.openStats.bind(this, 'stats', projects[index].projectDetails.orgName, projects[index].projectDetails.name)} className={overviewClass}>
                               Overview
                               </Button>
                             { !tagButtonHidden &&
@@ -224,9 +240,10 @@ export default class TaggerProjects extends Component {
     console.log('state is ', this.state);
     return (
       <div className="taggerPages">
+        <div id="back-img-dflt"></div>
           <Helmet title="My Projects" />
                           <div className="text-center">
-                          <Button size="tiny" loading={this.state.loading} positive className="pull-right" onClick={() => this.loadProjectDetails(true)} compact><Icon name="refresh" loading={this.state.loading} />Refresh</Button>
+                          <Button style={{ width: '9rem', fontSize: '1.25rem' }} loading={this.state.loading} positive className="pull-right" onClick={() => this.loadProjectDetails(true)} compact><Icon name="refresh" loading={this.state.loading} />Refresh</Button>
                             <h2>My Projects</h2>
                             <br />
 

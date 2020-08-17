@@ -19,6 +19,8 @@ import ReactGA from 'react-ga';
 import swot from 'swot-simple';
 import config from '../../config';
 import 'font-awesome/css/font-awesome.min.css';
+import $ from 'jquery';
+import anBckImg from '../../../assets/img/annotate-bck.jpg';
 
 @connect(
   state => ({user: state.auth.user, userCreated: state.auth.userCreated}),
@@ -388,50 +390,66 @@ export default class TaggerLogin extends Component {
     }
   }
 
+  componentDidMount() {
+    $(document).ready(function(){
+      // Set login page backgdount
+      $('#back-img-area').css({
+        backgroundImage:  'url(' + anBckImg + ')',
+        backgroundRepeat: 'no-repeat', 
+        backgroundSize: 'cover',
+        height: 'auto',
+        width: 'auto'
+      });
+
+      $('body').css({overflow: 'hidden'});
+    });
+  }
+
   render() {
     const {user} = this.props;
     console.log('TaggerLogin props are ', config, this.props, this.state);
     // const styles = require('./TaggerLogin.scss');
     return (
-      <div>
+      <div style={{ backdropFilter: 'blur(2px)' }}>
         <Helmet title="Login"/>
         {!user &&
       <div className="row" style={{padding: '5% 20% 10% 15%'}}>
         <Segment basic loading={this.state.loading}>
-          <div className="col-md-7 text-left" style={{marginBottom: '10%'}}>
-              <h1 style={{fontSize: '3em', letterSpacing: 'normal' }}> Super Easy Data Annotations </h1>
-              <p style={{fontSize: '1.4em'}}>Invite your team and generate high quality labeled data in minutes</p>
-              <p style={{fontSize: '0.8em', color: 'lightslategray'}}>By signing up, you agree with our privacy policy and terms. </p>
+          <div className="col-md-7 text-left" style={{marginBottom: '10%', marginLeft: '-3rem', width: '55%' }}>
+              <h1 style={{fontSize: '3.5em', letterSpacing: 'normal', color: 'rgb(0 0 0)' }}> Super Easy Data Annotations </h1>
+              <p style={{fontSize: '1.5em', color: 'rgb(0 0 0)', fontWeight: 'bold'}}>Invite your team and generate high quality labeled data in minutes</p>
+              <p style={{fontSize: '1.2em', color: 'rgb(0 0 0)', fontWeight: 'bold'}}>By signing up, you agree with our privacy policy and terms. </p>
           </div>
         <Transition visible animation="browse" duration={2000}>
 
-            <div className="col-md-5 text-center"
+            {/* <div className="col-md-5 text-center"
              style={{marginTop: '-5%', background: 'black', height: '150%', paddingBottom: '10%', paddingTop: '1%', border: '1px solid lightslategray',
-    boxShadow: '-1px 1px lightslategray,-2px 2px lightslategray, -3px 3px lightslategray, -4px 4px lightslategray, -5px 5px lightslategray' }}>
+    boxShadow: '-1px 1px lightslategray,-2px 2px lightslategray, -3px 3px lightslategray, -4px 4px lightslategray, -5px 5px lightslategray', marginLeft: '4.5rem' }}> */}
+
+            <div className="col-md-5 text-center" style={{ backgroundColor: 'rgb(0,0,0)', backgroundColor: 'rgba(0,0,0, 0.4)', color: '#373a3c', fontWeight: 'bold', border: '3px solid #373a3c', zIndex: 2, width: '48%', padding: '20px', textAlign: 'center' }}>
                     { !this.state.emailSignup && <div style={{ marginTop: '5%'}}>
                           <Form onSubmit={this.handleEmailSignIn} inverted inline ref={form => this.form = form}>
-                            <h2 style={{ color: 'white'}}>Log in</h2>
+                          <h2 style={{ color: 'white'}}><i data-txt="logPassType" className="fa fa-lock" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Log in</h2>
                             <Form.Group widths="equal">
                             <Form.Field>
-                              <label>Email</label>
+                              <label style={{ fontSize: '1.25rem' }}>Email</label>
                               <input ref={(email) => {this.email = email;}} type="email" onChange={this.handleCreateChange.bind(this)} value={this.state.email} name="email" placeholder="me@Email.com" />
                             </Form.Field>
                             <Form.Field>
-                              <label>Password</label>
-
+                              <label style={{ fontSize: '1.25rem' }}>Password</label>
                               <i data-txt="logPassType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '43%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
 
                               <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.logPassType ? "password" : "text"} placeholder="Enter Password" />
                             </Form.Field>
                             </Form.Group>
                             <br />
-                            <Button size="tiny" type="submit">Log in</Button>
+                            <Button color="green" type="submit" style={{ width: '8rem', fontSize: '1.25rem' }}>Log in</Button>
                               <br />
                               <br />
-                              <a as="a" onClick={this.forgotPassword.bind(this)} style={{ color: 'white'}}>Forgot Password ?</a>
+                              <a as="a" onClick={this.forgotPassword.bind(this)} style={{ color: 'white', fontSize: '1.3rem' }}>Forgot Password ?</a>
                               <br />
-                              <h6 style={{ color: 'white'}}> Don't have an account yet? &nbsp;
-                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true}); this.setState({password: ''}); }}>  Sign Up</Label>
+                              <h6 style={{ color: 'white', fontSize: '1rem', fontWeight: 'bold' }}> Don't have an account yet? &nbsp;
+                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true}); this.setState({password: ''}); }} style={{ width: '8rem', fontSize: '1.25rem' }}>  Sign Up</Label>
                               </h6>
                           </Form>
                             <Message negative hidden={!this.state.error}>
@@ -457,24 +475,24 @@ export default class TaggerLogin extends Component {
                     { this.state.emailSignup &&
                       <div style={{ marginTope: '-10%'}}>
                           <Form inverted ref={form => this.form = form}>
+                          <h2 style={{ color: 'white', marginTop: '2rem', marginBottom: '2rem' }}><i data-txt="logPassType" className="fa fa-user" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Sign in</h2>
                             <Form.Group widths="equal">
                               <Form.Field>
-                                <label>First Name</label>
+                                <label style={{ fontSize: '1.25rem' }}>First Name</label>
                                 <input ref={(fname) => {this.fname = fname;}} type="text" onChange={this.handleCreateChange.bind(this)} value={this.state.fname} name="fname" placeholder="First Name" />
                               </Form.Field>
                               <Form.Field>
-                                <label>Last name</label>
+                                <label style={{ fontSize: '1.25rem' }}>Last name</label>
                                 <input ref={(lname) => {this.lname = lname;}} type="text" onChange={this.handleCreateChange.bind(this)} value={this.state.lname} name="lname" placeholder="Last Name" />
                               </Form.Field>
                             </Form.Group>
 
                             <Form.Field>
-                              <label>Email</label>
+                              <label style={{ fontSize: '1.25rem' }}>Email</label>
                               <input ref={(email) => {this.email = email;}} type="email" onChange={this.handleCreateChange.bind(this)} value={this.state.email} name="email" placeholder="me@Email.com" />
                             </Form.Field>
                             <Form.Field>
-                              <label>Password</label>
-
+                              <label style={{ fontSize: '1.25rem' }}>Password</label>
                               <i data-txt="passType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
 
                               <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.passType ? "password" : "text"} placeholder="Create a password" />
@@ -482,14 +500,13 @@ export default class TaggerLogin extends Component {
 
                             {/* Re-enter password */}
                             <Form.Field>
-                              <label>Re-enter password</label>
-                              
+                              <label style={{ fontSize: '1.25rem' }}>Re-enter password</label>                              
                               <i data-txt="rePassType" className={'fa' + (this.state.rePassType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
 
                               <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type={this.state.rePassType ? "password" : "text"} placeholder="Re-enter password" />
                             </Form.Field>
 
-                            <Button type="submit" onClick={this.createAccount.bind(this)}>Sign Up</Button>
+                            <Button color="green" type="submit" style={{ width: '8rem', fontSize: '1.25rem' }} onClick={this.createAccount.bind(this)}>Sign Up</Button>
                             <Message negative hidden={!this.state.error} style={{ marginLeft: '20%'}}>
                               <p>{this.state.error}</p>
                             </Message>

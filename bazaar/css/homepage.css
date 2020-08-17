@@ -13,7 +13,7 @@
    Start of custom Webflow CSS
    ========================================================================== */
 body {
-  font-family: Roboto, sans-serif;
+  font-family: Rubik, sans-serif;
   color: #333;
   font-size: 14px;
   line-height: 20px;
@@ -113,7 +113,7 @@ a:hover {
   padding-top: 24px;
   padding-right: 10px;
   padding-left: 10px;
-  font-family: Roboto, sans-serif;
+  font-family: Rubik, sans-serif;
   color: #FFFFFF;
   font-size: 13px;
   font-weight: 500;
@@ -155,14 +155,14 @@ a:hover {
 }
 
 .nav-link.icon {
-  font-family: 'Font Awesome', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 400;
 }
 
 .section-heading {
   margin-top: 0px;
   margin-bottom: 49px;
-  font-family: Roboto, sans-serif;
+  font-family: Rubik, sans-serif;
   color: #2c2c2c;
   font-size: 43px;
   line-height: 62.2px;
@@ -357,7 +357,7 @@ a:hover {
   border-radius: 50px;
   -webkit-transition: all 125ms ease;
   transition: all 125ms ease;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Rubik', sans-serif;
   color: #2c82f7;
   font-size: 13.5px;
   letter-spacing: 0.15px;
