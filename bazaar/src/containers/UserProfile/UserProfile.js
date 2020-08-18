@@ -40,6 +40,7 @@ export default class UserProfile extends Component {
       userProjectStatsOnDate: null,
       date: null,
       enddate: new Date(),
+      activeMenu: 'profile'
     }; 
     
     // FOR BAR CHART

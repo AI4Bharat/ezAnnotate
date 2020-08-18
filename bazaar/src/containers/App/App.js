@@ -307,7 +307,8 @@ export default class App extends Component {
     }
   } 
 
-  goToUserProfile = (uid, event) => {
+  goToUserProfile = (uid, event, {name}) => {
+    this.setState({ activeMenu: name});
     this.props.pushState('/profile/'+uid);
   }
   
@@ -425,7 +426,7 @@ export default class App extends Component {
           </div>
         
             <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
-            <Menu.Item name="profile" onClick={this.goToUserProfile.bind(this,user.uid) }>
+            <Menu.Item name="profile" style={{ padding: '2rem' }} onClick={this.goToUserProfile.bind(this,user.uid) } active={activeMenu === 'profile'}>
               <div className="text-center">
                 {!this.props.menuHidden &&
                 <p style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> 
@@ -450,34 +451,38 @@ export default class App extends Component {
                   }
                   </span>
                 }
-
-                <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', margin: '1em 0', padding: '0' }}></div>
               </div>
             </Menu.Item>
-           </Menu>
+          
+            {/* divider div */}
+            <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', padding: '0.1rem' }}></div>
 
-          <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
             <Menu.Item name="home" style={{ padding: '2rem' }}
-                  active={activeMenu === 'projects'}
+                  active={activeMenu === 'projects' || activeMenu === 'home'}
                   onClick={this.selectMenu}>
               {/* <Icon name="home" color="blue" /> */}
               {!this.props.menuHidden && <h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> <i aria-hidden="true" className="fa fa-home" style={{ marginRight: '0.5rem' }}></i>Home </h7>}
 
               {this.props.menuHidden && <span style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> <i aria-hidden="true" className="fa fa-home" style={{ marginRight: '0.5rem' }}></i> </span>}
             </Menu.Item>
-            <Menu.Item name="create" active={activeMenu === 'create'} href={'/projects/create'} onClick={this.selectMenu}>
+            
+            <Menu.Item name="create" style={{ padding: '2rem' }} active={activeMenu === 'create'} href={'/projects/create'} onClick={this.selectMenu}>
               {/* <Icon name="plus" color="blue" /> */}
               {!this.props.menuHidden && <h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}><i aria-hidden="true" className="fa fa-plus" style={{ marginRight: '0.5rem' }}></i>Create Dataset </h7>}
 
               {this.props.menuHidden && <span style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}><i aria-hidden="true" className="fa fa-plus" style={{ marginRight: '0.5rem' }}></i> </span>}
             </Menu.Item>
-                  { this.props.plan && !this.props.menuHidden &&
-                    <div>
-                    <Button primary onClick={ () => { this.setState({ apiKeyModal: true }); getAPIKey(this.apiKeyFetched.bind(this));}}>
-                      Get API Key
-                    </Button>
-                  </div>}
-              <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', margin: '1em 0', padding: '0' }}></div>
+
+            { this.props.plan && !this.props.menuHidden &&
+              <div style={{ padding: '2rem' }}>
+                <Button style={{ width: '12rem', fontSize: '1.25rem', padding: '1.5rem' }} primary onClick={ () => { this.setState({ apiKeyModal: true }); getAPIKey(this.apiKeyFetched.bind(this));}}>
+                Get API Key
+                </Button>
+              </div>
+            }
+            
+            {/* divider div */}
+            <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', margin: '1em 0', padding: '0' }}></div>
 
           {/* { !this.props.menuHidden && this.props.labelsAllowed &&
           <div>
@@ -504,17 +509,35 @@ export default class App extends Component {
           </div>
           } */}
 
-            <br />
-                {!this.props.menuHidden &&
-                  <Menu.Item className={projectMenuClass} style={{ padding: '2%' }}>
-                    <Menu.Header><h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold', marginLeft: '7rem' }}> Datasets </h7> </Menu.Header>
+            {!this.props.menuHidden &&
+              <Menu.Item className={projectMenuClass} style={{ padding: '1rem' }}>
+                <Menu.Header><h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold', marginLeft: '6rem', paddingBottom: '1rem' }}><i aria-hidden="true" className="fa fa-database" style={{ marginRight: '0.5rem' }}></i>Datasets </h7> </Menu.Header>
 
-                    <Menu.Menu id="datasetmenu" style={{ padding: '2%', color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}>
-                      {projectArray}
-                    </Menu.Menu>
-                  </Menu.Item>
-                }
-            </Menu>
+                <Menu.Menu id="datasetmenu" style={{ padding: '2%', color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.35rem', fontWeight: 'bold', width: '21.5rem' }}>
+                  {projectArray}
+                </Menu.Menu>
+              </Menu.Item>
+            }
+          </Menu>
+
+          <style>{"\
+            a.item:hover{\
+              background-color: #487596 !important;\
+            }\
+            a.active{\
+              background-color: #1678C2 !important;\
+            }\
+            div#datasetmenu a{\
+              color: rgb(255 255 255);\
+              padding: 1rem;\
+              margin-left: 0.9rem !important;\
+              width: 98%;\
+              padding: 1.5rem;\
+            }\
+            div#datasetmenu a:hover{\
+              background-color: #487596 !important;\
+            }\
+          "}</style>
         </Segment>
       }
 
