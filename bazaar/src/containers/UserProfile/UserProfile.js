@@ -294,17 +294,38 @@ export default class UserProfile extends Component {
     return <tbody>{arrs}</tbody>;
   };
 
+  componentDidMount() {
+    /**
+     * Page layout level designs goes here
+     */
+    // Set profile page background
+    $(document).ready(function(){
+      $('#back-img-area').css({ backgroundImage:  'none' });
+      $('body').css({overflow: 'auto'});
+      $('#datasetmenu').children().css({ 
+        padding: '2%', 
+        color: 'white !important', 
+        fontSize: '1rem', 
+      });
+    });
+    // Layout Design END
+  }
+
   render(){
     return(
       <div>
+        <div id="back-img-dflt"></div>
         <Helmet title="My Profile" />
+
+        {/* User Details Section */}
         <div className="text-center">
-          <h2 style={{ paddingTop:"1em" }}> {this.state.fullName} </h2>
-          { this.state.userEmail &&
-          <p> {this.state.userEmail} </p>}
+          <div style={{ backgroundColor: '#EEEEEE', width: '99%', marginLeft: '0.5rem', marginBottom: '2rem', padding: '1rem' }}>
+            <h2 style={{ paddingTop: '0.5em', fontSize: '2.5rem' }}> <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.fullName} </h2>
+            { this.state.userEmail &&
+            <p style={{ fontSize: '1.75rem', fontWeight: 'bold' }}> <i className="fa fa-envelope-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.userEmail} </p>}
+          </div>
         </div>
-        <br/>
-        <br/>
+
         { this.state && 
           this.state.userProjectStats &&
           this.state.userProjectStats.length > 0 && (

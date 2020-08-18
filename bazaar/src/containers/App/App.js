@@ -181,7 +181,7 @@ export default class App extends Component {
 
     $(document).ready(function(){
       if(!$("#back-img-dflt").length) {
-        // Set login page backgdount
+        // Set landing page background
         $('#back-img-area').css({
           backgroundImage:  'url(' + anBckImg + ')',
           backgroundRepeat: 'no-repeat', 

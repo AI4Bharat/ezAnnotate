@@ -392,7 +392,7 @@ export default class TaggerLogin extends Component {
 
   componentDidMount() {
     $(document).ready(function(){
-      // Set login page backgdount
+      // Set login page background
       $('#back-img-area').css({
         backgroundImage:  'url(' + anBckImg + ')',
         backgroundRepeat: 'no-repeat', 

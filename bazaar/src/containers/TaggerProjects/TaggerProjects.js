@@ -69,7 +69,7 @@ export default class TaggerProjects extends Component {
     /**
      * Page layout level designs goes here
      */
-    // Set login page backgdount
+    // Set project list page backgrount
     $(document).ready(function(){
       $('#back-img-area').css({ backgroundImage:  'none' });
       $('body').css({overflow: 'auto'});
