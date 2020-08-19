@@ -1861,11 +1861,11 @@ export default class TaggerOrgProject extends Component {
         {this.state.showDeleteConfirmation && (
           <div>
             <Modal.Dialog>
-              <Modal.Header>
-                <Modal.Title>Delete Project</Modal.Title>
+              <Modal.Header style={{ backgroundColor: '#373A3C', color: 'white' }}>
+                <Modal.Title style={{ fontSize: '1.25rem' }}>Delete Project</Modal.Title>
               </Modal.Header>
 
-              <Modal.Body>
+              <Modal.Body style={{ fontSize: '1.25rem' }}>
                 Once deleted we would not be able to recover the data. Please
                 make sure you have a backup at your end for all the data.
               </Modal.Body>
@@ -1874,6 +1874,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.setState({ showDeleteConfirmation: false });
                   }}
+                  style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}
                 >
                   Close
                 </Button>
@@ -1882,6 +1883,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.deleteProject().bind(this);
                   }}
+                  style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}
                 >
                   Delete
                 </Button>
@@ -1892,14 +1894,14 @@ export default class TaggerOrgProject extends Component {
         {successModal && (
           <div className="static-modal" style={{ marginTop: "50px" }}>
             <Modal.Dialog>
-              <Modal.Header>
-                <Modal.Title>Success</Modal.Title>
+              <Modal.Header style={{ backgroundColor: '#373A3C', color: 'white' }}>
+                <Modal.Title style={{ fontSize: '1.25rem' }}>Success</Modal.Title>
               </Modal.Header>
 
-              <Modal.Body>{this.state.successMessage}</Modal.Body>
+              <Modal.Body style={{ fontSize: '1.25rem' }}>{this.state.successMessage}</Modal.Body>
 
               <Modal.Footer>
-                <Button bsStyle="success" onClick={this.close}>
+                <Button bsStyle="success" onClick={this.close} style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}>
                   Close
                 </Button>
               </Modal.Footer>
