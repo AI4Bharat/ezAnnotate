@@ -106,13 +106,13 @@ export default class TaggerProjects extends Component {
         overviewClass = '';
       }
       arrs.push(
-        <Card raised blue key={index} style={{ width: '35%', marginLeft: '5%', marginRight: '5%', marginBottom: '5%' }}>
+        <Card raised blue key={index} style={{ width: '40%', marginLeft: '5%', marginRight: '5%', marginBottom: '5%' }}>
                           <Card.Content extra onClick={this.openProject} style={{ cursor: 'pointer'}} onClick={this.openStats.bind(this, 'stats', projects[index].projectDetails.orgName, projects[index].projectDetails.name)}>
                         { projects[index].role === 'OWNER' &&
-                          <Label size="mini" attached="top left" > Owner </Label>
+                          <Label size="mini" attached="top left" style={{padding: '1rem', fontSize: '1rem' }}> Owner </Label>
                         }
                         { projects[index].role === 'OWNER' &&
-                          <Label icon size="mini" attached="top right" style={{ width: '10%', background: 'white'}}>
+                          <Label icon size="mini" attached="top right" style={{ background: 'white'}}>
                             <Menu secondary>
                               <Dropdown icon="ellipsis horizontal">
                                 <Dropdown.Menu>
@@ -122,29 +122,29 @@ export default class TaggerProjects extends Component {
                             </Menu>
                           </Label>
                         }
-                            <Card.Header>
+                            <Card.Header style={{ fontSize: '1.5rem' }}>
                               {projects[index].projectDetails.name}
                             </Card.Header>
                             <Card.Meta className="marginTop">
                               { projects[index].projectDetails.visibility_type &&
-                                <Label size="mini" inverted style={{ width: '20%', background: '#a1bccc', color: 'white'}}> {projects[index].projectDetails.visibility_type} </Label>
+                                <Label size="mini" inverted style={{ width: '20%', background: '#a1bccc', color: 'white', fontSize: '1rem', padding: '0.75rem', marginTop: '0.5rem', color: '#000000' }}> {projects[index].projectDetails.visibility_type} </Label>
                               }
-                              <br />
-                              <span className="date">
+                             
+                              <div className="date" style={{ fontSize: '1.1rem', marginTop: '0.5rem', color: '#000000' }}>
                                 {taskTypeMap[projects[index].projectDetails.task_type]}
-                              </span>
+                              </div>
                             </Card.Meta>
-                            <Card.Description>
-                                <Progress style={{ marginBottom: '1em', fontSize: '0.75rem'}} precision={0} color="olive" indicating progress percent={projects[index].projectDetails.totalHits === 0 ? 0 : (projects[index].projectDetails.totalHitsDone * 100) / projects[index].projectDetails.totalHits} />
+                            <Card.Description style={{ width: '102%' }}>
+                                <Progress style={{ marginBottom: '1em', fontSize: '1rem', height: '3rem' }} precision={0} color="olive" indicating progress percent={projects[index].projectDetails.totalHits === 0 ? 0 : (projects[index].projectDetails.totalHitsDone * 100) / projects[index].projectDetails.totalHits} />
                                 {projects[index].projectDetails.totalHitsDone} / {projects[index].projectDetails.totalHits}
                             </Card.Description>
                           </Card.Content>
-                          <Card.Content extra>
-                              <Button primary name="posT" style={{ width: '9rem', fontSize: '1.25rem' }} onClick={this.openStats.bind(this, 'stats', projects[index].projectDetails.orgName, projects[index].projectDetails.name)} className={overviewClass}>
-                              Overview
+                          <Card.Content extra style={{ backgroundColor: '#373A3C' }}>
+                              <Button positive name="posT" style={{ width: '100%', height: '100%', fontSize: '1.25rem', backgroundColor: '#373A3C' }} onClick={this.openStats.bind(this, 'stats', projects[index].projectDetails.orgName, projects[index].projectDetails.name)} className={overviewClass}>
+                              Click to see Overview
                               </Button>
                             { !tagButtonHidden &&
-                              <Button color="teal" className="pull-right" name="posT1" size="mini" onClick={this.openStats.bind(this, 'tag', projects[index].projectDetails.orgName, projects[index].projectDetails.name)}>
+                              <Button color="teal" className="pull-right" name="posT1" size="mini" onClick={this.openStats.bind(this, 'tag', projects[index].projectDetails.orgName, projects[index].projectDetails.name)} style={{ fontSize: '1.25rem', backgroundColor: '#373A3C !important' }}>
                               { (projects[index].projectDetails.task_type === POS_TAGGING || projects[index].projectDetails.task_type === DOCUMENT_ANNOTATION ||
                                 projects[index].projectDetails.task_type === POS_TAGGING_GENERIC)
                                 && 'Start Tagging'
@@ -242,17 +242,19 @@ export default class TaggerProjects extends Component {
       <div className="taggerPages">
         <div id="back-img-dflt"></div>
           <Helmet title="My Projects" />
-                          <div className="text-center">
-                          <Button style={{ width: '9rem', fontSize: '1.25rem' }} loading={this.state.loading} positive className="pull-right" onClick={() => this.loadProjectDetails(true)} compact><Icon name="refresh" loading={this.state.loading} />Refresh</Button>
-                            <h2>My Projects</h2>
-                            <br />
+            <div className="text-center">
+              <div style={{ backgroundColor: '#EEEEEE', width: '104%', marginBottom: '2rem', padding: '1rem', marginTop: '-1rem' }}>
+                <h2 style={{ paddingTop: '0.5em', fontSize: '2.5rem' }}> <i className="fa fa-file-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>My Projects</h2>
 
-                            {
-                              (this.state.labelsDone > this.state.labelsAllowed || this.state.hasSubscriptionExpired) &&
-                                <div className="text-center" style={{ marginBottom: '40px' }}>
-                                  <Message negative style={{ marginTop: '-60px' }} size="mini">
-                                    <Message.Header>Your account needs renewal, please contact <u>
-                                    contact@dataturks.com </u></Message.Header>
+                <Button primary style={{ width: '9rem', fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }} loading={this.state.loading} className="pull-right" onClick={() => this.loadProjectDetails(true)} compact><Icon name="refresh" loading={this.state.loading} />Refresh</Button>
+              </div>
+
+              {
+                (this.state.labelsDone > this.state.labelsAllowed || this.state.hasSubscriptionExpired) &&
+                  <div className="text-center" style={{ marginBottom: '40px' }}>
+                    <Message negative style={{ marginTop: '-60px' }} size="mini">
+                      <Message.Header>Your account needs renewal, please contact <u>
+                      contact@dataturks.com </u></Message.Header>
               <div className="text-center">
                 <p> Labels Used </p>
                 <Label> {this.state.labelsDone} </Label>
@@ -294,6 +296,11 @@ export default class TaggerProjects extends Component {
                           </div>
                       }
 
+        <style>{"\
+          div.bar{\
+            height: 100% !important;\
+          }\
+        "}</style>
       </div>
 
     );

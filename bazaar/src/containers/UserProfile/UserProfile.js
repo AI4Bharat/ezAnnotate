@@ -319,7 +319,7 @@ export default class UserProfile extends Component {
 
         {/* User Details Section */}
         <div className="text-center">
-          <div style={{ backgroundColor: '#EEEEEE', width: '99%', marginLeft: '0.5rem', marginBottom: '2rem', padding: '1rem' }}>
+          <div style={{ backgroundColor: '#EEEEEE', width: '98%', marginLeft: '1rem', marginBottom: '2rem', padding: '1rem' }}>
             <h2 style={{ paddingTop: '0.5em', fontSize: '2.5rem' }}> <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.fullName} </h2>
             { this.state.userEmail &&
             <p style={{ fontSize: '1.75rem', fontWeight: 'bold' }}> <i className="fa fa-envelope-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.userEmail} </p>}
@@ -340,7 +340,7 @@ export default class UserProfile extends Component {
               >
                 <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                   <Icon name="line chart" />
-                  <Header.Content style={{ marginLeft: '19rem' }}>Projects Stats</Header.Content>
+                  <Header.Content style={{ marginLeft: '15%' }}>Projects Stats</Header.Content>
                 </Header>
                 <Table striped bordered condensed hover responsive>
                   <thead>
@@ -373,7 +373,7 @@ export default class UserProfile extends Component {
               >
                   <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', fontSize: '1.75rem' }}>
                     <Icon name="line chart" style={{ color: 'rgb(255 255 255)' }} />
-                    <Header.Content style={{ marginLeft: '19rem' }}> 
+                    <Header.Content style={{ marginLeft: '15%' }}> 
                       <span style={{ color: 'rgb(255 255 255)' }}>Projects Stats for date from</span>  
                       <DatePicker
                       onChange={this.onChangeDate}
