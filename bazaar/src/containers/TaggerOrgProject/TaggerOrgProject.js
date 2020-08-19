@@ -745,13 +745,13 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
             </Button>
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -863,7 +863,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -871,7 +871,7 @@ export default class TaggerOrgProject extends Component {
           </div>
           <div className="col-md-6">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -912,7 +912,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -921,7 +921,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1005,7 +1005,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1014,7 +1014,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1127,7 +1127,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1136,7 +1136,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1220,7 +1220,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1229,7 +1229,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1317,7 +1317,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1326,7 +1326,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1402,7 +1402,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1411,7 +1411,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1579,7 +1579,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
-              style={{ width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1588,7 +1588,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6">
             <Button
-              style={{ float: 'right', width: '25%', fontSize: '1.25rem', padding: '1rem' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1751,7 +1751,7 @@ export default class TaggerOrgProject extends Component {
                     labeled
                     button
                     className="icon mini primary"
-                    style={{ width: '100%', fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}
+                    style={{ width: '100%', fontSize: '1.25rem', padding: '1rem' }}
                   >
                     <Dropdown.Menu style={{ marginLeft: '-3.75rem', marginTop: '0.25rem' }}>
                       <Dropdown.Item
@@ -1874,7 +1874,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.setState({ showDeleteConfirmation: false });
                   }}
-                  style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}
+                  style={{ fontSize: '1.25rem', padding: '1rem' }}
                 >
                   Close
                 </Button>
@@ -1883,7 +1883,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.deleteProject().bind(this);
                   }}
-                  style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}
+                  style={{ fontSize: '1.25rem', padding: '1rem' }}
                 >
                   Delete
                 </Button>
@@ -1901,7 +1901,7 @@ export default class TaggerOrgProject extends Component {
               <Modal.Body style={{ fontSize: '1.25rem' }}>{this.state.successMessage}</Modal.Body>
 
               <Modal.Footer>
-                <Button bsStyle="success" onClick={this.close} style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}>
+                <Button bsStyle="success" onClick={this.close} style={{ fontSize: '1.25rem', padding: '1rem' }}>
                   Close
                 </Button>
               </Modal.Footer>
@@ -2217,7 +2217,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
@@ -2232,7 +2232,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
@@ -2247,7 +2247,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 <h3> Entities </h3>
@@ -2268,7 +2268,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 <h3> Entities </h3>
@@ -2288,7 +2288,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2312,7 +2312,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2335,7 +2335,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2358,7 +2358,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2381,7 +2381,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2406,7 +2406,7 @@ export default class TaggerOrgProject extends Component {
             <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
               <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content style={{ marginLeft: '15%' }}>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 basic

@@ -1145,9 +1145,9 @@ export default class TaggerSpace extends Component {
       const status = hit.status;
       return (
         <div>
-            {fileName && <Label title="File Name" size="medium">{fileName}</Label>}
-            {status && <Label title="HIT status" style={{ textTransform: 'capitalize' }} size="medium">{hitStateNameMap[status]}</Label>}
-            {<Label title="Done Counter" style={{ textTransform: 'capitalize' }} size="medium">{'Currently Done: ' + (this.state.hitIDsDone.size)}</Label>}
+            {fileName && <Label title="File Name" size="medium" style={{ width: '10rem', backgroundColor: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem', marginLeft: '0.5rem' }} >{fileName}</Label>}
+            {status && <Label title="HIT status" style={{ textTransform: 'capitalize', width: '14rem', backgroundColor: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem', marginTop: '0.5rem', marginLeft: '0.5rem' }} size="medium">{hitStateNameMap[status]}</Label>}
+            {<Label title="Done Counter" style={{ textTransform: 'capitalize', width: '10rem', backgroundColor: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem', marginTop: '0.5rem', marginLeft: '0.5rem' }} size="medium">{'Currently Done: ' + (this.state.hitIDsDone.size)}</Label>}
         </div>
       );
     }
@@ -2450,14 +2450,14 @@ export default class TaggerSpace extends Component {
     console.log("show text", this.state);
     return (
       <div>
-        <label> Source Text </label>
+        <label style={{ fontSize: '1.25rem' }}> Source Text </label>
         <div className={styles.tagArea}>
           <p className={styles.textStyle}>{srcTxt}</p>
         </div>
         <br />
         { dataArr.length > 2 &&
         <div>
-          <label> Uncorrected Translation </label>
+          <label style={{ fontSize: '1.25rem' }}> Uncorrected Translation </label>
           <div className={styles.tagArea}>
             <p className={styles.textStyle}>{dataArr[2]}</p>
           </div>
@@ -2605,12 +2605,13 @@ export default class TaggerSpace extends Component {
             <Button 
             type="button"
             size="medium"
-            color="blue"
+            color="teal"
             icon
             onClick={this.addNewTextBox.bind(this)}
+            style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
-            <Icon name="add square"/>
-            {addMoreButtonName}
+              <Icon name="add square"/>
+              {addMoreButtonName}
             </Button>
         </form>
       );
@@ -3342,6 +3343,7 @@ export default class TaggerSpace extends Component {
               color="blue"
               icon
               onClick={this.moveToDone.bind(this, "moveToDone")}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="save" />
               Mark as Done
@@ -3359,6 +3361,7 @@ export default class TaggerSpace extends Component {
               title="Mark as skipped"
               icon
               onClick={this.moveToSkip.bind(this)}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="mail forward" />
               Mark as Skipped
@@ -3497,6 +3500,7 @@ export default class TaggerSpace extends Component {
             loading={this.state.loading}
             onClick={this.nextRow.bind(this, 'previous')}
             disabled={this.state.currentIndex <= 0}
+            style={{ fontSize: '1.25rem', padding: '1rem' }}
           >
             <Icon name="left arrow" />
           </Button>
@@ -3509,6 +3513,7 @@ export default class TaggerSpace extends Component {
               loading={this.state.loading}
               onClick={this.saveElement.bind(this)}
               disabled={this.state.currentIndex < 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="save" />
             </Button>
@@ -3521,6 +3526,7 @@ export default class TaggerSpace extends Component {
               loading={this.state.loading}
               onClick={this.skipRow}
               disabled={this.state.currentIndex < 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="mail forward" />
             </Button>
@@ -3621,6 +3627,7 @@ export default class TaggerSpace extends Component {
               compact
               onClick={this.getBackTopreviousRow}
               disabled={this.state.currentIndex <= 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -3654,6 +3661,7 @@ export default class TaggerSpace extends Component {
             icon
             labelPosition="left"
             onClick={this.moveToDone.bind(this, "saveToDone")}
+            style={{ fontSize: '1.25rem', padding: '1rem' }}
           >
             <Icon name="save" />
             Move to Done
@@ -3669,6 +3677,7 @@ export default class TaggerSpace extends Component {
             labelPosition="left"
             onClick={this.skipRow}
             disabled={this.state.currentIndex < 0}
+            style={{ fontSize: '1.25rem', padding: '1rem' }}
           >
             <Icon name="mail forward" />
             Skip
@@ -3694,6 +3703,7 @@ export default class TaggerSpace extends Component {
           labelPosition="left"
           onClick={this.getBackTopreviousRow}
           disabled={this.state.currentIndex <= 0}
+          style={{ fontSize: '1.25rem', padding: '1rem' }}
         >
           <Icon name="left arrow" />
           {prevButton}
@@ -3708,6 +3718,7 @@ export default class TaggerSpace extends Component {
           labelPosition="left"
           onClick={this.skipRow}
           disabled={this.state.currentIndex < 0}
+          style={{ fontSize: '1.25rem', padding: '1rem' }}
         >
           <Icon name="mail forward" />
           {skipButton}
@@ -3720,6 +3731,7 @@ export default class TaggerSpace extends Component {
           icon
           labelPosition="left"
           onClick={this.moveToDone.bind(this, "saveToDone")}
+          style={{ fontSize: '1.25rem', padding: '1rem' }}
         >
           <Icon name="save" />
           {moveToDoneButton}
@@ -3847,11 +3859,11 @@ export default class TaggerSpace extends Component {
           onClick={this.handleClick}
         >
           <Icon name="dropdown" />
-          <Label size="medium" style={{ background: "#a9d5de" }}>
+          <Label size="medium" style={{ width: '10rem', background: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem' }}>
             Project Guidelines
           </Label>
         </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
+        <Accordion.Content active={activeIndex === 0} style={{ fontSize: '1.25rem', fontWeight: 'bold', padding: '1rem', marginLeft: '1rem' }}>
           <div
             dangerouslySetInnerHTML={{
               __html: this.state.rules.instructions
@@ -4054,6 +4066,7 @@ export default class TaggerSpace extends Component {
     // const { tagLine } = this.state;
     return (
       <div>
+        <div id="back-img-dflt"></div>
         {!this.props.projectDetails && <Segment basic vertical loading />}
         {this.props.projectDetails && (
           <div style={{ display: "flex", flexDirection: "row" }}>
@@ -4110,8 +4123,9 @@ export default class TaggerSpace extends Component {
                       )
                     }
                     compact
+                    style={{ fontSize: '1.25rem', backgroundColor: '#16AB39', color: 'white' }}
                   >
-                    <Icon color="teal" name="arrow left" />
+                    <Icon color="white" name="arrow left" />
                   </Button>
 
                   <Button
@@ -4124,8 +4138,9 @@ export default class TaggerSpace extends Component {
                       )
                     }
                     compact
+                    style={{ fontSize: '1.25rem', backgroundColor: '#16AB39', color: 'white' }}
                   >
-                    <Icon size="large" name="home" color="teal" />
+                    <Icon size="large" name="home" color="white" />
                   </Button>
               {this.state.type !== HIT_STATE_NOT_DONE && this.props.projectDetails.task_type !== POS_TAGGING && (
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -4268,6 +4283,7 @@ export default class TaggerSpace extends Component {
                               )
                             }
                             compact
+                            style={{ fontSize: '1.25rem', backgroundColor: 'rgb(22, 171, 57)', color: 'white' }}
                           >
                             <Icon
                               aria-label="Keyboard Shortcuts"
@@ -4303,12 +4319,13 @@ export default class TaggerSpace extends Component {
                                   this.setState({ fullScreen: true });
                                 else this.setState({ fullScreen: false });
                               }}
-                            >
+                              style={{ fontSize: '1.25rem', backgroundColor: 'rgb(22, 171, 57)', color: 'white' }}
+                              >
                               {!this.state.fullScreen && (
-                                <Icon color="blue" name="expand" />
+                                <Icon color="white" name="expand" />
                               )}
                               {this.state.fullScreen && (
-                                <Icon color="blue" name="compress" />
+                                <Icon color="white" name="compress" />
                               )}
                             </Button>
                           </OverlayTrigger>

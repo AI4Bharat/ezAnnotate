@@ -100,8 +100,8 @@ export default class TaggerInvite extends Component {
               </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleClose} className="pull-left" style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}>Close</Button>
-            <Button color="green" inverted type="submit" disabled={submitDisabled} onClick={this.handleSubmit} style={{ fontSize: '1.25rem', marginTop: '-4rem', padding: '1rem' }}>
+            <Button onClick={this.handleClose} className="pull-left" style={{ fontSize: '1.25rem', padding: '1rem' }}>Close</Button>
+            <Button color="green" inverted type="submit" disabled={submitDisabled} onClick={this.handleSubmit} style={{ fontSize: '1.25rem', padding: '1rem' }}>
                     <Icon name="checkmark" /> Send Invite
                   </Button>
           </Modal.Footer>
