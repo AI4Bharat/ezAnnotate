@@ -1722,13 +1722,25 @@ export default class TaggerOrgProject extends Component {
               >
                 <div>
                   <Breadcrumb size="big" style={{ fontSize: '1.75rem', marginTop: '-0.5rem', backgroundColor: '#EEEEEE' }}>
-                    <Breadcrumb.Section
+                    {/* <Breadcrumb.Section
                       link
                       as="a"
                       href={"/projects/" + projectDetails.orgName}
                       onClick={event => {
                         this.props.pushState(
                           "/projects/" + projectDetails.orgName
+                        );
+                        event.preventDefault();
+                      }}
+                    > */}
+
+                    <Breadcrumb.Section
+                      link
+                      as="a"
+                      href={"/projects/"}
+                      onClick={event => {
+                        this.props.pushState(
+                          "/projects/"
                         );
                         event.preventDefault();
                       }}
