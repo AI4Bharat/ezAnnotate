@@ -600,7 +600,7 @@ export default class App extends Component {
         <div className="fb-comments" data-href="https://www.facebook.com/Datatrks/" data-numposts="10"></div>
         </div>
         */}
-        <div className="centered footer">
+        <div className="centered footer" style={{ zIndex: '5' }}>
           <div className="footer-links">
             <h4>
               <a target="_blank" href="mailto:contact@ai4bharat.org?subject=Support%20EZAnnotate" className="footer-link w-inline-block">

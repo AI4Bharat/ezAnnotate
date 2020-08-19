@@ -1002,6 +1002,7 @@ export default class TaggerSpace extends Component {
         placeholder="Select State"
         selection
         options={options}
+        style={{ border: '2px solid' }}
       />
     );
   }
@@ -1066,6 +1067,7 @@ export default class TaggerSpace extends Component {
         placeholder="Filter By Evaluation Status"
         selection
         options={options}
+        style={{ border: '2px solid', marginLeft: '0.5rem' }}
       />
     );
   }
@@ -1134,6 +1136,7 @@ export default class TaggerSpace extends Component {
           style={{ display: 'none' }}
           selection
           options={options}
+          style={{ border: '2px solid', marginLeft: '0.5rem' }}
         />
       );
     }
@@ -2450,14 +2453,14 @@ export default class TaggerSpace extends Component {
     console.log("show text", this.state);
     return (
       <div>
-        <label style={{ fontSize: '1.25rem' }}> Source Text </label>
+        <label style={{ fontSize: '1.5rem', marginBottom: '1rem' }}> Source Text </label>
         <div className={styles.tagArea}>
           <p className={styles.textStyle}>{srcTxt}</p>
         </div>
         <br />
         { dataArr.length > 2 &&
         <div>
-          <label style={{ fontSize: '1.25rem' }}> Uncorrected Translation </label>
+          <label style={{ fontSize: '1.5rem', marginBottom: '1rem' }}> Uncorrected Translation </label>
           <div className={styles.tagArea}>
             <p className={styles.textStyle}>{dataArr[2]}</p>
           </div>
@@ -3378,6 +3381,7 @@ export default class TaggerSpace extends Component {
               color="red"
               icon
               onClick={this.deleteItem.bind(this)}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="delete" />
               Delete
@@ -3395,6 +3399,7 @@ export default class TaggerSpace extends Component {
               color="blue"
               icon
               onClick={this.retagHit.bind(this)}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="undo" />
               Requeue
@@ -3417,9 +3422,9 @@ export default class TaggerSpace extends Component {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button.Group size="medium">
-          <Button onClick={this.evaluateHit.bind(this, 'incorrect')} color="blue">Incorrect</Button>
-          <Button.Or />
-          <Button onClick={this.evaluateHit.bind(this, 'correct')} color="blue">Correct</Button>
+          <Button onClick={this.evaluateHit.bind(this, 'incorrect')} color="red" style={{ fontSize: '1.25rem', padding: '1rem' }}>Incorrect</Button>
+          <Button.Or style={{ marginTop: '0.45rem' }} />
+          <Button onClick={this.evaluateHit.bind(this, 'correct')} color="green" style={{ fontSize: '1.25rem', padding: '1rem' }}>Correct</Button>
         </Button.Group>
       </div>
     );
@@ -3993,10 +3998,10 @@ export default class TaggerSpace extends Component {
       return (
                   <div>
                     {this.state.type === "notDone" && (
-                      <Segment color="green" className="marginTopExtra">
+                      <Segment color="green" className="marginTopExtra" style={{ backgroundColor: '#EEEEEE' }}>
                         {this.state.type &&
                           this.state.type === "skipped" && (
-                            <h4>
+                            <h4 style={{ fontSize: '3rem' }}>
                               {" "}
                               All skipped rows are tagged, You can check the
                               project stats.{" "}
@@ -4004,14 +4009,14 @@ export default class TaggerSpace extends Component {
                           )}
                         {this.state.type &&
                           this.state.type !== "skipped" && (
-                            <h4>
+                            <h4 style={{ fontSize: '3rem' }}>
                               {" "}
                               All rows are tagged, You can check the project
                               stats.{" "}
                             </h4>
                           )}
                         {!this.state.type && (
-                          <h4>
+                          <h4 style={{ fontSize: '3rem' }}>
                             {" "}
                             All items are tagged, You can check the project
                             stats.{" "}
@@ -4026,7 +4031,10 @@ export default class TaggerSpace extends Component {
                                 this.props.params.projectName
                             )
                           }
+                          style={{ fontSize: '1.5rem', padding: '1rem', marginTop: '1rem' }}
+                          className="positive"
                         >
+                          <i aria-hidden="true" className="fa fa-check-circle" style={{ marginRight: '0.5rem' }}></i>
                           Show project stats
                         </Button>
                         {/* <div style={{ height: "30px" }} />
@@ -4071,7 +4079,7 @@ export default class TaggerSpace extends Component {
         {this.props.projectDetails && (
           <div style={{ display: "flex", flexDirection: "row" }}>
             {this.state.type !== HIT_STATE_NOT_DONE && this.props.projectDetails.task_type !== POS_TAGGING && (
-              <Segment raised style={{ width: '20%' }}>
+              <Segment raised style={{ width: '22rem' }}>
                 <h4
                   style={{ textTransform: "capitalize", marginTop: "0.5rem" }}
                 >
@@ -4369,7 +4377,7 @@ export default class TaggerSpace extends Component {
                 )}
               {this.state.loading && <Segment loading={this.state.loading} basic vertical />}
                 {this.state.type !== HIT_STATE_NOT_DONE && !this.state.loading && this.props.projectDetails && (
-                  <div className="text-center">{this.state.hits.length === 0 && <h2> No items to display here </h2>}</div>
+                  <div className="text-center" style={{ backgroundColor: '#EEEEEE', padding: '2rem' }}>{this.state.hits.length === 0 && <h2> No items to display here </h2>}</div>
                 )}
 
               {this.state.hits &&
