@@ -133,7 +133,7 @@ export default class TaggerExport extends Component {
                                       
                                       <div className="text-right">
                                         <Breadcrumb size="big" style={{ padding: '1.5rem', backgroundColor: '#16AB39' }}>
-                                          <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')}style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
+                                          <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
                                           <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.props.params.orgName}</Breadcrumb.Section>
                                           <Breadcrumb.Divider style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }} />
                                           <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.5rem', overflowWrap: 'break-word !important', fontWeight: 'bold', color: 'white' }}>
@@ -242,11 +242,6 @@ export default class TaggerExport extends Component {
             font-size: 1.5rem !important;\
             padding-bottom: 1%;\
             float: left;\
-          }\
-          menu.accordion{\
-            font-size: 1.75rem !important;\
-            border: 1px solid;\
-            margin: 1%;\
           }\
           p{\
             font-size: 1.5rem;\
