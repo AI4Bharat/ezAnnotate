@@ -425,7 +425,8 @@ export default class TaggerOrgProject extends Component {
     this.setState({ successModal: false });
     if (this.state.redirectToHome) {
       this.props.pushState({
-        pathname: "/projects/" + this.props.params.orgName
+        // pathname: "/projects/" + this.props.params.orgName
+        pathname: "/projects/"
       });
     }
   };
