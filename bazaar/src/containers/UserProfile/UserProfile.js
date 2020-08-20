@@ -159,7 +159,7 @@ export default class UserProfile extends Component {
         animationEnabled: true,
         exportEnabled: true,
         title: {
-          text: "Projects Stats",
+          text: "",
           fontFamily: "verdana"
         },
         axisY: {
@@ -340,7 +340,7 @@ export default class UserProfile extends Component {
               >
                 <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                   <Icon name="line chart" />
-                  <Header.Content style={{ marginLeft: '15%' }}>Projects Stats</Header.Content>
+                  <Header.Content style={{ width: '100%' }}>Projects Stats</Header.Content>
                 </Header>
                 <Table striped bordered condensed hover responsive>
                   <thead>
@@ -373,7 +373,7 @@ export default class UserProfile extends Component {
               >
                   <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', fontSize: '1.75rem' }}>
                     <Icon name="line chart" style={{ color: 'rgb(255 255 255)' }} />
-                    <Header.Content style={{ marginLeft: '15%' }}> 
+                    <Header.Content style={{ width: '90%', marginLeft: '5%' }}> 
                       <span style={{ color: 'rgb(255 255 255)' }}>Projects Stats for date from</span>  
                       <DatePicker
                       onChange={this.onChangeDate}
@@ -412,15 +412,21 @@ export default class UserProfile extends Component {
                 style={{ width: "98%" }}
                 centered
             >
+                <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', fontSize: '1.75rem' }}>
+                  <Icon name="line chart" style={{ color: 'rgb(255 255 255)' }} />
+                  <Header.Content style={{ width: '100%' }}> 
+                    <span style={{ color: 'rgb(255 255 255)' }}>Project Stat Chart</span> 
+                    <div className="pull-right" title="Reset Chart" onClick={event => {
+                      this.resetChart(this.state.userProjectStats);
+                      event.preventDefault();
+                    }} style={{ color: 'white', cursor: 'pointer' }}>
+                      <Icon name="refresh" />
+                    </div>
+                  </Header.Content>
+                </Header>
+
               {this.state.userProjectStats && this.state.userProjectStats.length > 0 &&(
-                <div>
-                  <Button as="a" title="Reset Chart" primary size="mini" onClick={event => {
-                    this.resetChart(this.state.userProjectStats);
-                    event.preventDefault();
-                  }} style={{ margin: '1rem 107rem', marginBottom: '1rem', width: '5rem', height: '4rem' }}>
-                    <Icon name="refresh" style={{ fontSize: '2rem', padding: '1rem' }} />
-                  </Button>
-                
+                <div style={{ marginTop: '2%' }}>
                   <CanvasJSChart options = {window.chartOptions} onRef={ref => this.chart = ref} />
                 </div>
               )}

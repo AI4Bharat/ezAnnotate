@@ -1467,6 +1467,11 @@ public class Controlcenter {
 
         for (DProjectUsers userProject : userProjects) {
             DProjects project = AppConfig.getInstance().getdProjectsDAO().findByIdInternal(userProject.getProjectId());
+
+            if(project == null) {
+                continue;
+            }
+            
             ProjectsPerUser record = new ProjectsPerUser(project);
             List<DHitsResult> results = AppConfig.getInstance().getdHitsResultDAO()
                     .findAllByUserIdAndProjectIdInternal(userId, project.getId());
