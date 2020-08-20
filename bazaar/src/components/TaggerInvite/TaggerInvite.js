@@ -79,7 +79,7 @@ export default class TaggerInvite extends Component {
               <br />
               <br />
               Admins have all permissions: modify or add data to the project, and add other contributors.
-              <Form size="small" key="import">
+              <Form size="big" key="import" style={{ marginTop: '5%' }}>
                 <Form.Field id="tags" onChange={this.handleChange.bind(this, 'tags')} label="Email" control="input" type="email" placeholder="Enter email id" />
                     <Form.Field>
                       <Checkbox 
