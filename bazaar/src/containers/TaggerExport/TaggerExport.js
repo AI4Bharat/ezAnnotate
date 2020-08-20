@@ -122,28 +122,33 @@ export default class TaggerExport extends Component {
     const { itemOption, downloadFormat } = this.state;
     return (
       <div className="taggerPages">
+        <div id="back-img-dflt"></div>
           <Helmet title="Export Data" />
                       {
                           <div className="text-center">
                               {
                                   <div>
-                                    <Segment basic size="large" loading={this.state.loading}>
-                                      <Button className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} compact><Icon name="arrow left" />Project</Button>
-                                          <div className="text-center">
-                                            <Breadcrumb size="big">
-                                              <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>{this.props.params.orgName}</Breadcrumb.Section>
-                                              <Breadcrumb.Divider />
-                                              <Breadcrumb.Section active link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)}>
-                                                {this.props.params.projectName}
-                                              </Breadcrumb.Section>
-                                            </Breadcrumb>
-                                          </div>
+                                    <Segment basic size="large" loading={this.state.loading} style={{ backgroundColor: '#EEEEEE' }}>
+                                      <Button color="green" className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ fontSize: '1.25rem', padding: '1.5rem' }}><Icon name="arrow left" />Project</Button>
+                                      
+                                      <div className="text-right">
+                                        <Breadcrumb size="big" style={{ padding: '1.5rem', backgroundColor: '#16AB39' }}>
+                                          <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')}style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
+                                          <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.props.params.orgName}</Breadcrumb.Section>
+                                          <Breadcrumb.Divider style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }} />
+                                          <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.5rem', overflowWrap: 'break-word !important', fontWeight: 'bold', color: 'white' }}>
+                                            {this.props.params.projectName}
+                                          </Breadcrumb.Section>
+                                        </Breadcrumb>
+                                      </div>
                                    </Segment>
                                   </div>
                               }
-                            <h1>Export Data</h1>
-                              <Segment basic size="mini" padded compact loading={this.state.loading}>
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                            
+                            <h1 style={{ backgroundColor: '#EEEEEE', marginBottom: '2rem', padding: '0.5em 1rem 2rem', fontSize: '2.5rem' }}> <i className="fa fa-cloud-download" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Export Data</h1>
+                            
+                              <Segment basic size="mini" padded compact loading={this.state.loading} style={{ backgroundColor: '#EEEEEE', padding: '2%' }}>
+                              <Form size="big" key="import1" loading={this.state.loading} compact>
 {/*                                <Label color="white" size="large"> Options </Label>
                                 <Select name="itemOption" placeholder="Download tagged or all" defaultValue="TAGGED" options={outputDwnldOptions} onChange={this.handleChange} /> */}
                                     <Form.Group inline style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
@@ -159,7 +164,7 @@ export default class TaggerExport extends Component {
                                 </Popup>
                                  <Select name="format" defaultValue="text" placeholder="Output format .." options={outputFormatOptions} onChange={this.handleChange2} /> */}
 
-                                <br />
+                                
                                 { this.props.projectDetails && this.props.projectDetails.task_type === IMAGE_CLASSIFICATION &&
                                 <p>Download file would be a text file where each line is a JSON containing the image URL and the classes marked for the image.</p>
                                 }
@@ -202,7 +207,7 @@ export default class TaggerExport extends Component {
                                   </div>
                                 }
                                 <br />
-                                <Button primary size="mini" onClick={this.downloadFile}>
+                                <Button primary onClick={this.downloadFile} style={{ fontSize: '1.25rem', padding: '1.5rem' }}>
                                   Download file
                                 </Button>
                                 <br />
@@ -228,6 +233,26 @@ export default class TaggerExport extends Component {
                               </Segment>
                           </div>
                       }
+
+        <style>{"\
+          div.field{\
+            padding: 1%;\
+          }\
+          div.field label{\
+            font-size: 1.5rem !important;\
+            padding-bottom: 1%;\
+            float: left;\
+          }\
+          menu.accordion{\
+            font-size: 1.75rem !important;\
+            border: 1px solid;\
+            margin: 1%;\
+          }\
+          p{\
+            font-size: 1.5rem;\
+            padding: 2%;\
+          }\
+        "}</style>
 
       </div>
     );
