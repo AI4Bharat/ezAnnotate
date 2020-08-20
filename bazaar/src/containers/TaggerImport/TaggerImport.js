@@ -299,7 +299,7 @@ export default class TaggerImport extends Component {
       submitDisabled = true;
     }
     const styles = require('./TaggerImport.scss');
-    const inputWidth = { width: '50%'};
+    const inputWidth = { width: '100%', border: '1px solid' };
     let placeholder = 'Tagging guidelines for your team. Ex: Mark all place names as City';
     if (type === TEXT_CLASSIFICATION || type === SENTENCE_PAIR_CLASSIFIER || type === IMAGE_CLASSIFICATION || type === VIDEO_CLASSIFICATION) {
       placeholder = 'Classification guidelines for your team. Ex: Mark all 1 star review as negative';
@@ -402,7 +402,8 @@ export default class TaggerImport extends Component {
       </div>
     );
     return (
-      <div className={styles.loginPage + ' container text-center'} style={{ marginTop: '20px' }}>
+      <div className={styles.loginPage + ' container text-center'} style={{ marginTop: '20px', width: '100%' }}>
+        <div id="back-img-dflt"></div>
           <Helmet title="Create Dataset" />
                       {
                           <div>
@@ -482,13 +483,10 @@ export default class TaggerImport extends Component {
                             {
                                 !this.state.projectCreationComplete && !this.props.projectCreated &&
                             <div>
-                                  <h1>Create Dataset</h1>
-                              <br />
-                              <br />
+                                  <h1 style={{ backgroundColor: '#EEEEEE', width: '100%', marginBottom: '2rem', padding: '0.5em 1rem 2rem', fontSize: '2.5rem' }}> <i className="fa fa-database" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Create Dataset</h1>
 
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
-                                    <Form.Input style={inputWidth} id="project_name" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'project_name')} label="Dataset Name" control="input" type="text" value={this.state.fields.project_name} placeholder={namePlaceHolder} />
-                                <br />
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: '#EEEEEE', padding: '2%' }}>
+                                <Form.Input style={inputWidth} id="project_name" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'project_name')} label="Dataset Name" control="input" type="text" value={this.state.fields.project_name} placeholder={namePlaceHolder} />
 
                                     { (type === IMAGE_CLASSIFICATION || type === VIDEO_CLASSIFICATION || type === POS_TAGGING || type === DOCUMENT_ANNOTATION || type === POS_TAGGING_GENERIC ||  type === TEXT_CLASSIFICATION || type === SENTENCE_PAIR_CLASSIFIER || type === IMAGE_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX_V2 || type === VIDEO_BOUNDING_BOX) &&
                                       <div>
@@ -509,7 +507,7 @@ export default class TaggerImport extends Component {
                                     }
                                 <br />
                                     <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} value={this.state.fields.instructions} label="Tagging Instruction" control="TextArea" placeholder={placeholder} />
-                                <br />
+                                
 
                                     { (type === IMAGE_BOUNDING_BOX) &&
                                         <Accordion as="Menu">
@@ -553,30 +551,30 @@ export default class TaggerImport extends Component {
                               </Accordion>
                               }
 
-                              <br />
+                              
 
                                   { (type === POS_TAGGING_GENERIC || type === DOCUMENT_ANNOTATION ) &&
-                                <div style={{ position: 'relative', marginLeft: '25%', marginRight: '25%' }} className="ui well">
+                                <div style={{ margin: '1%', border: '1px solid' }} className="ui well">
                                   { (this.state.addClassificationGroup && (this.state.fields.classification_name.length === 0 && this.state.fields.classification_classes.length === 0)) &&
-                                    <Label as="a" icon size="mini" onClick={() => this.setState({ addClassificationGroup: false })}>
-                                      <Icon color="blue" size="small" name="minus circle" /> Hide Classification
+                                    <Label as="a" icon onClick={() => this.setState({ addClassificationGroup: false })} style={{ fontSize: '1.25rem', padding: '1rem', float: 'right' }} color="red">
+                                      <Icon color="white" name="minus circle" /> Remove Classification
                                     </Label>
                                   }
 
                                   { ((this.state.fields.classification_name.length > 0 && this.state.fields.classification_classes.length > 0)) &&
-                                    <Label attached="top left" as="a" icon size="mini" onClick={() => { this.setState({ addClassificationGroup: false }); this.resetClassification();}}>
-                                      <Icon color="blue" size="small" name="minus circle" /> Remove Classification
+                                    <Label as="a" icon onClick={() => { this.setState({ addClassificationGroup: false }); this.resetClassification();}} style={{ fontSize: '1.25rem', padding: '1rem', float: 'right' }} color="red">
+                                      <Icon color="white" size="small" name="minus circle" /> Remove Classification
                                     </Label>
                                   }
-                                  <br />
+                                  
                                   { (!this.state.addClassificationGroup && this.state.fields.classification_name.length === 0) &&
-                                    <Label as="a" icon size="mini" onClick={() => this.setState({ addClassificationGroup: true })}>
-                                      <Icon color="blue" size="small" name="plus circle" /> Add Classification
+                                    <Label as="a" icon onClick={() => this.setState({ addClassificationGroup: true })} style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} color="teal">
+                                      <Icon color="white" name="plus circle" /> Add Classification
                                     </Label>
                                   }
                                   { (this.state.addClassificationGroup || ( this.state.fields.classification_name && this.state.fields.classification_name.length > 0)) &&
-                                      <Form compact size="mini">
-                                          <h5> Classification Options </h5>
+                                      <Form compact style={{ marginTop: '6rem' }}>
+                                          <h5 style={{ fontSize: '1.75rem' }}> Classification Options </h5>
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_name')} id="classification_name" compact label="Name" value={this.state.fields.classification_name} placeholder="Theme" />
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_disp_name')} id="classification_disp_name" compact label="Display Name" value={this.state.fields.classification_disp_name} placeholder="Select the article theme." />
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_classes')} id="classification_classes" compact label="Classes" value={this.state.fields.classification_classes } placeholder="News,Sports,Business" />
@@ -584,9 +582,7 @@ export default class TaggerImport extends Component {
                                   }
                             </div>
                           }
-
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" disabled={submitDisabled} className="primary" onClick={this.handleSubmit} style={{ width: '100%', fontSize: '2rem', padding: '1rem' }}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}
                                     </p>
@@ -978,6 +974,22 @@ export default class TaggerImport extends Component {
                                   {this.state.fileUploadProgress > 0 && this.state.loading && <Progress percent={Math.floor(this.state.fileUploadProgress)} progress autoSuccess /> }
                         </div>
                       }
+
+        <style>{"\
+          div.field{\
+            padding: 1%;\
+          }\
+          div.field label{\
+            font-size: 1.5rem !important;\
+            padding-bottom: 1%;\
+            float: left;\
+          }\
+          menu.accordion{\
+            font-size: 1.75rem !important;\
+            border: 1px solid;\
+            margin: 1%;\
+          }\
+        "}</style>
       </div>
     );
   }
