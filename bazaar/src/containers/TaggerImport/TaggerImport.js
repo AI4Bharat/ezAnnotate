@@ -593,27 +593,58 @@ export default class TaggerImport extends Component {
 
                           { this.props.projectCreated && !this.state.uploadType && !this.state.projectCreationComplete &&
                           <div>
-                            <h2> Select Upload Type </h2>
+                            <h2 style={{ backgroundColor: '#EEEEEE', padding: '2%', fontSize: '2rem' }}><i className="fa fa-upload" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i> Select Upload Type</h2>
                               <Segment basic>
                                 <Card.Group>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer'}} color="yellow" header="Upload Raw Data"
+                                  <Card className="up-raw" fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer'}} color="yellow" header="Upload Raw Data"
                                   description={[
                                     ''].join('')}/>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
+
+                                  <Card className="up-annotated" fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
                                   description={[
                                     'If you have some data which is already pre-annotated and',
                                     ' want to go through annotations and correct them.'].join('')}/>
                                 </Card.Group>
                               </Segment>
+
+                              <style>{"\
+                              .up-raw{\
+                                background: linear-gradient(45deg,#e55353 0%,#d93737 100%)!important;\
+                                border-color: #d93737!important;\
+                              }\
+                              .up-raw div.content{\
+                                width: 100%;\
+                                margin-top: 0.8% !important;\
+                              }\
+                              .up-raw div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-raw div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                              .up-annotated{\
+                                background: linear-gradient(45deg,#f9b115 0%,#f6960b 100%) !important;\
+                                border-color: #f6960b !important;\
+                              }\
+                              .up-annotated div.content{\
+                                width: 100%;\
+                              }\
+                              .up-annotated div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-annotated div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                            "}</style>
                           </div>
                           }
 { !this.state.projectCreationComplete && this.props.projectCreated && this.state.uploadType === 'Pre-Annotated' &&
                             <Segment basic vertical loading={this.state.loading}>
 
                               <div>
-                                <h3>Select file with Pre-Annotated data</h3>
+                                <h3 style={{ fontSize: '2rem', backgroundColor: '#EEEEEE', padding: '2%' }}><i className="fa fa-list" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Select file with Pre-Annotated data</h3>
                                   <br />
-                                  <Button onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                   <br />
                                 { (type === POS_TAGGING || type === POS_TAGGING_GENERIC ||
                                   type === DOCUMENT_ANNOTATION) &&
@@ -642,9 +673,9 @@ export default class TaggerImport extends Component {
                               <div>
                                 { (type === IMAGE_BOUNDING_BOX) &&
                                   <div>
-                                <h3>Select file with Pre-Annotated data</h3>
+                                  <h3 style={{ fontSize: '2rem', backgroundColor: '#EEEEEE', padding: '2%' }}><i className="fa fa-list" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Select file with Pre-Annotated data</h3>
                                   <br />
-                                  <Button className="text-left" onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                   <br />
                                     <p>
                                     Please upload a text file with each line in file having input sentence in following json format.
@@ -849,7 +880,7 @@ export default class TaggerImport extends Component {
                                 </p>
                                 }
                                <div className="col-md-5" />
-                                <div className="col-md-3 text-center" style={inputWidth}>
+                                <div className="col-md-3 text-center" style={{ width: '95%', border: '1px solid', marginLeft: '2.5%' }}>
                                 <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                     <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                     </input>
@@ -865,7 +896,7 @@ export default class TaggerImport extends Component {
                                 <br />
 
                                 <div style={{ height: '50px'}}/>
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" className="text-left primary" style={{ fontSize: '1.25rem', padding: '1.5rem' }}  disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                 <br />
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}
@@ -876,10 +907,10 @@ export default class TaggerImport extends Component {
 
                           {
                             this.props.projectCreated && !this.state.projectCreationComplete && this.state.uploadType === 'Raw' &&
-                            <Segment basic vertical loading={this.state.loading}>
-                                <h1>Import Data</h1>
+                            <Segment basic vertical loading={this.state.loading} style={{ backgroundColor: '#EEEEEE' }}>
+                                <h1><i className="fa fa-cloud-upload" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Import Data</h1>
                                 <br />
-                                  <Button className="text-left" onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                 <br />
                                 <h3> Select file with input data </h3>
                                 <br />
@@ -947,7 +978,7 @@ export default class TaggerImport extends Component {
                                 }
 
                                  <div className="col-md-5" />
-                                <div className="col-md-3 text-center" style={inputWidth}>
+                                <div className="col-md-3 text-center" style={{ width: '95%', border: '1px solid', marginLeft: '2.5%' }}>
                                 <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                     <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                     </input>
@@ -963,7 +994,7 @@ export default class TaggerImport extends Component {
                                 <br />
 
                                 <div style={{ height: '50px'}}/>
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" className="text-left primary" style={{ fontSize: '1.25rem', padding: '1.5rem' }}  disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                 <br />
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}

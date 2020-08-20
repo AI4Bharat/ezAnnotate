@@ -380,7 +380,7 @@ export default class TaggerEdit extends Component {
       submitDisabled = true;
     }
     const styles = require('./TaggerEdit.scss');
-    const inputWidth = { width: '50%'};
+    const inputWidth = { width: '100%', border: '1px solid' };
     const { projectName, tags, instructions } = this.state.fields;
     let ignoreClass = 'hidden';
     const docOptions = (
@@ -445,23 +445,27 @@ export default class TaggerEdit extends Component {
 
     return (
       <div id="home-page" className="taggerPages">
+        <div id="back-img-dflt"></div>
           <Helmet title="Edit Project" />
                       { this.props.currentProject &&
-                          <div className="text-center marginTop">
-                                    <Segment basic size="large" loading={this.state.loading}>
-                                      <Button className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} compact><Icon name="arrow left" />Project</Button>
-                                          <div className="text-center">
-                                            <Breadcrumb size="big">
-                                              <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>{this.props.params.orgName}</Breadcrumb.Section>
-                                              <Breadcrumb.Divider />
-                                              <Breadcrumb.Section active link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)}>
-                                                {this.props.params.projectName}
-                                              </Breadcrumb.Section>
-                                            </Breadcrumb>
-                                          </div>
-                                   </Segment>
-                            <h1>Edit Project</h1>
-                                <br />
+                          <div className="text-center marginTop" style={{ width: '104%' }}>
+                            <Segment basic size="large" loading={this.state.loading} style={{ backgroundColor: '#EEEEEE' }}>
+                              <Button color="green" className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ fontSize: '1.25rem', padding: '1.5rem' }}><Icon name="arrow left" />Project</Button>
+                              
+                              <div className="text-right">
+                                <Breadcrumb size="big" style={{ padding: '1.5rem', backgroundColor: '#16AB39' }}>
+                                  <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
+                                    <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.props.params.orgName}
+                                  </Breadcrumb.Section>
+                                  <Breadcrumb.Divider style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }} />
+                                  <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ fontSize: '1.5rem', overflowWrap: 'break-word !important', fontWeight: 'bold', color: 'white' }}>
+                                    {this.props.params.projectName}
+                                  </Breadcrumb.Section>
+                                </Breadcrumb>
+                              </div>
+                            </Segment>
+
+                            <h1 style={{ backgroundColor: '#EEEEEE', marginBottom: '2rem', padding: '0.5em 1rem 2rem', fontSize: '2.5rem' }}> <i className="fa fa-pencil-square-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Edit Project</h1>
 
                             { this.state.fileUploaded && this.state.type === 'file' &&
                                 <div>
@@ -500,15 +504,15 @@ export default class TaggerEdit extends Component {
                             { this.state.type === 'label' && projectDetails && (projectDetails.task_type === POS_TAGGING || projectDetails.task_type === POS_TAGGING_GENERIC ||
                              projectDetails.task_type === DOCUMENT_ANNOTATION) &&
                             <div>
-                              <br />
+                              
                               {!this.state.projectEdited && projectDetails &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} id="tags" size="small" compact onChange={this.handleChange.bind(this, 'tags')} label="List of tags comma seperated" control="input" type="text" value={tags} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="Tagging Instruction" control="TextArea" value={instructions} />
-                                <br />
+                                
                               {this.state.type === 'label' && projectDetails && (projectDetails.task_type === DOCUMENT_ANNOTATION || projectDetails.task_type === POS_TAGGING_GENERIC) &&
                               <Accordion as="Menu">
                                 <Menu.Item>
@@ -556,8 +560,8 @@ export default class TaggerEdit extends Component {
                               }
 
 
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                
+                                <Button type="submit" className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
                                     </p>
@@ -567,7 +571,7 @@ export default class TaggerEdit extends Component {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>
+                                    <Button color="teal" style={{ fontSize: '1.25rem', padding: '1rem' }} onClick={ () => this.props.pushState('/projects/')}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -576,17 +580,16 @@ export default class TaggerEdit extends Component {
                           }
                           { this.state.type === 'label' && projectDetails && (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER || projectDetails.task_type === IMAGE_CLASSIFICATION || projectDetails.task_type === VIDEO_CLASSIFICATION) &&
                             <div>
-                              <br />
+                              
                               {!this.state.projectEdited &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} id="tags" size="small" compact onChange={this.handleChange.bind(this, 'tags')} label="List of classes comma seperated" control="input" type="text" value={tags} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Classify" control="TextArea" value={instructions} />
-                                <br />
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                
+                                <Button type="submit" className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
                                     </p>
@@ -596,7 +599,7 @@ export default class TaggerEdit extends Component {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName )}>
+                                    <Button color="teal" style={{ fontSize: '1.25rem', padding: '1rem' }} onClick={ () => this.props.pushState('/projects/' )}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -605,17 +608,17 @@ export default class TaggerEdit extends Component {
                           }
                           { this.state.type === 'label' && projectDetails && (projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX || projectDetails.task_type === VIDEO_BOUNDING_BOX || projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2 || projectDetails.task_type === IMAGE_BOUNDING_BOX) &&
                             <div>
-                              <br />
+                              
                               {!this.state.projectEdited &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 { typeof tags === 'string' &&
                                 <Form.Input style={inputWidth} id="tags" size="small" compact onChange={this.handleChange.bind(this, 'tags')} label="List of classes comma seperated" control="input" type="text" value={tags} />
                                 }
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Bound" control="TextArea" value={instructions} />
-                                <br />
+                                
                               {this.state.type === 'label' && projectDetails && (projectDetails.task_type === IMAGE_BOUNDING_BOX) &&
                               <Accordion as="Menu">
                                 <Menu.Item>
@@ -643,8 +646,8 @@ export default class TaggerEdit extends Component {
                               </Accordion>
                               }
 
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                
+                                <Button type="submit" className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
                                     </p>
@@ -654,7 +657,7 @@ export default class TaggerEdit extends Component {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>
+                                    <Button color="teal" style={{ fontSize: '1.25rem', padding: '1rem' }} onClick={ () => this.props.pushState('/projects/')}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -663,15 +666,14 @@ export default class TaggerEdit extends Component {
                           }
                           { this.state.type === 'label' && projectDetails && projectDetails.task_type === TEXT_MODERATION &&
                             <div>
-                              <br />
+                              
                               {!this.state.projectEdited &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Moderate" control="TextArea" value={instructions} />
-                                <br />
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                
+                                <Button type="submit" className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
                                     </p>
@@ -681,7 +683,7 @@ export default class TaggerEdit extends Component {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName )}>
+                                    <Button color="teal" style={{ fontSize: '1.25rem', padding: '1rem' }} onClick={ () => this.props.pushState('/projects/' )}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -690,15 +692,14 @@ export default class TaggerEdit extends Component {
                           }
                           { this.state.type === 'label' && projectDetails && projectDetails.task_type === TEXT_SUMMARIZATION &&
                             <div>
-                              <br />
+                              
                               {!this.state.projectEdited &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Summarize" control="TextArea" value={instructions} />
-                                <br />
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                
+                                <Button type="submit" className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
                                     </p>
@@ -708,7 +709,7 @@ export default class TaggerEdit extends Component {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName )}>
+                                    <Button color="teal" style={{ fontSize: '1.25rem', padding: '1rem' }} onClick={ () => this.props.pushState('/projects/' )}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -717,25 +718,23 @@ export default class TaggerEdit extends Component {
                           }
                           { this.state.type === 'label' && projectDetails && projectDetails.task_type === SENTENCE_TRANSLATION &&
                             <div>
-                              <br />
                               {!this.state.projectEdited &&
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: 'rgb(238, 238, 238)', padding: '2%' }}>
                                 <Form.Input style={inputWidth} id="projectName" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'projectName')} label="Project Name" control="input" type="text" value={projectName} />
-                                <br />
+                                
                                 <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} label="How to Translate" control="TextArea" value={instructions} />
-                                <br />
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
-                                    <p className={styles.error} disabled={!this.state.errors}>
-                                      {this.state.errors}
-                                    </p>
+                                
+                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit} className="primary" style={{ width: '100%', fontSize: '2rem', padding: '1rem' }}>Submit</Button>
+                                  <p className={styles.error} disabled={!this.state.errors}>
+                                    {this.state.errors}
+                                  </p>
                               </Form>
                               }
                               {
                                 this.state.projectEdited &&
                                 <div>
                                   <h2> Project Update successful</h2>
-                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName )}>
+                                    <Button color="teal" onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.25rem', padding: '1rem' }}>
                                       Go Back to Projects
                                     </Button>
                                 </div>
@@ -744,25 +743,56 @@ export default class TaggerEdit extends Component {
                           }
                           {this.state.type === 'file' && !this.state.uploadType && !this.state.fileUploaded && projectDetails &&
                           <div>
-                            <h2> Select Upload Type </h2>
+                            <h2> Select Upload Type</h2>
                               <Segment basic>
                                 <Card.Group>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer'}} color="yellow" header="Upload Raw Data"
+                                  <Card className="up-raw" fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer' }} color="yellow" header="Upload Raw Data"
                                   description={[
-                                    ''].join('')}/>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
+                                    ''].join('')} />
+
+                                  <Card className="up-annotated" fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
                                   description={[
                                     'If you have some data which is already pre-annotated and',
                                     ' want to go through annotations and correct them.'].join('')}/>
                                 </Card.Group>
                               </Segment>
+
+                              <style>{"\
+                              .up-raw{\
+                                background: linear-gradient(45deg,#e55353 0%,#d93737 100%)!important;\
+                                border-color: #d93737!important;\
+                              }\
+                              .up-raw div.content{\
+                                width: 100%;\
+                                margin-top: 0.8% !important;\
+                              }\
+                              .up-raw div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-raw div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                              .up-annotated{\
+                                background: linear-gradient(45deg,#f9b115 0%,#f6960b 100%) !important;\
+                                border-color: #f6960b !important;\
+                              }\
+                              .up-annotated div.content{\
+                                width: 100%;\
+                              }\
+                              .up-annotated div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-annotated div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                            "}</style>
                           </div>
                           }
 
 { !this.state.fileUploaded && this.state.type === 'file' && this.state.uploadType === 'Pre-Annotated' && projectDetails &&
-                              <div>
-                                <h3>Select file with Pre-Annotated data</h3>
-                                  <br />
+                              <div style={{ backgroundColor: '#EEEEEE', padding: '2%' }}>
+                                <h3 style={{ fontSize: '2rem' }}>Select file with Pre-Annotated data</h3>
+                                  
                                 { (projectDetails.task_type === POS_TAGGING || projectDetails.task_type === POS_TAGGING_GENERIC ||
                                   projectDetails.task_type === DOCUMENT_ANNOTATION) &&
                                   <div>
@@ -771,7 +801,7 @@ export default class TaggerEdit extends Component {
                                 Format is similar to the annotated and downloaded json file from dataturks.
                                  Max size 10MB
                                 </p>
-                                <pre>
+                                <pre style={{ padding: '1%', marginTop: '1%' }}>
                                   <code>
                                     {JSON.stringify(posSample)}
                                   </code>
@@ -969,20 +999,20 @@ export default class TaggerEdit extends Component {
                                   </p>
                                 </div>
                                 }
-                                <div className="col-md-5" />
-                                  <div className="col-md-3 text-center">
+                                <div className="col-md-5" style={{ width: '38%' }} />
+                                  <div className="col-md-3 text-center" style={{ border: '1px solid' }}>
                                   <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                       <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                       </input>
                                       { this.state.file && this.state.file.size > 10000000 && <p style={{ color: 'red', fontWeight: 'bold' }}> File size is big: {bytes(this.state.file.size)} </p>}
-                                      {this.state.file && this.state.file.size < 10000000 && <p> File Size: {bytes(this.state.file.size)} </p>}
+                                      {this.state.file && this.state.file.size < 10000000 && <p style={{ float: 'left', color: 'green', fontSize: '1rem' }}> File Size: {bytes(this.state.file.size)} </p>}
                                    </form>
                                   </div>
                                   <div className="col-md-3" />
-                                  <br />
+                                  
 
                                   <div style={{ height: '50px'}}/>
-                                      <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit.bind(this, 'PRE_TAGGED_JSON')}>Submit</Button>
+                                    <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit.bind(this, 'PRE_TAGGED_JSON')} className="primary" style={{ fontSize: '1.25rem', padding: '1.5rem', marginTop: '1%' }}>Submit</Button>
                                       <br />
                                   {this.state.fileUploadProgress > 0 && <Progress percent={Math.floor(this.state.fileUploadProgress)} progress autoSuccess /> }
                                     <p className={styles.error} disabled={!this.state.errors}>
@@ -992,9 +1022,9 @@ export default class TaggerEdit extends Component {
                               }
 
                             { !this.state.fileUploaded && this.state.type === 'file' && this.state.uploadType === 'Raw' && projectDetails &&
-                              <div>
-                                <h3>Select file with data</h3>
-                                  <br />
+                              <div style={{ padding: '2%', backgroundColor: '#EEEEEE' }}>
+                                <h3 style={{ padding: '2%', fontSize: '2rem' }}>Select file with data</h3>
+                                  
                                 { (projectDetails.task_type === POS_TAGGING) &&
                                           <p>Please upload a text/doc/pdf file. </p>
                                 }
@@ -1057,21 +1087,21 @@ export default class TaggerEdit extends Component {
                                 { (projectDetails.task_type === VIDEO_BOUNDING_BOX) &&
                                 <p>Upload a text file containing URLs of videos.</p>
                                 }
-                                <div className="col-md-5" />
-                                  <div className="col-md-3 text-center">
+                                <div className="col-md-5" style={{ width: '38%' }} />
+                                  <div className="col-md-3 text-center" style={{ border: '1px solid' }}>
                                   <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                       <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                       </input>
                                       { this.state.file && this.state.file.size > 10000000 && <p style={{ color: 'red', fontWeight: 'bold' }}> File size is big: {bytes(this.state.file.size)} </p>}
-                                      {this.state.file && this.state.file.size < 10000000 && <p> File Size: {bytes(this.state.file.size)} </p>}
+                                      {this.state.file && this.state.file.size < 10000000 && <p style={{ float: 'left', fontWeight: 'bold', color: 'green' }}> File Size: {bytes(this.state.file.size)} </p>}
                                    </form>
                                   </div>
                                   <div className="col-md-3" />
-                                  <br />
+                                  
 
                                   <div style={{ height: '50px'}}/>
-                                      <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
-                                      <br />
+                                    <Button type="submit" className="primary" disabled={submitDisabled} onClick={this.handleSubmit} style={{ fontSize: '1.5rem', padding: '1.5rem', marginTop: '2%' }}>Submit</Button>
+                                      
                                   {this.state.fileUploadProgress > 0 && <Progress percent={Math.floor(this.state.fileUploadProgress)} progress autoSuccess /> }
                                     <p className={styles.error} disabled={!this.state.errors}>
                                       {this.state.errors}
@@ -1080,6 +1110,22 @@ export default class TaggerEdit extends Component {
                               }
                       </div>
                   }
+
+        <style>{"\
+          div.field{\
+            padding: 1%;\
+          }\
+          div.field label{\
+            font-size: 1.5rem !important;\
+            padding-bottom: 1%;\
+            float: left;\
+          }\
+          menu.accordion{\
+            font-size: 1.75rem !important;\
+            border: 1px solid;\
+            margin: 1%;\
+          }\
+        "}</style>
       </div>
 
     );
