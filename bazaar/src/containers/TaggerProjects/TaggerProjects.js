@@ -72,7 +72,7 @@ export default class TaggerProjects extends Component {
     // Set project list page backgrount
     $(document).ready(function(){
       $('#back-img-area').css({ backgroundImage:  'none' });
-      $('body').css({overflow: 'auto'});
+      $('body').css({overflowY: 'auto'});
       $('#datasetmenu').children().css({ 
         padding: '2%', 
         color: 'white !important', 

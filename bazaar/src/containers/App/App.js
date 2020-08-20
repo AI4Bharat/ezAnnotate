@@ -186,11 +186,11 @@ export default class App extends Component {
           backgroundImage:  'url(' + anBckImg + ')',
           backgroundRepeat: 'no-repeat', 
           backgroundSize: 'cover',
-          height: '100rem',
-          width: '100rem'
+          // height: '100rem',
+          // width: '100rem'
         });
 
-        $('body').css({overflow: 'hidden'});
+        // $('body').css({overflow: 'hidden'});
       }
     });
   }

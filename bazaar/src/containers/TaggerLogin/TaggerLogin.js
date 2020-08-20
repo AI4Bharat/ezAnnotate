@@ -401,7 +401,7 @@ export default class TaggerLogin extends Component {
         width: 'auto'
       });
 
-      $('body').css({overflow: 'hidden'});
+      // $('body').css({overflow: 'hidden'});
     });
   }
 
@@ -415,8 +415,8 @@ export default class TaggerLogin extends Component {
         {!user &&
       <div className="row" style={{padding: '5% 20% 10% 15%'}}>
         <Segment basic loading={this.state.loading}>
-          <div className="col-md-7 text-left" style={{marginBottom: '10%', marginLeft: '-3rem', width: '55%' }}>
-              <h1 style={{fontSize: '3.5em', letterSpacing: 'normal', color: 'rgb(0 0 0)' }}> Super Easy Data Annotations </h1>
+          <div className="col-md-6 pull-left" style={{marginBottom: '10%' }}>
+              <h1 style={{fontSize: '3em', letterSpacing: 'normal', color: 'rgb(0 0 0)' }}> Super Easy Data Annotations </h1>
               <p style={{fontSize: '1.5em', color: 'rgb(0 0 0)', fontWeight: 'bold'}}>Invite your team and generate high quality labeled data in minutes</p>
               <p style={{fontSize: '1.2em', color: 'rgb(0 0 0)', fontWeight: 'bold'}}>By signing up, you agree with our privacy policy and terms. </p>
           </div>
@@ -426,7 +426,7 @@ export default class TaggerLogin extends Component {
              style={{marginTop: '-5%', background: 'black', height: '150%', paddingBottom: '10%', paddingTop: '1%', border: '1px solid lightslategray',
     boxShadow: '-1px 1px lightslategray,-2px 2px lightslategray, -3px 3px lightslategray, -4px 4px lightslategray, -5px 5px lightslategray', marginLeft: '4.5rem' }}> */}
 
-            <div className="col-md-5 text-center" style={{ backgroundColor: 'rgb(0,0,0)', backgroundColor: 'rgba(0,0,0, 0.4)', color: '#373a3c', fontWeight: 'bold', border: '3px solid #373a3c', zIndex: 2, width: '48%', padding: '20px', textAlign: 'center' }}>
+            <div className="col-md-6 pull-right" style={{ backgroundColor: 'rgb(0,0,0)', backgroundColor: 'rgba(0,0,0, 0.4)', color: '#373a3c', fontWeight: 'bold', border: '3px solid #373a3c', zIndex: 2, padding: '2.5%', textAlign: 'center' }}>
                     { !this.state.emailSignup && <div style={{ marginTop: '5%'}}>
                           <Form onSubmit={this.handleEmailSignIn} inverted inline ref={form => this.form = form}>
                           <h2 style={{ color: 'white'}}><i data-txt="logPassType" className="fa fa-lock" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Log in</h2>
@@ -437,7 +437,7 @@ export default class TaggerLogin extends Component {
                             </Form.Field>
                             <Form.Field>
                               <label style={{ fontSize: '1.25rem' }}>Password</label>
-                              <i data-txt="logPassType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '43%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+                              {/* <i data-txt="logPassType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '43%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i> */}
 
                               <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.logPassType ? "password" : "text"} placeholder="Enter Password" />
                             </Form.Field>
