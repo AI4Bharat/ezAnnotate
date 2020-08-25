@@ -205,80 +205,81 @@ export default class TaggerKeyBind extends Component {
 
   render() {
     console.log('TaggerKeyBind state is ', this.state, this.props);
-    const inputWidth = { width: '25%'};
+    const inputWidth = { width: '84%', border: '1px solid' };
     return (
       <div className="text-center taggerPages">
+        <div id="back-img-dflt"></div>
           <Helmet title="DataTurks: Add keyboard shortcuts" />
               <div className="text-center marginTop">
-                                    <Segment basic size="large" loading={this.state.loading}>
-                                      <Button className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} compact><Icon name="arrow left" />Project</Button>
-                                          <div className="text-center">
-                                            <Breadcrumb size="big">
-                                              <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>{this.props.params.orgName}</Breadcrumb.Section>
-                                              <Breadcrumb.Divider />
-                                              <Breadcrumb.Section active link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)}>
-                                                {this.props.params.projectName}
-                                              </Breadcrumb.Section>
-                                            </Breadcrumb>
-                                          </div>
-                                   </Segment>
-                  <h2>Configure keyboard shortcuts</h2>
-                  <p>Click on box and press keys to configure keyboard shortcuts</p>
-                  <br />
-                  <br />
-                      <Form onSubmit={event => { event.preventDefault(); }} size="small" key="import1" onKeyDown={this.handleKeyPress} loading={this.state.loading} compact>
-                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'next')} />} inline style={inputWidth} value={this.getValue('next')} id="next" size="small" color="teal" compact label="Next" placeholder="Press the keys" type="text" />
-                        <br />
-                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'previous')} />} inline style={inputWidth} value={this.getValue('previous')} size="small" id="previous" type="text" label="Previous" placeholder="Press the keys" />
-                        <br />
-                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'skip')} />} inline style={inputWidth} value={this.getValue('skip')} size="small" id="skip" type="text" label="Skip" placeholder="Press the keys" />
-                        <br />
-                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'moveToDone')} />} inline style={inputWidth} value={this.getValue('moveToDone')} size="small" id="moveToDone" type="text" label="Mark as Done" placeholder="Press the keys" />
-                        <br />
+                <Segment basic size="large" loading={this.state.loading} style={{ backgroundColor: '#EEEEEE' }}>
+                  <Button color="green" className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ fontSize: '1.25rem', padding: '1.5rem' }}><Icon name="arrow left" />Project</Button>
 
+                  <div className="text-right">
+                    <Breadcrumb size="big" style={{ padding: '1.5rem', backgroundColor: '#16AB39' }}>
+                      <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/')} style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}><i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.props.params.orgName}</Breadcrumb.Section>
+                      <Breadcrumb.Divider style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }} />
+                      <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ fontSize: '1.5rem', overflowWrap: 'break-word !important', fontWeight: 'bold', color: 'white' }}>
+                        {this.props.params.projectName}
+                      </Breadcrumb.Section>
+                    </Breadcrumb>
+                  </div>
+                </Segment>
+                  
+                  <h3 style={{ backgroundColor: '#EEEEEE', marginBottom: '2rem', padding: '0.5em 1rem 2rem', fontSize: '2.5rem' }}> 
+                  <i className="fa fa-keyboard-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Configure keyboard shortcuts
+                  <p style={{ marginTop: '0.5rem' }}>Click on box and press keys to configure keyboard shortcuts</p></h3>
+
+                      <Form onSubmit={event => { event.preventDefault(); }} size="big" key="import1" onKeyDown={this.handleKeyPress} loading={this.state.loading} style={{ background: '#EEEEEE', padding: '2%' }}>
+                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'next')} />} inline style={inputWidth} value={this.getValue('next')} id="next" size="big" color="teal" compact label="Next" placeholder="Press the keys" type="text" />
+                        
+                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'previous')} />} inline style={inputWidth} value={this.getValue('previous')} size="big" id="previous" type="text" label="Previous" placeholder="Press the keys" />
+                        
+                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'skip')} />} inline style={inputWidth} value={this.getValue('skip')} size="big" id="skip" type="text" label="Skip" placeholder="Press the keys" />
+                        
+                        <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'moveToDone')} />} inline style={inputWidth} value={this.getValue('moveToDone')} size="big" id="moveToDone" type="text" label="Mark as Done" placeholder="Press the keys" />
 
                         {this.props.projectDetails && (this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX || this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'undo')} />} inline style={inputWidth} value={this.getValue('undo')} size="small" id="undo" type="text" label="Undo" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'undo')} />} inline style={inputWidth} value={this.getValue('undo')} size="big" id="undo" type="text" label="Undo" placeholder="Press the keys" />}
                         {this.props.projectDetails && (this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX || this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'clearAll')} />} inline style={inputWidth} value={this.getValue('clearAll')} size="small" id="clearAll" type="text" label="Clear All" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'clearAll')} />} inline style={inputWidth} value={this.getValue('clearAll')} size="big" id="clearAll" type="text" label="Clear All" placeholder="Press the keys" />}
                         {this.props.projectDetails && (this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX || this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'tool')} />} inline style={inputWidth} value={this.getValue('tool')} size="small" id="tool" type="text" label="Toggle Tool" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'tool')} />} inline style={inputWidth} value={this.getValue('tool')} size="big" id="tool" type="text" label="Toggle Tool" placeholder="Press the keys" />}
                         {this.props.projectDetails && (this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX || this.props.projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'delete')} />} inline style={inputWidth} value={this.getValue('delete')} size="small" id="delete" type="text" label="Delete Annotation" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'delete')} />} inline style={inputWidth} value={this.getValue('delete')} size="big" id="delete" type="text" label="Delete Annotation" placeholder="Press the keys" />}
 
 
                         <br />
                           {this.props.projectDetails && this.props.projectDetails.task_type === POS_TAGGING &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'left')} />} inline style={inputWidth} value={this.getValue('left')} size="small" id="left" type="text" label="Previous Word" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'left')} />} inline style={inputWidth} value={this.getValue('left')} size="big" id="left" type="text" label="Previous Word" placeholder="Press the keys" />}
                           {this.props.projectDetails && this.props.projectDetails.task_type === POS_TAGGING &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'right')} />} inline style={inputWidth} value={this.getValue('right')} size="small" id="right" type="text" label="Next Word" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'right')} />} inline style={inputWidth} value={this.getValue('right')} size="big" id="right" type="text" label="Next Word" placeholder="Press the keys" />}
                         <br />
 
                         <br />
                           {this.props.projectDetails && this.props.projectDetails.task_type === VIDEO_BOUNDING_BOX &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'forward')} />} inline style={inputWidth} value={this.getValue('forward')} size="small" id="forward" type="text" label="One Frame Forward" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'forward')} />} inline style={inputWidth} value={this.getValue('forward')} size="big" id="forward" type="text" label="One Frame Forward" placeholder="Press the keys" />}
                           {this.props.projectDetails && this.props.projectDetails.task_type === VIDEO_BOUNDING_BOX &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'backward')} />} inline style={inputWidth} value={this.getValue('backward')} size="small" id="backward" type="text" label="One Frame Backward" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'backward')} />} inline style={inputWidth} value={this.getValue('backward')} size="big" id="backward" type="text" label="One Frame Backward" placeholder="Press the keys" />}
                           {this.props.projectDetails && this.props.projectDetails.task_type === VIDEO_BOUNDING_BOX &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'fast_forward')} />} inline style={inputWidth} value={this.getValue('fast_forward')} size="small" id="fast_forward" type="text" label="10 Frame Forward" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'fast_forward')} />} inline style={inputWidth} value={this.getValue('fast_forward')} size="big" id="fast_forward" type="text" label="10 Frame Forward" placeholder="Press the keys" />}
                           {this.props.projectDetails && this.props.projectDetails.task_type === VIDEO_BOUNDING_BOX &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'fast_backward')} />} inline style={inputWidth} value={this.getValue('fast_backward')} size="small" id="fast_backward" type="text" label="10 Frame Backward" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'fast_backward')} />} inline style={inputWidth} value={this.getValue('fast_backward')} size="big" id="fast_backward" type="text" label="10 Frame Backward" placeholder="Press the keys" />}
                         <br />
 
 
                         <br />
                           {this.props.projectDetails && ( this.props.projectDetails.task_type === DOCUMENT_ANNOTATION || this.props.projectDetails.task_type === POS_TAGGING_GENERIC) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'save')} />} inline style={inputWidth} value={this.getValue('save')} size="small" id="save" type="text" label="Save" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'save')} />} inline style={inputWidth} value={this.getValue('save')} size="big" id="save" type="text" label="Save" placeholder="Press the keys" />}
                         <br />
                           {this.props.projectDetails && (this.props.projectDetails.task_type === DOCUMENT_ANNOTATION || this.props.projectDetails.task_type === POS_TAGGING_GENERIC) &&
-                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'close')} />} inline style={inputWidth} value={this.getValue('close')} size="small" id="close" type="text" label="Close" placeholder="Press the keys" />}
+                          <Form.Input icon={<Icon name="close" link onClick={this.clearShortcut.bind(this, 'close')} />} inline style={inputWidth} value={this.getValue('close')} size="big" id="close" type="text" label="Close" placeholder="Press the keys" />}
 
 
                         {this.props.projectDetails && this.state.fields && this.getEntityInputs(this.state.fields)}
 
 
-                        <Button positive onClick={this.handleSubmit}>Save</Button>
-                        <Button onClick={() => {this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName);}}>Cancel</Button>
+                        <Button primary onClick={this.handleSubmit} style={{ fontSize: '1.25rem', padding: '1.5rem' }}>Save</Button>
+                        <Button onClick={() => {this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName);}} style={{ fontSize: '1.25rem', padding: '1.5rem' }}>Cancel</Button>
                         <p className={{color: '#ff0000'}} disabled={!this.state.error}>
                                       {this.state.error}
                         </p>
@@ -287,6 +288,18 @@ export default class TaggerKeyBind extends Component {
                         </p>}
                       </Form>
               </div>
+
+        <style>{"\
+          div.field{\
+            padding: 1%;\
+          }\
+          div.field label{\
+            font-size: 1.5rem !important;\
+            padding-bottom: 1%;\
+            float: left;\
+            width: 12% !important;\
+          }\
+        "}</style>
       </div>
 
     );

@@ -188,18 +188,18 @@ export default class TaggerVisualize extends Component {
       </tr>);
     }
     return (
-                                <Table striped bordered condensed hover responsive>
-                                   <thead>
-                                    <tr>
-                                      <th>Word</th>
-                                      <th>Count</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {renderArr}
-                                  </tbody>
-                                </Table>
-                              );
+      <Table striped bordered condensed hover responsive>
+          <thead style={{ backgroundColor: '#373A3C', color: 'white', fontSize: '1.5rem' }}>
+          <tr>
+            <th style={{ textAlign: 'center' }}>Word</th>
+            <th style={{ textAlign: 'center' }}>Count</th>
+          </tr>
+        </thead>
+        <tbody style={{ fontSize: '1.2rem' }}>
+          {renderArr}
+        </tbody>
+      </Table>
+    );
   }
 
   loadProjectDetails(pid, cache) {
@@ -280,6 +280,7 @@ export default class TaggerVisualize extends Component {
 
     return (
       <div className="taggerPages">
+        <div id="back-img-dflt"></div>
           <Helmet title={pageTitle}>
             <meta property="og:title" content={pageTitle} />
             <meta name="description" content={pageDescription} />
@@ -289,21 +290,26 @@ export default class TaggerVisualize extends Component {
                           <div>
                       {
                           <div>
-                            <Segment basic size="large" loading={this.state.loading}>
-                              <Button className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} compact><Icon name="arrow left" />Project</Button>
-                                  <div className="text-center">
-                                    <Breadcrumb size="big">
-                                      <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName)}>{this.props.params.orgName}</Breadcrumb.Section>
-                                      <Breadcrumb.Divider />
-                                      <Breadcrumb.Section active link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)}>
-                                        {this.props.params.projectName}
-                                      </Breadcrumb.Section>
-                                    </Breadcrumb>
-                                  </div>
-                                  <div className="text-right">
-                                      <Button size="tiny" positive className="pull-right" onClick={() => this.loadProjectDetails(this.props.currentProject, false)} compact><Icon name="refresh" />Refresh</Button>
-                                  </div>
-                           </Segment>
+                            <Segment basic size="large" loading={this.state.loading} style={{ backgroundColor: '#EEEEEE', width: '104%' }}>
+                              <Button className="pull-left" onClick={() => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} compact positive style={{ fontSize: '1.25rem', padding: '1rem' }}><Icon name="arrow left" />Project</Button>
+
+                              <div className="text-center" style={{ width: '70%', marginLeft: '21.75%' }}>
+                                <Breadcrumb size="big" style={{ fontSize: '1.45rem', padding: '1rem', marginLeft: '-6rem', width: '80%', fontWeight: 'bold', backgroundColor: '#EEEEEE' }}>
+                                  <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/') }>
+                                    <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>
+                                    {this.props.params.orgName}
+                                  </Breadcrumb.Section>
+                                  <Breadcrumb.Divider />
+                                  <Breadcrumb.Section link onClick={ () => this.props.pushState('/projects/' + this.props.params.orgName + '/' + this.props.params.projectName)} style={{ overflowWrap: 'break-word !important' }}>
+                                    {this.props.params.projectName}
+                                  </Breadcrumb.Section>
+                                </Breadcrumb>
+                              </div>
+
+                              <div className="text-right">
+                                  <Button size="tiny" positive className="pull-right" onClick={() => this.loadProjectDetails(this.props.currentProject, false)} compact style={{ fontSize: '1.25rem', padding: '1rem', marginTop: '-3.5rem', marginLeft: '1rem' }}><Icon name="refresh" />Refresh</Button>
+                              </div>
+                            </Segment>
                           </div>
                       }
                       <br />
@@ -311,24 +317,27 @@ export default class TaggerVisualize extends Component {
                             { projectStats && taskType !== DOCUMENT_ANNOTATION && taskType !== VIDEO_CLASSIFICATION && taskType !== POS_TAGGING_GENERIC && taskType !== IMAGE_CLASSIFICATION && taskType !== IMAGE_BOUNDING_BOX && taskType !== IMAGE_POLYGON_BOUNDING_BOX && taskType !== VIDEO_BOUNDING_BOX && taskType !== IMAGE_POLYGON_BOUNDING_BOX_V2 &&
                             <div className="text-center col-md-12">
                             <Segment basic vertical textAlign="center" loading={this.state.loading}>
-                              <Header as="h2">Project Insights</Header>
+                              <Header as="h2" style={{ fontSize: '2.5rem' }}>Project Insights</Header>
                             <div>
                             <br />
                             <br />
+
+    
+
                               <Statistic.Group size="mini" widths="three">
-                                <Statistic color="green">
-                                  <Statistic.Value>{projectStats.totalUniqWords}</Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Unique Words</Statistic.Label>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">{projectStats.totalUniqWords}</Statistic.Value>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Unique Words</Statistic.Label>
                                 </Statistic>
-                                <Statistic color="green">
-                                  <Statistic.Value>{(projectStats.totalWords / projectStats.totalUniqWords).toPrecision(2)}</Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Word Frequency</Statistic.Label>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">{(projectStats.totalWords / projectStats.totalUniqWords).toPrecision(2)}</Statistic.Value>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Word Frequency</Statistic.Label>
                                 </Statistic>
-                                <Statistic color="green">
-                                  <Statistic.Value>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">
                                     {projectStats.totalWords}
                                   </Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Total Words</Statistic.Label>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Total Words</Statistic.Label>
                                 </Statistic>
                               </Statistic.Group>
                             </div>
@@ -338,7 +347,7 @@ export default class TaggerVisualize extends Component {
                             <div className="col-md-6">
                               { projectStats.leastFrequentWords && projectStats.leastFrequentWords.length > 0 &&
                               <div className="marginTop">
-                                <h4> Least frequent words </h4>
+                                <h4 style={{ fontSize: '2rem' }}> Least frequent words </h4>
                                 {this.getWordsChart(projectStats.leastFrequentWords)}
                               </div>
                               }
@@ -346,7 +355,7 @@ export default class TaggerVisualize extends Component {
                             <div className="col-md-6">
                               {projectStats.mostFrequentWords && projectStats.mostFrequentWords.length > 0 &&
                               <div className="marginTop">
-                                <h4> Most frequent words </h4>
+                                <h4 style={{ fontSize: '2rem' }}> Most frequent words </h4>
                                 {this.getWordsChart(projectStats.mostFrequentWords)}
                               </div>
                               }
@@ -361,24 +370,24 @@ export default class TaggerVisualize extends Component {
                             { projectStats && (taskType === POS_TAGGING) &&
                             <div className="text-center col-md-12">
                             <Segment basic vertical textAlign="center" loading={this.state.loading}>
-                              <Header as="h2">Insights from completed HITs</Header>
+                              <Header as="h2" style={{ fontSize: '2.5rem' }}>Insights from completed HITs</Header>
                             <div>
                             <br />
                             <br />
                               <Statistic.Group size="mini" widths="three">
-                                <Statistic color="green">
-                                  <Statistic.Value>{projectStats.totalUniqWordsWithLabels}</Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Unique Words</Statistic.Label>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">{projectStats.totalUniqWordsWithLabels}</Statistic.Value>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Unique Words</Statistic.Label>
                                 </Statistic>
-                                <Statistic color="green">
-                                  <Statistic.Value>{(projectStats.totalWordsWithLabels / projectStats.totalUniqWordsWithLabels).toPrecision(2)}</Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Word Frequency</Statistic.Label>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">{(projectStats.totalWordsWithLabels / projectStats.totalUniqWordsWithLabels).toPrecision(2)}</Statistic.Value>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Word Frequency</Statistic.Label>
                                 </Statistic>
-                                <Statistic color="green">
-                                  <Statistic.Value>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">
                                     {projectStats.totalWordsWithLabels}
                                   </Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Total Words</Statistic.Label>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Total Words</Statistic.Label>
                                 </Statistic>
                               </Statistic.Group>
                             </div>
@@ -388,20 +397,20 @@ export default class TaggerVisualize extends Component {
                           { (projectStats && taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION || taskType === SENTENCE_TRANSLATION ) &&
                             <div className="text-center col-md-12">
                             <Segment basic vertical textAlign="center" loading={this.state.loading}>
-                              <Header as="h2">Insights from completed HITs</Header>
+                              <Header as="h2" style={{ fontSize: '2.5rem' }}>Insights from completed HITs</Header>
                             <div>
                             <br />
                             <br />
                               <Statistic.Group size="mini" widths="two">
-                                <Statistic color="green">
-                                  <Statistic.Value>{projectStats.avrWordsInHits}</Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Average Words in HITs</Statistic.Label>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">{projectStats.avrWordsInHits}</Statistic.Value>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Average Words in HITs</Statistic.Label>
                                 </Statistic>
-                                <Statistic color="green">
-                                  <Statistic.Value>
+                                <Statistic className="stat-main">
+                                  <Statistic.Value className="stat-val">
                                     {projectStats.avrWordsInHitResults}
                                   </Statistic.Value>
-                                  <Statistic.Label style={statsLabel}>Average Words in HIT Results</Statistic.Label>
+                                  <Statistic.Label className="stat-lbl" style={statsLabel}>Average Words in HIT Results</Statistic.Label>
                                 </Statistic>
                               </Statistic.Group>
                             </div>
@@ -450,8 +459,8 @@ export default class TaggerVisualize extends Component {
                            { projectStats && ( taskType === TEXT_SUMMARIZATION || taskType === TEXT_MODERATION || taskType === SENTENCE_TRANSLATION ) &&
                             <div className="text-center col-md-12">
                               <Segment basic vertical textAlign="center" loading={this.state.loading}>
-                              <div className="marginTop" style={{ paddingLeft: '20%', paddingRight: '20%' }}>
-                                <h4> Most frequent Excluded Words </h4>
+                              <div className="marginTop" style={{ paddingLeft: '6%', paddingRight: '6%' }}>
+                                <h4 style={{ fontSize: '2rem' }}> Most frequent Excluded Words </h4>
                                 {this.getWordsChart(projectStats.mostFrequentExcludedWords)}
                               </div>
                             </Segment>
@@ -459,6 +468,31 @@ export default class TaggerVisualize extends Component {
                           }
                     </div>
               }
+
+        <style>{"\
+          .stat-main{\
+            background: linear-gradient(45deg,#f9b115 0%,#f6960b 100%) !important;\
+            border-color: #f6960b !important;\
+            padding: 1rem !important;\
+            padding: 2rem !important;\
+            width: 33% !important;\
+          }\
+          .stat-val{\
+            color: white !important;\
+            font-weight: bold !important;\
+            // font-size: 3rem !important;\
+          }\
+          .stat-lbl{\
+            text-transform: initial;\
+            font-weight: bold !important;\
+            font-size: 1.5rem !important;\
+            margin-top: 0.5rem !important;\
+            white-space: pre-wrap;\
+          }\
+          .ui.mini.statistics .statistic>.value {\
+            font-size: 3rem!important;\
+          }\
+        "}</style>
 
       </div>
 

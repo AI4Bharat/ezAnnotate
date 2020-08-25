@@ -40,6 +40,7 @@ export default class UserProfile extends Component {
       userProjectStatsOnDate: null,
       date: null,
       enddate: new Date(),
+      activeMenu: 'profile'
     }; 
     
     // FOR BAR CHART
@@ -158,7 +159,7 @@ export default class UserProfile extends Component {
         animationEnabled: true,
         exportEnabled: true,
         title: {
-          text: "Projects Stats",
+          text: "",
           fontFamily: "verdana"
         },
         axisY: {
@@ -250,7 +251,7 @@ export default class UserProfile extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].projectDetails.name}</td>
+            <td className="just">{data[index].projectDetails.name}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
             <td>{data[index].hitsDeleted}</td>
@@ -275,7 +276,7 @@ export default class UserProfile extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{data[index].projectDetails.name}</td>
+            <td className="just">{data[index].projectDetails.name}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
             <td>{data[index].hitsDeletedByDate}</td>
@@ -293,17 +294,38 @@ export default class UserProfile extends Component {
     return <tbody>{arrs}</tbody>;
   };
 
+  componentDidMount() {
+    /**
+     * Page layout level designs goes here
+     */
+    // Set profile page background
+    $(document).ready(function(){
+      $('#back-img-area').css({ backgroundImage:  'none' });
+      $('body').css({overflowY: 'auto'});
+      $('#datasetmenu').children().css({ 
+        padding: '2%', 
+        color: 'white !important', 
+        fontSize: '1rem', 
+      });
+    });
+    // Layout Design END
+  }
+
   render(){
     return(
       <div>
+        <div id="back-img-dflt"></div>
         <Helmet title="My Profile" />
+
+        {/* User Details Section */}
         <div className="text-center">
-          <h2 style={{ paddingTop:"1em" }}> {this.state.fullName} </h2>
-          { this.state.userEmail &&
-          <p> {this.state.userEmail} </p>}
+          <div style={{ backgroundColor: '#EEEEEE', width: '98%', marginLeft: '1rem', marginBottom: '2rem', padding: '1rem' }}>
+            <h2 style={{ paddingTop: '0.5em', fontSize: '2.5rem' }}> <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.fullName} </h2>
+            { this.state.userEmail &&
+            <p style={{ fontSize: '1.75rem', fontWeight: 'bold' }}> <i className="fa fa-envelope-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>{this.state.userEmail} </p>}
+          </div>
         </div>
-        <br/>
-        <br/>
+
         { this.state && 
           this.state.userProjectStats &&
           this.state.userProjectStats.length > 0 && (
@@ -313,12 +335,12 @@ export default class UserProfile extends Component {
             >
               <Segment.Group
                 loading={this.state.loading}
-                style={{ width: "60%" }}
+                style={{ width: "98%", fontSize: '1.2rem' }}
                 centered
               >
-                <Header attached="top" block as="h4">
-                  <Icon name="line chart" disabled />
-                  <Header.Content>Projects Stats</Header.Content>
+                <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
+                  <Icon name="line chart" />
+                  <Header.Content style={{ width: '100%' }}>Projects Stats</Header.Content>
                 </Header>
                 <Table striped bordered condensed hover responsive>
                   <thead>
@@ -346,18 +368,19 @@ export default class UserProfile extends Component {
             >
               <Segment.Group
                 loading={this.state.loading}
-                style={{ width: "60%" }}
+                style={{ width: "98%", fontSize: '1.2rem' }}
                 centered
               >
-                  <Header attached="top" block as="h4">
-                    <Icon name="line chart" disabled />
-                    <Header.Content> Projects Stats for date from  
+                  <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', fontSize: '1.75rem' }}>
+                    <Icon name="line chart" style={{ color: 'rgb(255 255 255)' }} />
+                    <Header.Content style={{ width: '90%', marginLeft: '5%' }}> 
+                      <span style={{ color: 'rgb(255 255 255)' }}>Projects Stats for date from</span>  
                       <DatePicker
                       onChange={this.onChangeDate}
                       value={[this.state.date, this.state.enddate]}
                       maxDate={new Date()}
                       selectRange="true"
-                      />  to  {dateToLocalString(this.state.enddate)}
+                      /> <span style={{ color: 'rgb(255 255 255)' }}> to  {dateToLocalString(this.state.enddate)}</span>
                     </Header.Content>
                   </Header>
                 {this.state.userProjectStatsOnDate && this.state.userProjectStatsOnDate.length > 0 &&(
@@ -386,18 +409,24 @@ export default class UserProfile extends Component {
           <div className="text-center" style={{ display: "flex", justifyContent: "space-around" }}>
             <Segment.Group
                 loading={this.state.loading}
-                style={{ width: "60%" }}
+                style={{ width: "98%" }}
                 centered
             >
+                <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', fontSize: '1.75rem' }}>
+                  <Icon name="line chart" style={{ color: 'rgb(255 255 255)' }} />
+                  <Header.Content style={{ width: '100%' }}> 
+                    <span style={{ color: 'rgb(255 255 255)' }}>Project Stat Chart</span> 
+                    <div className="pull-right" title="Reset Chart" onClick={event => {
+                      this.resetChart(this.state.userProjectStats);
+                      event.preventDefault();
+                    }} style={{ color: 'white', cursor: 'pointer' }}>
+                      <Icon name="refresh" />
+                    </div>
+                  </Header.Content>
+                </Header>
+
               {this.state.userProjectStats && this.state.userProjectStats.length > 0 &&(
-                <div>
-                  <Button as="a" primary size="mini" onClick={event => {
-                    this.resetChart(this.state.userProjectStats);
-                    event.preventDefault();
-                  }} style={{ marginLeft: "59rem", marginTop: "1rem", marginBottom: "1rem" }}>
-                    <Icon name="refresh" /> Reset Chart
-                  </Button>
-                
+                <div style={{ marginTop: '2%' }}>
                   <CanvasJSChart options = {window.chartOptions} onRef={ref => this.chart = ref} />
                 </div>
               )}
@@ -409,6 +438,28 @@ export default class UserProfile extends Component {
         {/* ---- */}
         <br />
         <br />
+
+        <style>{"\
+          th{\
+            text-align: center;\
+            padding: 0.75rem;\
+            font-size: 1.4rem;\
+          }\
+          td{\
+            padding: 0.75rem;\
+          }\
+          td.just{\
+            text-align: justify;\
+          }\
+          .react-date-picker__calendar{\
+            font-size: 1rem !important;\
+          }\
+          .react-date-picker__button{\
+            background-color: #FFFFFF;\
+            padding: 0.25rem;\
+            margin: 0rem 0.5rem;\
+          }\
+        "}</style>
       </div>
     )
   }

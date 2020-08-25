@@ -10,7 +10,7 @@ import {bindActionCreators} from 'redux';
 // import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { logout, verifyUser, signIn } from 'redux/modules/auth';
 import { resetState } from 'redux/modules/dataturks';
-import { push, replace } from 'react-router-redux';
+import { push, replace, goBack } from 'react-router-redux';
 import config from '../../config';
 import { getUidToken, logEvent, refreshToken, getAPIKey } from '../../helpers/dthelper';
 import { DUMMY_UID, timeConverter } from '../../helpers/Utils';
@@ -24,6 +24,8 @@ import Modal from "react-bootstrap/lib/Modal";
 import firebase from 'firebase';
 import ReactGA from 'react-ga';
 import LoadingBar from 'react-redux-loading-bar';
+import $ from 'jquery';
+import anBckImg from '../../../assets/img/annotate-bck.jpg';
 
 /* global FB */
 // import { asyncConnect } from 'redux-async-connect';
@@ -176,6 +178,21 @@ export default class App extends Component {
         this.props.logout();
       }
     }
+
+    $(document).ready(function(){
+      if(!$("#back-img-dflt").length) {
+        // Set landing page background
+        $('#back-img-area').css({
+          backgroundImage:  'url(' + anBckImg + ')',
+          backgroundRepeat: 'no-repeat', 
+          backgroundSize: 'cover',
+          // height: '100rem',
+          // width: '100rem'
+        });
+
+        // $('body').css({overflow: 'hidden'});
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -290,7 +307,8 @@ export default class App extends Component {
     }
   } 
 
-  goToUserProfile = (uid, event) => {
+  goToUserProfile = (uid, event, {name}) => {
+    this.setState({ activeMenu: name});
     this.props.pushState('/profile/'+uid);
   }
   
@@ -313,7 +331,7 @@ export default class App extends Component {
     console.log('app render', this.props, this.state);
     const pathSplits = this.props.location.pathname.split('/');
     // let menuHidden = state.menuHidden;
-    const spaceStyle = { height: '60px'};
+    const spaceStyle = { height: '60px', backgroundColor: '#373a3c' };
     let spaceOpen = false;
     let marginTop = '20px';
     console.log('locationchange', pathSplits);
@@ -346,7 +364,7 @@ export default class App extends Component {
             <Navbar.Brand>
               <a href="/">
                 <div className={styles.brand}/>
-                <span style={{color: '#ffffff'}}>
+                <span style={{color: 'rgb(255 255 255)'}}>
                   <h3 className={styles.brandLink}>
                   {config.app.title}
                   </h3>
@@ -356,7 +374,7 @@ export default class App extends Component {
           <Navbar.Toggle/>
         </Navbar.Header>
 
-          <Navbar.Collapse eventKey={0} style={{width: '125rem'}}>
+          <Navbar.Collapse eventKey={0} style={{width: '125rem', backgroundColor: '#373a3c' }}>
             <Nav navbar pullRight>
             {/* {<li role="presentation" className="logout-link">
             <a href="https://dataturks.com/help/help.php" target="_blank">
@@ -380,7 +398,7 @@ export default class App extends Component {
               {!user &&
               <LinkContainer to="/projects/login">
                 <NavItem eventKey={6}>
-                <h4 className="nav-link">
+                <h4 className="nav-link" style={{ color: 'rgb(255 255 255)', fontSize: '1.25rem' }}>
                   Sign Up/Login
                 </h4>
                 </NavItem>
@@ -388,7 +406,7 @@ export default class App extends Component {
               {user &&
               <LinkContainer to="/projects/login">
                 <NavItem eventKey={7} className="logout-link" onClick={this.handleLogout}>
-                <h4 className="nav-link">
+                <h4 className="nav-link" style={{ color: 'rgb(255 255 255)', fontSize: '1.25rem' }}>
                   Logout
                 </h4>
                 </NavItem>
@@ -401,47 +419,70 @@ export default class App extends Component {
       <div>
       <Segment.Group basic horizontal style={{ marginTop: `${marginTop}`, minHeight: '600px'}}>
       { user && user.uid && !spaceOpen &&
-      <Segment basic vertical className={styles.mobile_hide} style={{ minWidth: width, maxWidth: width, marginTop: '2%' }}>
-          <div className="text-right">
+      <Segment basic vertical className={styles.mobile_hide} style={{ minWidth: width, maxWidth: width, marginTop: '2%', backgroundColor: '#373A3C' }}>
+          <div className="text-right" style={{ color: 'white', fontSize: '1.5rem', marginRight: '0.5rem' }}>
             {this.props.menuHidden && <Icon name="toggle on" onClick={() => { this.props.toggleMenu(false);}}/> }
             {!this.props.menuHidden && <Icon name="toggle off" onClick={() => {this.props.toggleMenu(true);}}/> }
           </div>
         
             <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
-            <Menu.Item name="profile" onClick={this.goToUserProfile.bind(this,user.uid) }>
+            <Menu.Item name="profile" style={{ padding: '2rem' }} onClick={this.goToUserProfile.bind(this,user.uid) } active={activeMenu === 'profile'}>
               <div className="text-center">
-              { user.profilePic &&
-                <Image avatar src={user.profilePic} size={imageSize} />
-              }
-              { !user.profilePic &&
-                <Icon name="user" color="blue" size="big" />
-              }
                 {!this.props.menuHidden &&
-                <p> {user.firstName}</p> }
+                <p style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> 
+                { user.profilePic &&
+                  <Image avatar src={user.profilePic} size={imageSize} />
+                }
+                { !user.profilePic &&
+                  // <Icon name="user" color="blue" size="big" />
+                  <i aria-hidden="true" className="fa fa-user" style={{ marginRight: '0.5rem' }}></i>
+                }
+                {user.firstName}
+                </p> }
+
+                {this.props.menuHidden &&
+                  <span style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> 
+                  { user.profilePic &&
+                    <Image avatar src={user.profilePic} size={imageSize} />
+                  }
+                  { !user.profilePic &&
+                    // <Icon name="user" color="blue" size="big" />
+                    <i aria-hidden="true" className="fa fa-user" style={{ marginRight: '0.5rem' }}></i>
+                  }
+                  </span>
+                }
               </div>
             </Menu.Item>
-           </Menu>
+          
+            {/* divider div */}
+            <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', padding: '0.1rem' }}></div>
 
-            <br />
-            <br />
-          <Menu secondary vertical fluid icon="labeled" widths="one" size="large">
-            <Menu.Item name="home"
-                  active={activeMenu === 'projects'}
+            <Menu.Item name="home" style={{ padding: '2rem' }}
+                  active={activeMenu === 'projects' || activeMenu === 'home'}
                   onClick={this.selectMenu}>
-              <Icon name="home" color="blue" />
-              {!this.props.menuHidden && <h7> Home </h7>}
+              {/* <Icon name="home" color="blue" /> */}
+              {!this.props.menuHidden && <h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> <i aria-hidden="true" className="fa fa-home" style={{ marginRight: '0.5rem' }}></i>Home </h7>}
+
+              {this.props.menuHidden && <span style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}> <i aria-hidden="true" className="fa fa-home" style={{ marginRight: '0.5rem' }}></i> </span>}
             </Menu.Item>
-            <Menu.Item name="create" active={activeMenu === 'create'} href={'/projects/create'} onClick={this.selectMenu}>
-              <Icon name="plus" color="blue" />
-              {!this.props.menuHidden && <h7> Create Dataset </h7>}
+            
+            <Menu.Item name="create" style={{ padding: '2rem' }} active={activeMenu === 'create'} href={'/projects/create'} onClick={this.selectMenu}>
+              {/* <Icon name="plus" color="blue" /> */}
+              {!this.props.menuHidden && <h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}><i aria-hidden="true" className="fa fa-plus" style={{ marginRight: '0.5rem' }}></i>Create Dataset </h7>}
+
+              {this.props.menuHidden && <span style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}><i aria-hidden="true" className="fa fa-plus" style={{ marginRight: '0.5rem' }}></i> </span>}
             </Menu.Item>
-                  { this.props.plan && !this.props.menuHidden &&
-                    <div>
-                    <Button onClick={ () => { this.setState({ apiKeyModal: true }); getAPIKey(this.apiKeyFetched.bind(this));}}>
-                      Get API Key
-                    </Button>
-                  </div>}
-            <br />
+
+            { this.props.plan && !this.props.menuHidden &&
+              <div style={{ padding: '2rem' }}>
+                <Button style={{ width: '12rem', fontSize: '1.25rem', padding: '1.5rem' }} primary onClick={ () => { this.setState({ apiKeyModal: true }); getAPIKey(this.apiKeyFetched.bind(this));}}>
+                Get API Key
+                </Button>
+              </div>
+            }
+            
+            {/* divider div */}
+            <div style={{ display: 'block', height: '1px', border: '0', borderTop: '1px solid #ccc', margin: '1em 0', padding: '0' }}></div>
 
           {/* { !this.props.menuHidden && this.props.labelsAllowed &&
           <div>
@@ -468,24 +509,42 @@ export default class App extends Component {
           </div>
           } */}
 
-            <br />
-                {!this.props.menuHidden &&
-                  <Menu.Item className={projectMenuClass} style={{ padding: '2%' }}>
-                    <Menu.Header><h7> Datasets </h7> </Menu.Header>
+            {!this.props.menuHidden &&
+              <Menu.Item className={projectMenuClass} style={{ padding: '1rem' }}>
+                <Menu.Header><h7 style={{ color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold', marginLeft: '6rem', paddingBottom: '1rem' }}><i aria-hidden="true" className="fa fa-database" style={{ marginRight: '0.5rem' }}></i>Datasets </h7> </Menu.Header>
 
-                    <Menu.Menu style={{ padding: '2%' }}>
-                      {projectArray}
-                    </Menu.Menu>
-                  </Menu.Item>
-                }
-            </Menu>
+                <Menu.Menu id="datasetmenu" style={{ padding: '2%', color: 'rgb(255 255 255)', marginTop: '0.5rem', fontSize: '1.35rem', fontWeight: 'bold', width: '21.5rem' }}>
+                  {projectArray}
+                </Menu.Menu>
+              </Menu.Item>
+            }
+          </Menu>
+
+          <style>{"\
+            a.item:hover{\
+              background-color: #487596 !important;\
+            }\
+            a.active{\
+              background-color: #1678C2 !important;\
+            }\
+            div#datasetmenu a{\
+              color: rgb(255 255 255);\
+              padding: 1rem;\
+              margin-left: 0.9rem !important;\
+              width: 98%;\
+              padding: 1.5rem;\
+            }\
+            div#datasetmenu a:hover{\
+              background-color: #487596 !important;\
+            }\
+          "}</style>
         </Segment>
       }
 
         <div className="col-md-0.5" />
-          <Segment basic vertical>
+          <Segment id="back-img-area" basic vertical>
 		  { !user && !spaceOpen &&
-		  <div id="container">
+		  <div id="container" style={{ backdropFilter: 'blur(2px)' }}>
 		    <br/>
 		    <h2 style={{ textAlign: 'center', marginTop: '2%' }}> Please login to start using the platform! </h2>
 		  </div>
@@ -528,7 +587,7 @@ export default class App extends Component {
             </Modal.Dialog>
           </div>
             }
-            { !spaceOpen && <div style={{height: '30px'}} /> }
+            { !spaceOpen && <div style={{height: '30px', backdropFilter: 'blur(2px)' }} /> }
             <ErrorBoundary>
               {this.props.children}
             </ErrorBoundary>
@@ -541,7 +600,7 @@ export default class App extends Component {
         <div className="fb-comments" data-href="https://www.facebook.com/Datatrks/" data-numposts="10"></div>
         </div>
         */}
-        <div className="centered footer">
+        <div className="centered footer" style={{ zIndex: '5' }}>
           <div className="footer-links">
             <h4>
               <a target="_blank" href="mailto:contact@ai4bharat.org?subject=Support%20EZAnnotate" className="footer-link w-inline-block">

@@ -299,7 +299,7 @@ export default class TaggerImport extends Component {
       submitDisabled = true;
     }
     const styles = require('./TaggerImport.scss');
-    const inputWidth = { width: '50%'};
+    const inputWidth = { width: '100%', border: '1px solid' };
     let placeholder = 'Tagging guidelines for your team. Ex: Mark all place names as City';
     if (type === TEXT_CLASSIFICATION || type === SENTENCE_PAIR_CLASSIFIER || type === IMAGE_CLASSIFICATION || type === VIDEO_CLASSIFICATION) {
       placeholder = 'Classification guidelines for your team. Ex: Mark all 1 star review as negative';
@@ -402,7 +402,8 @@ export default class TaggerImport extends Component {
       </div>
     );
     return (
-      <div className={styles.loginPage + ' container text-center'} style={{ marginTop: '20px' }}>
+      <div className={styles.loginPage + ' container text-center'} style={{ marginTop: '20px', width: '100%' }}>
+        <div id="back-img-dflt"></div>
           <Helmet title="Create Dataset" />
                       {
                           <div>
@@ -482,13 +483,10 @@ export default class TaggerImport extends Component {
                             {
                                 !this.state.projectCreationComplete && !this.props.projectCreated &&
                             <div>
-                                  <h1>Create Dataset</h1>
-                              <br />
-                              <br />
+                                  <h1 style={{ backgroundColor: '#EEEEEE', width: '100%', marginBottom: '2rem', padding: '0.5em 1rem 2rem', fontSize: '2.5rem' }}> <i className="fa fa-database" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Create Dataset</h1>
 
-                              <Form size="small" key="import1" loading={this.state.loading} compact>
-                                    <Form.Input style={inputWidth} id="project_name" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'project_name')} label="Dataset Name" control="input" type="text" value={this.state.fields.project_name} placeholder={namePlaceHolder} />
-                                <br />
+                              <Form size="big" key="import1" loading={this.state.loading} compact style={{ backgroundColor: '#EEEEEE', padding: '2%' }}>
+                                <Form.Input style={inputWidth} id="project_name" size="small" color="teal" compact onChange={this.handleChange.bind(this, 'project_name')} label="Dataset Name" control="input" type="text" value={this.state.fields.project_name} placeholder={namePlaceHolder} />
 
                                     { (type === IMAGE_CLASSIFICATION || type === VIDEO_CLASSIFICATION || type === POS_TAGGING || type === DOCUMENT_ANNOTATION || type === POS_TAGGING_GENERIC ||  type === TEXT_CLASSIFICATION || type === SENTENCE_PAIR_CLASSIFIER || type === IMAGE_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX || type === IMAGE_POLYGON_BOUNDING_BOX_V2 || type === VIDEO_BOUNDING_BOX) &&
                                       <div>
@@ -509,7 +507,7 @@ export default class TaggerImport extends Component {
                                     }
                                 <br />
                                     <Form.Input style={inputWidth} size="small" id="instruction" type="textarea" onChange={this.handleChange.bind(this, 'instructions')} value={this.state.fields.instructions} label="Tagging Instruction" control="TextArea" placeholder={placeholder} />
-                                <br />
+                                
 
                                     { (type === IMAGE_BOUNDING_BOX) &&
                                         <Accordion as="Menu">
@@ -553,30 +551,30 @@ export default class TaggerImport extends Component {
                               </Accordion>
                               }
 
-                              <br />
+                              
 
                                   { (type === POS_TAGGING_GENERIC || type === DOCUMENT_ANNOTATION ) &&
-                                <div style={{ position: 'relative', marginLeft: '25%', marginRight: '25%' }} className="ui well">
+                                <div style={{ margin: '1%', border: '1px solid' }} className="ui well">
                                   { (this.state.addClassificationGroup && (this.state.fields.classification_name.length === 0 && this.state.fields.classification_classes.length === 0)) &&
-                                    <Label as="a" icon size="mini" onClick={() => this.setState({ addClassificationGroup: false })}>
-                                      <Icon color="blue" size="small" name="minus circle" /> Hide Classification
+                                    <Label as="a" icon onClick={() => this.setState({ addClassificationGroup: false })} style={{ fontSize: '1.25rem', padding: '1rem', float: 'right' }} color="red">
+                                      <Icon color="white" name="minus circle" /> Remove Classification
                                     </Label>
                                   }
 
                                   { ((this.state.fields.classification_name.length > 0 && this.state.fields.classification_classes.length > 0)) &&
-                                    <Label attached="top left" as="a" icon size="mini" onClick={() => { this.setState({ addClassificationGroup: false }); this.resetClassification();}}>
-                                      <Icon color="blue" size="small" name="minus circle" /> Remove Classification
+                                    <Label as="a" icon onClick={() => { this.setState({ addClassificationGroup: false }); this.resetClassification();}} style={{ fontSize: '1.25rem', padding: '1rem', float: 'right' }} color="red">
+                                      <Icon color="white" size="small" name="minus circle" /> Remove Classification
                                     </Label>
                                   }
-                                  <br />
+                                  
                                   { (!this.state.addClassificationGroup && this.state.fields.classification_name.length === 0) &&
-                                    <Label as="a" icon size="mini" onClick={() => this.setState({ addClassificationGroup: true })}>
-                                      <Icon color="blue" size="small" name="plus circle" /> Add Classification
+                                    <Label as="a" icon onClick={() => this.setState({ addClassificationGroup: true })} style={{ width: '100%', fontSize: '2rem', padding: '1rem' }} color="teal">
+                                      <Icon color="white" name="plus circle" /> Add Classification
                                     </Label>
                                   }
                                   { (this.state.addClassificationGroup || ( this.state.fields.classification_name && this.state.fields.classification_name.length > 0)) &&
-                                      <Form compact size="mini">
-                                          <h5> Classification Options </h5>
+                                      <Form compact style={{ marginTop: '6rem' }}>
+                                          <h5 style={{ fontSize: '1.75rem' }}> Classification Options </h5>
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_name')} id="classification_name" compact label="Name" value={this.state.fields.classification_name} placeholder="Theme" />
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_disp_name')} id="classification_disp_name" compact label="Display Name" value={this.state.fields.classification_disp_name} placeholder="Select the article theme." />
                                           <Form.Input style={inputWidth} onChange={this.handleChange.bind(this, 'classification_classes')} id="classification_classes" compact label="Classes" value={this.state.fields.classification_classes } placeholder="News,Sports,Business" />
@@ -584,9 +582,7 @@ export default class TaggerImport extends Component {
                                   }
                             </div>
                           }
-
-                                <br />
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" disabled={submitDisabled} className="primary" onClick={this.handleSubmit} style={{ width: '100%', fontSize: '2rem', padding: '1rem' }}>Submit</Button>
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}
                                     </p>
@@ -597,27 +593,58 @@ export default class TaggerImport extends Component {
 
                           { this.props.projectCreated && !this.state.uploadType && !this.state.projectCreationComplete &&
                           <div>
-                            <h2> Select Upload Type </h2>
+                            <h2 style={{ backgroundColor: '#EEEEEE', padding: '2%', fontSize: '2rem' }}><i className="fa fa-upload" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i> Select Upload Type</h2>
                               <Segment basic>
                                 <Card.Group>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer'}} color="yellow" header="Upload Raw Data"
+                                  <Card className="up-raw" fluid onClick={() => {this.setState({ uploadType: 'Raw'});}} centered raised style={{ cursor: 'pointer'}} color="yellow" header="Upload Raw Data"
                                   description={[
                                     ''].join('')}/>
-                                  <Card fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
+
+                                  <Card className="up-annotated" fluid onClick={() => {this.setState({ uploadType: 'Pre-Annotated'});}} centered raised style={{ cursor: 'pointer'}} color="orange" header="Upload Pre-Annotated Data"
                                   description={[
                                     'If you have some data which is already pre-annotated and',
                                     ' want to go through annotations and correct them.'].join('')}/>
                                 </Card.Group>
                               </Segment>
+
+                              <style>{"\
+                              .up-raw{\
+                                background: linear-gradient(45deg,#e55353 0%,#d93737 100%)!important;\
+                                border-color: #d93737!important;\
+                              }\
+                              .up-raw div.content{\
+                                width: 100%;\
+                                margin-top: 0.8% !important;\
+                              }\
+                              .up-raw div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-raw div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                              .up-annotated{\
+                                background: linear-gradient(45deg,#f9b115 0%,#f6960b 100%) !important;\
+                                border-color: #f6960b !important;\
+                              }\
+                              .up-annotated div.content{\
+                                width: 100%;\
+                              }\
+                              .up-annotated div.content div.header{\
+                                font-size: 1.75rem !important;\
+                              }\
+                              .up-annotated div.content div.description{\
+                                font-size: 1.25rem !important;\
+                              }\
+                            "}</style>
                           </div>
                           }
 { !this.state.projectCreationComplete && this.props.projectCreated && this.state.uploadType === 'Pre-Annotated' &&
                             <Segment basic vertical loading={this.state.loading}>
 
                               <div>
-                                <h3>Select file with Pre-Annotated data</h3>
+                                <h3 style={{ fontSize: '2rem', backgroundColor: '#EEEEEE', padding: '2%' }}><i className="fa fa-list" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Select file with Pre-Annotated data</h3>
                                   <br />
-                                  <Button onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                   <br />
                                 { (type === POS_TAGGING || type === POS_TAGGING_GENERIC ||
                                   type === DOCUMENT_ANNOTATION) &&
@@ -646,9 +673,9 @@ export default class TaggerImport extends Component {
                               <div>
                                 { (type === IMAGE_BOUNDING_BOX) &&
                                   <div>
-                                <h3>Select file with Pre-Annotated data</h3>
+                                  <h3 style={{ fontSize: '2rem', backgroundColor: '#EEEEEE', padding: '2%' }}><i className="fa fa-list" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Select file with Pre-Annotated data</h3>
                                   <br />
-                                  <Button className="text-left" onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                   <br />
                                     <p>
                                     Please upload a text file with each line in file having input sentence in following json format.
@@ -853,7 +880,7 @@ export default class TaggerImport extends Component {
                                 </p>
                                 }
                                <div className="col-md-5" />
-                                <div className="col-md-3 text-center" style={inputWidth}>
+                                <div className="col-md-3 text-center" style={{ width: '95%', border: '1px solid', marginLeft: '2.5%' }}>
                                 <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                     <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                     </input>
@@ -869,7 +896,7 @@ export default class TaggerImport extends Component {
                                 <br />
 
                                 <div style={{ height: '50px'}}/>
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" className="text-left primary" style={{ fontSize: '1.25rem', padding: '1.5rem' }}  disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                 <br />
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}
@@ -880,10 +907,10 @@ export default class TaggerImport extends Component {
 
                           {
                             this.props.projectCreated && !this.state.projectCreationComplete && this.state.uploadType === 'Raw' &&
-                            <Segment basic vertical loading={this.state.loading}>
-                                <h1>Import Data</h1>
+                            <Segment basic vertical loading={this.state.loading} style={{ backgroundColor: '#EEEEEE' }}>
+                                <h1><i className="fa fa-cloud-upload" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>Import Data</h1>
                                 <br />
-                                  <Button className="text-left" onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
+                                  <Button className="text-left positive" style={{ fontSize: '1.25rem', padding: '1.5rem' }} onClick={() => {this.setState({ uploadType: undefined});}}>Change Import Type</Button>
                                 <br />
                                 <h3> Select file with input data </h3>
                                 <br />
@@ -951,7 +978,7 @@ export default class TaggerImport extends Component {
                                 }
 
                                  <div className="col-md-5" />
-                                <div className="col-md-3 text-center" style={inputWidth}>
+                                <div className="col-md-3 text-center" style={{ width: '95%', border: '1px solid', marginLeft: '2.5%' }}>
                                 <form encType="multipart/form-data" action="" key="importFile" className="text-center">
                                     <input className="h4 text-primary" disabled={this.state.loading} type="file" name="fileName" onChange={this.handleUploadFile}>
                                     </input>
@@ -967,7 +994,7 @@ export default class TaggerImport extends Component {
                                 <br />
 
                                 <div style={{ height: '50px'}}/>
-                                <Button type="submit" disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
+                                <Button type="submit" className="text-left primary" style={{ fontSize: '1.25rem', padding: '1.5rem' }}  disabled={submitDisabled} onClick={this.handleSubmit}>Submit</Button>
                                 <br />
                                     <p className={styles.error} disabled={!this.state.errors.submit}>
                                       {this.state.errors.submit}
@@ -978,6 +1005,22 @@ export default class TaggerImport extends Component {
                                   {this.state.fileUploadProgress > 0 && this.state.loading && <Progress percent={Math.floor(this.state.fileUploadProgress)} progress autoSuccess /> }
                         </div>
                       }
+
+        <style>{"\
+          div.field{\
+            padding: 1%;\
+          }\
+          div.field label{\
+            font-size: 1.5rem !important;\
+            padding-bottom: 1%;\
+            float: left;\
+          }\
+          menu.accordion{\
+            font-size: 1.75rem !important;\
+            border: 1px solid;\
+            margin: 1%;\
+          }\
+        "}</style>
       </div>
     );
   }

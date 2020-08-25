@@ -1,3 +1,20 @@
+# What's new in ezAnnotate Beta
+
+- Brand new UI design.
+- Introduced new feature: A detailed profile page for users, from where you'll be able to track self-engagement and contribution to the system.
+- Added visualisation support in the form of a graph for daily and custom date period data.
+- Enhanced project dashboard. Users will be able to track more engagement data than before.
+- New user role: Moderator
+  - **Admin:** Have access to all possible functionality.
+  - **Moderator(New role introduced):** Have access to all functionality except adding new contributors and updating core project related details/features.
+  - **Annotator:** Have access to only performing annotation tasks.
+- Some known issues have been fixed. 
+- Performance improvement.
+- Enhanced mobile support.
+- Further enhanced performance.
+
+### This project has been forked from [Dataturks](http://www.dataturks.com/).
+
 # DataTurks
 An open-source tool for powering data annotations.
 
@@ -13,68 +30,10 @@ An open-source tool for powering data annotations.
 
 ## Installation
 
-For latest intstructions to build on Linux, check here: [Building_on_Linux.md](docs/Building_on_Linux.md)
+For latest intstructions to build on Linux, check here: [**Building_on_Linux**](docs/Building_on_Linux.md)
 
-### Old build instructions
+For intstructions for MacOs, check here: [**Old_build_Instructions**](docs/Old_build_Instructions.md)
 
-Can run as a docker image as well. Here is the docker file specifying all the steps for setting things up:
+## Documentation
 
-https://github.com/DataTurks/DataTurks/blob/master/hope/docker/Dockerfile
-
-If you rather have it run as a non-docker service, then see below.
-
-Two main subcomponents:
-  1. Hope: Java-mysql based backend.
-    
-    Build:
-    Its a maven project, please install maven and then:
-    # cd hope
-    # mvn package -DskipTests <-- will build the .jar file.
-    
-    Run:
-    The service is based on dropwizard and taken a config file on startup. This config file specifies the MYSQL end-points, 
-    password and the port to run the service on.
-    
-    Setup mysql server as in: https://github.com/DataTurks/DataTurks/blob/master/hope/docker/mysqlInit.sql
-    
-    # java -Djava.net.useSystemProxies=true -server -jar target/dataturks-1.0-SNAPSHOT.jar server onprem.yml
-    
-  2. Bazaar: React based front-end.
-   
-  Mac Setup :
-        
-    brew install node@8
-    brew link node@8
-    conda create -n bazaar python=2.7 anaconda
-    conda activate bazaar
-    xcode-select --install
-    sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-    rm -rf node_modules
-    npm rebuild node-sass
-    npm install
-    npm run dev  
-   
-  Linux Setup:
-        Install Node Js etc.
-        
-	sudo apt-get -y install build-essential 
-	curl -sL https://deb.nodesource.com/setup_8.x | bash 	  
-	apt-get install --yes nodejs 	  
-	node -v 	  
-	npm -v  	  
-	npm i -g nodemon 	  
-	nodemon -v	  
-	apt-get clean 	  
-   
-   Build:
-      
-      cd bazaar
-      npm install && npm run build-onprem
-    
-   Run the service:
-     
-      npm run start-onprem
-    
-    
-
-    
+For latest documentation, [**Click Here**](https://docs.dataturks.com/).

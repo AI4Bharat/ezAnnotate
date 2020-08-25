@@ -315,7 +315,7 @@ export default class TaggerOrgProject extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{this.userAnchor(data[index].userDetails)}</td>
+            <td className="just">{this.userAnchor(data[index].userDetails)}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
             <td>{data[index].hitsDeleted}</td>
@@ -340,7 +340,7 @@ export default class TaggerOrgProject extends Component {
       if (data[index].hitsDone > 0 || showZero) {
         arrs.push(
           <tr key={index}>
-            <td>{this.userAnchor(data[index].userDetails)}</td>
+            <td className="just">{this.userAnchor(data[index].userDetails)}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
             <td>{data[index].hitsDeletedByDate}</td>
@@ -425,7 +425,8 @@ export default class TaggerOrgProject extends Component {
     this.setState({ successModal: false });
     if (this.state.redirectToHome) {
       this.props.pushState({
-        pathname: "/projects/" + this.props.params.orgName
+        // pathname: "/projects/" + this.props.params.orgName
+        pathname: "/projects/"
       });
     }
   };
@@ -745,12 +746,13 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
             </Button>
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -862,6 +864,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -869,7 +872,7 @@ export default class TaggerOrgProject extends Component {
           </div>
           <div className="col-md-6">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -910,6 +913,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -918,7 +922,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1002,6 +1006,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1010,7 +1015,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1123,6 +1128,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1131,7 +1137,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1215,6 +1221,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1223,7 +1230,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1311,6 +1318,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1319,7 +1327,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1395,6 +1403,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1403,7 +1412,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1571,6 +1580,7 @@ export default class TaggerOrgProject extends Component {
               labelPosition="left"
               onClick={this.previousElement.bind(this, "pervious")}
               disabled={this.state.start === 0}
+              style={{ fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="left arrow" />
               Previous
@@ -1579,7 +1589,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6">
             <Button
-              style={{ float: 'right' }}
+              style={{ float: 'right', fontSize: '1.25rem', padding: '1rem' }}
               size="mini"
               color="blue"
               icon
@@ -1682,6 +1692,7 @@ export default class TaggerOrgProject extends Component {
     };
     return (
       <div className="taggerPages" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div id="back-img-dflt"></div>
         <Helmet script={[schema]} title={pageTitle}>
           <meta property="og:title" content={pageTitle} />
           <meta name="description" content={pageDescription} />
@@ -1695,7 +1706,7 @@ export default class TaggerOrgProject extends Component {
         )}
         {!projectDetails && <Segment basic vertical loading />}
         {projectDetails && (
-          <div>
+          <div style={{ backgroundColor: 'rgb(238, 238, 238)', width: '104%', marginBottom: '2rem', padding: '1rem', marginTop: '-1rem' }}>
             <Segment
               basic
               vertical
@@ -1711,8 +1722,8 @@ export default class TaggerOrgProject extends Component {
                 }}
               >
                 <div>
-                  <Breadcrumb size="big">
-                    <Breadcrumb.Section
+                  <Breadcrumb size="big" style={{ fontSize: '1.75rem', marginTop: '-0.5rem', backgroundColor: '#EEEEEE' }}>
+                    {/* <Breadcrumb.Section
                       link
                       as="a"
                       href={"/projects/" + projectDetails.orgName}
@@ -1722,7 +1733,20 @@ export default class TaggerOrgProject extends Component {
                         );
                         event.preventDefault();
                       }}
+                    > */}
+
+                    <Breadcrumb.Section
+                      link
+                      as="a"
+                      href={"/projects/"}
+                      onClick={event => {
+                        this.props.pushState(
+                          "/projects/"
+                        );
+                        event.preventDefault();
+                      }}
                     >
+                      <i className="fa fa-user-o" aria-hidden="true" style={{ marginRight: '0.5rem' }}></i>
                       {projectDetails.orgName}
                     </Breadcrumb.Section>
                     <Breadcrumb.Divider />
@@ -1732,36 +1756,41 @@ export default class TaggerOrgProject extends Component {
                   </Breadcrumb>
                 </div>
                 <div />
+
                 <div>
                   <Dropdown
                     text="Options"
                     icon="options"
                     labeled
                     button
-                    className="icon mini teal"
+                    className="icon mini primary"
+                    style={{ width: '100%', fontSize: '1.25rem', padding: '1rem' }}
                   >
-                    <Dropdown.Menu>
+                    <Dropdown.Menu style={{ marginLeft: '-3.75rem', marginTop: '0.25rem' }}>
                       <Dropdown.Item
                         disabled={!permissions.canUploadData}
                         onClick={this.openScreen.bind(this, "edit", "file")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         {" "}
-                        <Icon name="add circle" color="blue" /> Add Data
+                        <Icon name="add circle" color="green" /> Add Data
                       </Dropdown.Item>
                       <Dropdown.Item
                         disabled={!permissions.canEditProject}
                         onClick={this.openScreen.bind(this, "edit", "label")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         {" "}
-                        <Icon name="edit" color="blue" />
+                        <Icon name="edit" color="green" />
                         Edit Project
                       </Dropdown.Item>
                       <Dropdown.Item
                         disabled={!permissions.canSeeCompletedHITs}
                         onClick={this.openScreen.bind(this, "overview", "all")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         {" "}
-                        <Icon name="database" color="blue" />
+                        <Icon name="database" color="green" />
                         HITs Done
                       </Dropdown.Item>
                       <Dropdown.Item
@@ -1771,14 +1800,16 @@ export default class TaggerOrgProject extends Component {
                           "overview",
                           "skipped"
                         )}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         {" "}
-                        <Icon name="mail forward" color="blue" />
+                        <Icon name="mail forward" color="green" />
                         HITs Skipped
                       </Dropdown.Item>
                       <Dropdown.Item
                         disabled={!permissions.canDownloadData}
                         onClick={this.openScreen.bind(this, "export")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         <Icon name="download" color="blue" />
                         Download
@@ -1786,6 +1817,7 @@ export default class TaggerOrgProject extends Component {
                       <Dropdown.Item
                         disabled={!permissions.canEditProject}
                         onClick={this.openScreen.bind(this, "keybind")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         <Icon name="keyboard" color="blue" />
                         Keyboard Shortcuts
@@ -1793,6 +1825,7 @@ export default class TaggerOrgProject extends Component {
                       <Dropdown.Item
                         disabled={!permissions.canInviteCollaborators}
                         onClick={this.openScreen.bind(this, "contributors")}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         {" "}
                         <Icon name="users" color="blue" /> Contributors
@@ -1802,6 +1835,7 @@ export default class TaggerOrgProject extends Component {
                         onClick={() => {
                           this.setState({ showDeleteConfirmation: true });
                         }}
+                        style={{ fontSize: '1.25rem' }}
                       >
                         <Icon name="delete" color="red" />
                         Delete Project
@@ -1840,11 +1874,11 @@ export default class TaggerOrgProject extends Component {
         {this.state.showDeleteConfirmation && (
           <div>
             <Modal.Dialog>
-              <Modal.Header>
-                <Modal.Title>Delete Project</Modal.Title>
+              <Modal.Header style={{ backgroundColor: '#373A3C', color: 'white' }}>
+                <Modal.Title style={{ fontSize: '1.25rem' }}>Delete Project</Modal.Title>
               </Modal.Header>
 
-              <Modal.Body>
+              <Modal.Body style={{ fontSize: '1.25rem' }}>
                 Once deleted we would not be able to recover the data. Please
                 make sure you have a backup at your end for all the data.
               </Modal.Body>
@@ -1853,6 +1887,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.setState({ showDeleteConfirmation: false });
                   }}
+                  style={{ fontSize: '1.25rem', padding: '1rem' }}
                 >
                   Close
                 </Button>
@@ -1861,6 +1896,7 @@ export default class TaggerOrgProject extends Component {
                   onClick={() => {
                     this.deleteProject().bind(this);
                   }}
+                  style={{ fontSize: '1.25rem', padding: '1rem' }}
                 >
                   Delete
                 </Button>
@@ -1871,14 +1907,14 @@ export default class TaggerOrgProject extends Component {
         {successModal && (
           <div className="static-modal" style={{ marginTop: "50px" }}>
             <Modal.Dialog>
-              <Modal.Header>
-                <Modal.Title>Success</Modal.Title>
+              <Modal.Header style={{ backgroundColor: '#373A3C', color: 'white' }}>
+                <Modal.Title style={{ fontSize: '1.25rem' }}>Success</Modal.Title>
               </Modal.Header>
 
-              <Modal.Body>{this.state.successMessage}</Modal.Body>
+              <Modal.Body style={{ fontSize: '1.25rem' }}>{this.state.successMessage}</Modal.Body>
 
               <Modal.Footer>
-                <Button bsStyle="success" onClick={this.close}>
+                <Button bsStyle="success" onClick={this.close} style={{ fontSize: '1.25rem', padding: '1rem' }}>
                   Close
                 </Button>
               </Modal.Footer>
@@ -1898,10 +1934,10 @@ export default class TaggerOrgProject extends Component {
                 loading={this.state.loading}
               >
                 <div className="pull-left col-md-12 marginTop text-left">
-                  <Label>{projectDetails.visibility_type}</Label>
-                  <Label>{taskTypeMap[projectDetails.task_type]}</Label>
-                  <Label>Created on {createdDate}</Label>
-                  <Label>
+                  <Label style={{ width: '6rem', background: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem' }}>{projectDetails.visibility_type}</Label>
+                  <Label style={{ width: '9rem', background: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem' }}>{taskTypeMap[projectDetails.task_type]}</Label>
+                  <Label style={{ width: '12rem', background: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem' }}>Created on {createdDate}</Label>
+                  <Label style={{ width: '8rem', background: 'rgb(161, 188, 204)', color: 'rgb(0, 0, 0)', fontSize: '1rem', padding: '0.75rem' }}>
                     {projectDetails.contributorDetails.length} Contributors
                   </Label>
                 </div>
@@ -1915,11 +1951,11 @@ export default class TaggerOrgProject extends Component {
                     percent={taggingProgress}
                     precision={2}
                     progress="percent"
-                    style={{ width: "50%", left: "25%", fontSize: "0.75rem" }}
+                    style={{ width: "50%", left: "25%", fontSize: "1.25rem", height: '3rem' }}
                   />
                   <div style={{ padding: '0.5rem', borderTop: '1px solid lightsteelbue', borderBottom: '1px solid lightsteelbue', textAlign: 'left', display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                   <div>
-                  <h5> HITs Progress </h5>
+                  <h5 style={{ fontSize: '1.25rem' }}> HITs Progress </h5>
                   <Statistic.Group size="mini" widths="eight">
                     <Statistic
                       color="green"
@@ -1931,8 +1967,10 @@ export default class TaggerOrgProject extends Component {
                           this.openScreen("overview", "all");
                         event.preventDefault();
                       }}
+                      style={{ border: '1px solid green' }}
                     >
                       <Statistic.Value>
+                        <i className="fa fa-check-circle-o" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                         {projectDetails.totalHitsDone}
                       </Statistic.Value>
                       <Statistic.Label style={statsLabel}>
@@ -1949,8 +1987,10 @@ export default class TaggerOrgProject extends Component {
                           this.openScreen("overview", "skipped");
                         event.preventDefault();
                       }}
+                      style={{ border: '1px solid violet', marginLeft: '0.25rem' }}
                     >
                       <Statistic.Value>
+                        <i className="fa fa-share" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                         {projectDetails.totalHitsSkipped}
                       </Statistic.Value>
                       <Statistic.Label style={statsLabel}>
@@ -1967,16 +2007,19 @@ export default class TaggerOrgProject extends Component {
                           this.openScreen("overview", "deleted");
                         event.preventDefault();
                       }}
+                      style={{ border: '1px solid red', marginLeft: '0.25rem' }}
                     >
                       <Statistic.Value>
+                        <i className="fa fa-times-circle-o" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                         {projectDetails.totalHitsDeleted}
                       </Statistic.Value>
                       <Statistic.Label style={statsLabel}>
                         HITs Deleted
                       </Statistic.Label>
                     </Statistic>
-                    <Statistic size="mini">
+                    <Statistic size="mini" style={{ border: '1px solid', marginLeft: '0.25rem' }}>
                       <Statistic.Value color="blue">
+                        <i className="fa fa-check-square-o" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                         {projectDetails.totalHits}
                       </Statistic.Value>
                       <Statistic.Label style={statsLabel}>
@@ -1988,13 +2031,15 @@ export default class TaggerOrgProject extends Component {
                   {(projectDetails.totalEvaluationInCorrect > 0 ||
                     projectDetails.totalEvaluationCorrect > 0) && (
                     <div style={{ textAlign: 'left'}}>
-                      <h5>Evaluation Stats </h5>
+                      <h5 style={{ fontSize: '1.25rem' }}>Evaluation Stats </h5>
                       <Statistic.Group size="mini" widths="four">
                         <Statistic
                           color="green"
                           size="mini"
+                          style={{ border: '1px solid green' }}
                         >
                           <Statistic.Value>
+                            <i className="fa fa-check" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                             {projectDetails.totalEvaluationCorrect}
                           </Statistic.Value>
                           <Statistic.Label style={statsLabel}>
@@ -2004,8 +2049,10 @@ export default class TaggerOrgProject extends Component {
                         <Statistic
                           color="red"
                           size="mini"
+                          style={{ border: '1px solid red', marginLeft: '0.25rem' }}
                         >
                           <Statistic.Value>
+                            <i className="fa fa-times" aria-hidden="true" style={{ marginRight: '0.25rem' }}></i>
                             {projectDetails.totalEvaluationInCorrect}
                           </Statistic.Value>
                           <Statistic.Label style={statsLabel}>
@@ -2034,12 +2081,13 @@ export default class TaggerOrgProject extends Component {
               as="a"
               href={path + "visualize"}
               disabled={!permissions.canSeeInsights}
-              primary
+              className="teal"
               size="mini"
               onClick={event => {
                 this.openScreen("visualize");
                 event.preventDefault();
               }}
+              style={{ width: '9.5rem', fontSize: '1.25rem', padding: '1rem' }}
             >
               <Icon name="bar graph" /> Insights
             </Button>
@@ -2048,12 +2096,13 @@ export default class TaggerOrgProject extends Component {
                 as="a"
                 href={path + "space"}
                 disabled={!permissions.canCompleteHITs}
-                primary
+                positive
                 size="mini"
                 onClick={event => {
                   this.openScreen("space");
                   event.preventDefault();
                 }}
+                style={{ width: '100%', fontSize: '1.25rem', padding: '1rem' }}
               >
                 <Icon name="tag" /> Start Tagging
               </Button>
@@ -2061,9 +2110,10 @@ export default class TaggerOrgProject extends Component {
             <a data-for="main2" data-tip={disabledError}>
               <Button
                 disabled={!permissions.canInviteCollaborators}
-                primary
+                className="primary"
                 size="mini"
                 onClick={this.openInviteModal}
+                style={{ width: '100%', fontSize: '1.25rem', padding: '1rem' }}
               >
                 <Icon name="add user" /> Add Contributor
               </Button>
@@ -2086,12 +2136,12 @@ export default class TaggerOrgProject extends Component {
             >
               <Segment.Group
                 loading={this.state.loading}
-                style={{ width: "60%" }}
+                style={{ width: "98%", fontSize: '1.2rem' }}
                 centered
               >
-                <Header attached="top" block as="h4">
-                  <Icon name="line chart" disabled />
-                  <Header.Content>Leaderboard</Header.Content>
+                <Header attached="top" block as="h4" style={{ backgroundColor: 'rgb(55, 58, 60)', color: 'rgb(255, 255, 255)', fontSize: '1.75rem' }}>
+                  <Icon name="line chart" />
+                  <Header.Content style={{ marginLeft: '14%' }}>Leaderboard</Header.Content>
                 </Header>
                 <Table striped bordered condensed hover responsive>
                   <thead>
@@ -2120,18 +2170,19 @@ export default class TaggerOrgProject extends Component {
             >
               <Segment.Group
                 loading={this.state.loading}
-                style={{ width: "60%" }}
+                style={{ width: "98%", fontSize: '1.2rem' }}
                 centered
               >
-                <Header attached="top" block as="h4">
-                  <Icon name="line chart" disabled />
-                  <Header.Content>Stats for the selected date from  
+                <Header attached="top" block as="h4" style={{ backgroundColor: 'rgb(55, 58, 60)', fontSize: '1.75rem' }}>
+                  <Icon name="line chart" style={{ color: 'rgb(255, 255, 255)' }} />
+                  <Header.Content style={{ marginLeft: '15%' }}>
+                      <span style={{ color: 'rgb(255 255 255)' }}>Stats for the selected date from</span>  
                       <DatePicker
                       onChange={this.onChangeDate}
                       value={[this.state.date, this.state.enddate]}
                       maxDate={new Date()}
                       selectRange="true"
-                      />  to  {dateToLocalString(this.state.enddate)}
+                      /> <span style={{ color: 'rgb(255 255 255)' }}> to  {dateToLocalString(this.state.enddate)}</span>
                   </Header.Content>
                 </Header>
                 {this.state.dateStats && (
@@ -2176,10 +2227,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length > 0 &&
           (projectDetails.task_type === TEXT_SUMMARIZATION || projectDetails.task_type === SENTENCE_TRANSLATION) && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
-                <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
+                <Icon name="list" />
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
@@ -2191,10 +2242,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === TEXT_MODERATION && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 {extra && <div>{this.showExtra(extra)}</div>}
@@ -2206,10 +2257,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           (projectDetails.task_type === TEXT_CLASSIFICATION || projectDetails.task_type === SENTENCE_PAIR_CLASSIFIER) && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 <h3> Entities </h3>
@@ -2227,10 +2278,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails.length >= 0 &&
           (projectDetails.task_type === IMAGE_CLASSIFICATION ||
             projectDetails.task_type === VIDEO_CLASSIFICATION) && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment padded>
                 <h3> Entities </h3>
@@ -2247,10 +2298,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === POS_TAGGING && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2271,10 +2322,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === IMAGE_BOUNDING_BOX && (
-            <Segment.Group>
-              <Header attached="top" block as="h4">
+            <Segment.Group style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2294,10 +2345,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX_V2 && (
-            <Segment.Group loading={this.state.loading}>
-              <Header attached="top" block as="h4">
+            <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2317,10 +2368,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === IMAGE_POLYGON_BOUNDING_BOX && (
-            <Segment.Group loading={this.state.loading}>
-              <Header attached="top" block as="h4">
+            <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2340,10 +2391,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails &&
           hitsDetails.length >= 0 &&
           projectDetails.task_type === VIDEO_BOUNDING_BOX && (
-            <Segment.Group loading={this.state.loading}>
-              <Header attached="top" block as="h4">
+            <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 padded
@@ -2365,10 +2416,10 @@ export default class TaggerOrgProject extends Component {
           hitsDetails.length >= 0 &&
           (projectDetails.task_type === DOCUMENT_ANNOTATION ||
             projectDetails.task_type === POS_TAGGING_GENERIC) && (
-            <Segment.Group loading={this.state.loading}>
-              <Header attached="top" block as="h4">
+            <Segment.Group loading={this.state.loading} style={{ fontSize: '1.2rem' }}>
+              <Header attached="top" block as="h4" style={{ backgroundColor: '#373A3C', color: 'rgb(255 255 255)', fontSize: '1.75rem' }}>
                 <Icon name="list" disabled />
-                <Header.Content>Sample Data</Header.Content>
+                <Header.Content style={{ marginLeft: '40%' }}>Sample Data</Header.Content>
               </Header>
               <Segment
                 basic
@@ -2390,8 +2441,9 @@ export default class TaggerOrgProject extends Component {
               <a data-for="main7" data-tip={disabledError}>
                 <Button
                   disabled={!permissions.canCompleteHITs}
-                  primary
+                  positive
                   onClick={this.openScreen.bind(this, "space")}
+                  style={{ width: '100%', fontSize: '1.25rem', padding: '1rem' }}
                 >
                   <Icon name="tag" /> Start Tagging
                 </Button>
@@ -2401,6 +2453,31 @@ export default class TaggerOrgProject extends Component {
           )}
 
         <div style={{ height: "50px" }} />
+
+        <style>{"\
+          div.bar{\
+            height: 100% !important;\
+          }\
+          th{\
+            text-align: center;\
+            padding: 0.75rem;\
+            font-size: 1.4rem;\
+          }\
+          td{\
+            padding: 0.75rem;\
+          }\
+          td.just{\
+            text-align: justify;\
+          }\
+          .react-date-picker__calendar{\
+            font-size: 1rem !important;\
+          }\
+          .react-date-picker__button{\
+            background-color: #FFFFFF;\
+            padding: 0.25rem;\
+            margin: 0rem 0.5rem;\
+          }\
+        "}</style>
       </div>
     );
   }
