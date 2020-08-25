@@ -1,6 +1,6 @@
-#### This project has been forked from [Dataturks](http://www.dataturks.com/).
+### This project has been forked from [Dataturks](http://www.dataturks.com/).
 
-## What's new in ezAnnotate Beta
+# What's new in ezAnnotate Beta
 
 - Brand new UI design.
 - Introduced new feature: A detailed profile page for users, from where you'll be able to track self-engagement and contribution to the system.
