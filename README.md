@@ -30,10 +30,10 @@ An open-source tool for powering data annotations.
 
 ## Installation
 
-For latest intstructions to build on Linux, check here: [**Building_on_Linux**](docs/Building_on_Linux.md)
+For the latest intstructions to build on Linux, check here: [**Building_on_Linux**](docs/Building_on_Linux.md)
 
-For intstructions for MacOs, check here: [**Old_build_Instructions**](docs/Old_build_Instructions.md)
+For the intstructions for MacOs, check here: [**Old_build_Instructions**](docs/Old_build_Instructions.md)
 
-## Documentation
+## API Documentation
 
-For latest documentation, [**Click Here**](https://docs.dataturks.com/).
+For the latest API Documentation, [**Click Here**](https://docs.dataturks.com/).
