@@ -7,4 +7,4 @@
     * Replace your new config in [config.js file](/bazaar/src/config.js) on line 17.
 4) Changing the Service account JSON.
     * Download the firebase service JSON by clicking on the "Generate New Private Key" button at the bottom of the Firebase Admin SDK section of the Service Accounts tab in the Project settings page.
-    * Replace the contents of the [dataturksFirebase.json](hope/keys/dataturksFirebase.json) file from the downloaded service JSON.
+    * Replace the contents of the [dataturksFirebase.json](/hope/keys/dataturksFirebase.json) file from the downloaded service JSON.
