@@ -356,7 +356,7 @@ export default class App extends Component {
           <Navbar.Toggle/>
         </Navbar.Header>
 
-          <Navbar.Collapse eventKey={0}>
+          <Navbar.Collapse eventKey={0} style={{width: '125rem'}}>
             <Nav navbar pullRight>
             {/* {<li role="presentation" className="logout-link">
             <a href="https://dataturks.com/help/help.php" target="_blank">

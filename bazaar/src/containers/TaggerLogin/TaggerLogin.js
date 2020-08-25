@@ -6,6 +6,9 @@ import { login, signIn, logout, resetFlags } from 'redux/modules/auth';
 import { replace } from 'react-router-redux';
 // import { GoogleLogin } from 'react-google-login';
 // import FontAwesome from 'react-fontawesome';
+// import faStyles from 'font-awesome/css/font-awesome.css'
+
+
 // import { Header } from 'semantic-ui-react';
 import { Button, Icon, Message, Transition, Segment, Form, Divider, Label } from 'semantic-ui-react';
 import { refreshToken, logEvent, createUserWithPassword, dtLogin } from '../../helpers/dthelper';
@@ -15,6 +18,7 @@ import firebase from 'firebase';
 import ReactGA from 'react-ga';
 import swot from 'swot-simple';
 import config from '../../config';
+import 'font-awesome/css/font-awesome.min.css';
 
 @connect(
   state => ({user: state.auth.user, userCreated: state.auth.userCreated}),
@@ -51,6 +55,10 @@ export default class TaggerLogin extends Component {
     fname: '',
     lname: '',
     password: '',
+    repassword: '',
+    logPassType: true,
+    passType: true,
+    rePassType: true,
     error: undefined
   }
 
@@ -274,16 +282,28 @@ export default class TaggerLogin extends Component {
   }
 
   createAccount(event) {
-    console.log('create account ', event, this.email, this.password);
-    if (this.state.email.length === 0 || !this.state.email.includes('@')) {
-      this.setState({ error: 'Invalid Email'});
-    } else if (this.state.password.length <= 6) {
-      this.setState({ error: 'Password should be atleast 6 letters long'});
-    } else if (this.state.fname.length < 2) {
+    // console.log('create account ', event, this.email, this.password);
+
+    if (this.state.fname.length < 2) {
       this.setState({ error: 'Please enter first name'});
+      this.fname.focus();
     } else if (this.state.lname.length < 2) {
       this.setState({ error: 'Please enter last name'});
-    } else if (this.state.email.length > 0 && this.state.email.includes('@') && this.state.password.length > 6) {
+      this.lname.focus();
+    } else if (this.state.email.length === 0 || !this.state.email.includes('@')) {
+      this.setState({ error: 'Invalid Email'});
+      this.email.focus();
+    } else if (this.state.password.length < 6) {
+      this.setState({ error: 'Password should be atleast 6 letters long'});
+      this.password.focus();
+    } else if (this.state.repassword.length == 0) {
+      this.setState({ error: 'Please re-enter password'});
+      this.repassword.focus();
+    } else if (this.state.repassword != this.state.password) {
+      this.setState({ error: 'Those passwords didn\'t match, try again'});
+      this.state.repassword = "";
+      this.repassword.focus();
+    } else if (this.state.email.length > 0 && this.state.email.includes('@') && this.state.password.length >= 6) {
       this.setState({ loading: true});
       if (config.servingEnv === 'online') {
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).
@@ -323,6 +343,19 @@ export default class TaggerLogin extends Component {
     firebase.auth().signInWithPopup(provider).then(this.firebaseCallback).catch(this.errorCallback);
   }
 
+  toggleShow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(e.target.dataset.txt == "logPassType") {
+      this.setState({ logPassType: !this.state.logPassType });
+    } else if(e.target.dataset.txt == "passType") {
+      this.setState({ passType: !this.state.passType });
+    } else if(e.target.dataset.txt == "rePassType") {
+      this.setState({ rePassType: !this.state.rePassType });
+    }
+  }
+
   handleCreateChange = (event) => {
     console.log('handleCreateChange ', event.target.name, event.target.value);
     // this.setState({ eventtarget.name: event.target.value });
@@ -334,6 +367,8 @@ export default class TaggerLogin extends Component {
       this.setState({ fname: event.target.value });
     } else if (event.target.name === 'lname') {
       this.setState({ lname: event.target.value });
+    } else if (event.target.name === 'repassword') {
+      this.setState({ repassword: event.target.value });
     }
   }
 
@@ -383,7 +418,10 @@ export default class TaggerLogin extends Component {
                             </Form.Field>
                             <Form.Field>
                               <label>Password</label>
-                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type="password" placeholder="Enter Password" />
+
+                              <i data-txt="logPassType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '43%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+
+                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.logPassType ? "password" : "text"} placeholder="Enter Password" />
                             </Form.Field>
                             </Form.Group>
                             <br />
@@ -393,7 +431,7 @@ export default class TaggerLogin extends Component {
                               <a as="a" onClick={this.forgotPassword.bind(this)} style={{ color: 'white'}}>Forgot Password ?</a>
                               <br />
                               <h6 style={{ color: 'white'}}> Don't have an account yet? &nbsp;
-                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true});}}>  Sign Up</Label>
+                              <Label color="green" as="a" onClick={() => { this.setState({emailSignup: true}); this.setState({password: ''}); }}>  Sign Up</Label>
                               </h6>
                           </Form>
                             <Message negative hidden={!this.state.error}>
@@ -436,10 +474,23 @@ export default class TaggerLogin extends Component {
                             </Form.Field>
                             <Form.Field>
                               <label>Password</label>
-                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type="password" placeholder="Create a password" />
+
+                              <i data-txt="passType" className={'fa' + (this.state.passType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+
+                              <input ref={(password) => {this.password = password;}} value={this.state.password} onChange={this.handleCreateChange.bind(this)} name="password" type={this.state.passType ? "password" : "text"} placeholder="Create a password" />
                             </Form.Field>
+
+                            {/* Re-enter password */}
+                            <Form.Field>
+                              <label>Re-enter password</label>
+                              
+                              <i data-txt="rePassType" className={'fa' + (this.state.rePassType ? '  fa-eye-slash' : '  fa-eye')} aria-hidden="true" style={{ position: 'absolute', marginLeft: '95%', marginTop: '2.5%', fontSize: '125%', fontWeight: 'bold', cursor: 'pointer' }} onClick={this.toggleShow}></i>
+
+                              <input ref={(repassword) => {this.repassword = repassword;}} value={this.state.repassword} onChange={this.handleCreateChange.bind(this)} name="repassword" type={this.state.rePassType ? "password" : "text"} placeholder="Re-enter password" />
+                            </Form.Field>
+
                             <Button type="submit" onClick={this.createAccount.bind(this)}>Sign Up</Button>
-                            <Message negative hidden={!this.state.error}>
+                            <Message negative hidden={!this.state.error} style={{ marginLeft: '20%'}}>
                               <p>{this.state.error}</p>
                             </Message>
                           </Form>

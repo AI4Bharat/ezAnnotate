@@ -1283,3 +1283,9 @@ VALUES
   (3096799, '2c9fafb0656f461b016589a1ccdf0125', 'https://storage.googleapis.com/bonsai-b808c.appspot.com/dataturks/website/uploads/vidoes/Pexels%20Videos%201153258.mp4', NULL, 'notDone', 'NONE', 0, 0, NULL, '2018-08-30 07:00:14', '2018-08-30 07:00:14', 0),
   (3096800, '2c9fafb0656f461b016589a1ccdf0125', 'https://storage.googleapis.com/bonsai-b808c.appspot.com/dataturks/website/uploads/vidoes/Pexels%20Videos%201069804.mp4', NULL, 'notDone', 'NONE', 0, 0, NULL, '2018-08-30 07:00:14', '2018-08-30 07:00:14', 0),
   (3096801, '2c9fafb0656f461b016589a1ccdf0125', 'https://storage.googleapis.com/bonsai-b808c.appspot.com/dataturks/website/uploads/vidoes/Pexels%20Videos%201153258.mp4', NULL, 'notDone', 'NONE', 0, 0, NULL, '2018-08-30 07:00:14', '2018-08-30 07:00:14', 0);
+
+ALTER TABLE d_hits ADD COLUMN `statusByUid` varchar(36) NULL AFTER `evaluation`, ADD COLUMN `evaluatedByUid` VARCHAR(36) NULL AFTER `statusByUid`;
+
+ALTER TABLE d_hits ADD COLUMN `updated_timestamp_eval` timestamp NULL AFTER `updated_timestamp`;
+
+ALTER TABLE d_hits_result MODIFY userId varchar(36) NULL;

@@ -86,9 +86,10 @@ public class DUtils {
         UserProjectPermissions permissions = new UserProjectPermissions();
         if (role == DTypes.Project_User_Role.CONTRIBUTOR) {
             addContributorPermissions(permissions);
-        }
-        else if (role == DTypes.Project_User_Role.OWNER) {
+        } else if (role == DTypes.Project_User_Role.OWNER) {
             addOwnerPermissions(permissions);
+        } else if (role == DTypes.Project_User_Role.ANNOTATOR) {
+            addAnnotatorPermissions(permissions);
         }
         return permissions;
     }
@@ -103,6 +104,20 @@ public class DUtils {
         permissions.setCanUploadData(true);
         permissions.setCanEditProject(true);
         permissions.setCanInviteCollaborators(true);
+    }
+
+    /**
+     * This function manages the permission for annotators
+     */
+    private static void addAnnotatorPermissions(UserProjectPermissions permissions){
+        addContributorPermissions(permissions);
+        permissions.setCanSeeInsights(false);
+        permissions.setCanSeeCompletedHITs(false);
+        permissions.setCanUploadData(false);
+        permissions.setCanDownloadData(false);
+        permissions.setCanEditProject(false);
+        permissions.setCanDeleteProject(false);
+        permissions.setCanInviteCollaborators(false);
     }
 
     public static String getNameFromEmailString(String email) {

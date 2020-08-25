@@ -1008,7 +1008,7 @@ export default class TaggerSpace extends Component {
 
   getEvaluations() {
     const options = [];
-    let selected = this.state.evaluationType;
+    let selected = (this.state.evaluationType == undefined) ? "ALL" : this.state.evaluationType;
     options.push({
       text: "Correct",
       value: "correct",
@@ -1037,7 +1037,7 @@ export default class TaggerSpace extends Component {
     });
     options.push({
       text: "Not Evaluated",
-      value: "none",
+      value: "NONE",
       onClick: () => {
         logEvent("buttons", "Select None");
         this.resetFilterState();
@@ -1050,7 +1050,7 @@ export default class TaggerSpace extends Component {
     });
     options.push({
       text: "All",
-      value: undefined,
+      value: "ALL",
       onClick: () => {
         logEvent("buttons", "Select All Evaluation");
         this.resetFilterState();
@@ -1062,7 +1062,6 @@ export default class TaggerSpace extends Component {
     });
     return (
       <Dropdown
-        compact
         value={selected}
         placeholder="Filter By Evaluation Status"
         selection
@@ -1074,6 +1073,11 @@ export default class TaggerSpace extends Component {
   getContributors(contributorDetails) {
     const options = [];
     let selected = "";
+
+    // To select current logged in user
+    let currUserData= getUidToken();
+    selected = currUserData.uid;
+
     if (contributorDetails) {
       for (
         let index = 0;
@@ -1127,6 +1131,7 @@ export default class TaggerSpace extends Component {
         <Dropdown
           value={selected}
           placeholder="Filter by Contributor"
+          style={{ display: 'none' }}
           selection
           options={options}
         />
@@ -2509,18 +2514,21 @@ export default class TaggerSpace extends Component {
     
     return this.state.translateValues.map((elem, i) => 
         <div key={i} style={{marginBottom: 15}}>
-         <Input 
-          value={elem||''} 
+         <TextArea 
+          rows="1"
+          value={elem||''}
           ref={(input) => { this.currentTextBox = input; }}
           onChange={this.handleTextChange.bind(this, i)}
-          style={{"width":"70%","padding":"2px"}}
-         />
+          className="form-control"
+          style={{ "display": "inline-block", "width":"70%", "fontSize": "25px" }}
+         ></TextArea>
          <Button
           type="button"
           size="medium"
           color="red"
           icon
           onClick={this.removeTextBox.bind(this, i)}
+          style={{ "marginLeft": "1%", "marginTop": "0.5rem", "position": "absolute" }}
           >
           <Icon name="delete"/>
           </Button>
@@ -4009,7 +4017,7 @@ export default class TaggerSpace extends Component {
                         >
                           Show project stats
                         </Button>
-                        <div style={{ height: "30px" }} />
+                        {/* <div style={{ height: "30px" }} />
                         <Button
                           onClick={() =>
                             this.props.pushState(
@@ -4022,8 +4030,8 @@ export default class TaggerSpace extends Component {
                           }
                         >
                           Show Completed HITs
-                        </Button>
-                        <div style={{ height: "30px" }} />
+                        </Button> */}
+                        {/* <div style={{ height: "30px" }} />
                         <Button
                           onClick={() =>
                             this.props.pushState(
@@ -4036,7 +4044,7 @@ export default class TaggerSpace extends Component {
                           }
                         >
                           Show Skipped HITs
-                        </Button>
+                        </Button> */}
                       </Segment>
                     )}
                   </div>

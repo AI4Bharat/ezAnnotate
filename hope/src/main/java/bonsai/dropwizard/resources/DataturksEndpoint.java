@@ -782,10 +782,10 @@ public class DataturksEndpoint {
     @Path("/{projectId}/fetchStatsForDate")
     public List<ContributorDetails> fetchStatsForDate(@NotNull @HeaderParam("token") String token,
             @NotNull @HeaderParam("uid") String id, @NotNull @PathParam("projectId") String projectId,
-            @NotNull @QueryParam("date") String ddMMyyyy) throws ParseException {
+            @NotNull @QueryParam("date") String ddMMyyyy, @NotNull @QueryParam("enddate") String eddMMyyyy) throws ParseException {
 
         LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
-        return Controlcenter.fetchStatsForDateInternal(projectId, ddMMyyyy);
+        return Controlcenter.fetchStatsForDateInternal(projectId, ddMMyyyy, eddMMyyyy);
     }
     
     @POST
@@ -793,10 +793,11 @@ public class DataturksEndpoint {
     public UserProfileData fetchProjectStatsForUser(@NotNull @HeaderParam("token") String token,
         @NotNull @HeaderParam("uid") String id,
         @NotNull @PathParam("userId") String userId,
-        @QueryParam("date") String ddMMyyyy) {
+        @QueryParam("date") String ddMMyyyy,
+        @QueryParam("enddate") String eddMMyyyy) {
         
         LoginAuth.validateAndGetDataturksUserIdElseThrowException(id, token);
-        List<ProjectsPerUser> projectStatsForUser = Controlcenter.fetchProjectStatsForUser(userId, ddMMyyyy);
+        List<ProjectsPerUser> projectStatsForUser = Controlcenter.fetchProjectStatsForUser(userId, ddMMyyyy, eddMMyyyy);
         UserProfileData response = new UserProfileData(userId);
         response.setProjectStats(projectStatsForUser);
         return response;

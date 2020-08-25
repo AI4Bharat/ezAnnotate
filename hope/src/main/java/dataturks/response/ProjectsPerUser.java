@@ -7,6 +7,16 @@ public class ProjectsPerUser {
     private long hitsDone;
     private long avrTimeTakenInSec;
 
+    private long dataDeleted;
+    private long dataSkipped;
+    private long dataEvaluationCorrect;
+    private long dataEvaluationInCorrect;
+
+    private long dataDeletedByDate;
+    private long dataSkippedByDate;
+    private long dataEvaluationCorrectByDate;
+    private long dataEvaluationInCorrectByDate;
+
     public ProjectsPerUser() {
         
     }
@@ -37,5 +47,69 @@ public class ProjectsPerUser {
 
     public void setAvrTimeTakenInSec(long avrTimeTakenInSec) {
         this.avrTimeTakenInSec = avrTimeTakenInSec;
+    }
+
+    public long getHitsDeleted() {
+        return dataDeleted;
+    }
+
+    public void setHitsDeleted(long dataDeleted) {
+        this.dataDeleted = dataDeleted;
+    }
+
+    public long getHitsSkipped() {
+        return dataSkipped;
+    }
+
+    public void setHitsSkipped(long dataSkipped) {
+        this.dataSkipped = dataSkipped;
+    }
+
+    public long getEvaluationCorrect() {
+        return dataEvaluationCorrect;
+    }
+
+    public void setEvaluationCorrect(long dataEvaluationCorrect) {
+        this.dataEvaluationCorrect = dataEvaluationCorrect;
+    }
+
+    public long getEvaluationInCorrect() {
+        return dataEvaluationInCorrect;
+    }
+
+    public void setEvaluationInCorrect(long dataEvaluationInCorrect) {
+        this.dataEvaluationInCorrect = dataEvaluationInCorrect;
+    }
+
+    public long getHitsDeletedByDate() {
+        return dataDeletedByDate;
+    }
+
+    public void setHitsDeletedByDate(long dataDeletedByDate) {
+        this.dataDeletedByDate = dataDeletedByDate;
+    }
+
+    public long getHitsSkippedByDate() {
+        return dataSkippedByDate;
+    }
+
+    public void setHitsSkippedByDate(long dataSkippedByDate) {
+        this.dataSkippedByDate = dataSkippedByDate;
+    }
+
+    public long getEvaluationCorrectByDate() {
+        return dataEvaluationCorrectByDate;
+    }
+
+    public void setEvaluationCorrectByDate(long dataEvaluationCorrectByDate) {
+        this.dataEvaluationCorrectByDate = dataEvaluationCorrectByDate;
+    }
+
+    public long getEvaluationInCorrectByDate() {
+        return dataEvaluationInCorrectByDate;
+    }
+
+    public void setEvaluationInCorrectByDate(long dataEvaluationInCorrectByDate) {
+        this.dataEvaluationInCorrectByDate = dataEvaluationInCorrectByDate;
     }
 }

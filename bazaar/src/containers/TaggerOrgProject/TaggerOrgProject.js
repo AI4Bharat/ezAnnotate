@@ -155,6 +155,7 @@ export default class TaggerOrgProject extends Component {
       successModal: false,
       selectedLabel: undefined,
       date: null,
+      enddate: new Date(),
       dateStats: null,
       dateStatsError: undefined
     };
@@ -171,6 +172,7 @@ export default class TaggerOrgProject extends Component {
     projectDetailsError: undefined,
     hitsDetails: undefined,
     date: null,
+    enddate: new Date(),
     dateStats: null,
     dateStatsError: undefined
   };
@@ -274,15 +276,26 @@ export default class TaggerOrgProject extends Component {
   }
 
   onChangeDate = date => {
-    this.setState({date});
-    getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
+    if(Array.isArray(date)) {
+      this.setState({date : date[0]});
+      this.setState({enddate : date[1]});
+      getStatsForDate(this.props.currentProject, dateToLocalString(date[0]), this.dateStatsFetched, dateToLocalString(date[1]));
+    } else {
+      this.setState({date : date});
+      this.setState({enddate : date});
+      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched, dateToLocalString(date));
+    }
+    
+    // this.setState({date});
+    // getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
   }
 
   setInitialDate() {
     const date = new Date();
     this.setState({date: date});
+    this.setState({enddate: date});
     if (this.props.currentProject) {
-      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched);
+      getStatsForDate(this.props.currentProject, dateToLocalString(date), this.dateStatsFetched, dateToLocalString(date));
     }
   }
 
@@ -305,6 +318,35 @@ export default class TaggerOrgProject extends Component {
             <td>{this.userAnchor(data[index].userDetails)}</td>
             <td>{data[index].avrTimeTakenInSec}</td>
             <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeleted}</td>
+            <td>{data[index].hitsSkipped}</td>
+            <td>{data[index].evaluationCorrect}</td>
+            <td>{data[index].evaluationInCorrect}</td>
+          </tr>
+        );
+      }
+    }
+    return <tbody>{arrs}</tbody>;
+  };
+
+  getContributorsDataByDate = data => {
+    const arrs = [];
+    console.log("getContributorsDataByDate ", data);
+    let showZero = true;
+    if (data && data.length > 10) {
+      showZero = false;
+    }
+    for (let index = 0; index < data.length; index++) {
+      if (data[index].hitsDone > 0 || showZero) {
+        arrs.push(
+          <tr key={index}>
+            <td>{this.userAnchor(data[index].userDetails)}</td>
+            <td>{data[index].avrTimeTakenInSec}</td>
+            <td>{data[index].hitsDone}</td>
+            <td>{data[index].hitsDeletedByDate}</td>
+            <td>{data[index].hitsSkippedByDate}</td>
+            <td>{data[index].evaluationCorrectByDate}</td>
+            <td>{data[index].evaluationInCorrectByDate}</td>
           </tr>
         );
       }
@@ -513,11 +555,11 @@ export default class TaggerOrgProject extends Component {
     }
   }
 
-  inviteByEmail(email, isOwner) {
+  inviteByEmail(email, isOwner, invuserrole="ANNOTATOR") {
     logEvent("buttons", "Sending invite");
 
     console.log("inviting by email ", event, event.target.value);
-    sendInvite(this.props.currentProject, email, isOwner, this.inviteSent);
+    sendInvite(this.props.currentProject, email, isOwner, this.inviteSent, invuserrole);
   }
 
   deleteProject() {
@@ -708,6 +750,7 @@ export default class TaggerOrgProject extends Component {
               Previous
             </Button>
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -826,6 +869,7 @@ export default class TaggerOrgProject extends Component {
           </div>
           <div className="col-md-6">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -874,6 +918,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -965,6 +1010,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1085,6 +1131,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1176,6 +1223,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1271,6 +1319,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1354,6 +1403,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6 col-xs-4">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1529,6 +1579,7 @@ export default class TaggerOrgProject extends Component {
           <div className="col-xs-4" />
           <div className="col-md-6">
             <Button
+              style={{ float: 'right' }}
               size="mini"
               color="blue"
               icon
@@ -1587,11 +1638,19 @@ export default class TaggerOrgProject extends Component {
       extra = JSON.parse(hitsDetails[this.state.start].extras);
     }
     if (projectDetails && projectDetails.permissions) {
-      taggingProgress = Number(
+      /*taggingProgress = Number(
         ((projectDetails.totalHitsDone + projectDetails.totalHitsSkipped) *
           100) /
           projectDetails.totalHits
+      ).toFixed(0);*/
+
+      // Only Hits done should be considered as progress
+      taggingProgress = Number(
+        ((projectDetails.totalHitsDone) *
+          100) /
+          projectDetails.totalHits
       ).toFixed(0);
+
       if (projectDetails.totalHits === 0) taggingProgress = 0;
       permissions = projectDetails.permissions;
       if (projectDetails.created_timestamp) {
@@ -1868,7 +1927,8 @@ export default class TaggerOrgProject extends Component {
                       as="a"
                       href={path + "space?type=all"}
                       onClick={event => {
-                        this.openScreen("overview", "all");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "all");
                         event.preventDefault();
                       }}
                     >
@@ -1885,7 +1945,8 @@ export default class TaggerOrgProject extends Component {
                       size="mini"
                       href={path + "space?type=skipped"}
                       onClick={event => {
-                        this.openScreen("overview", "skipped");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "skipped");
                         event.preventDefault();
                       }}
                     >
@@ -1902,7 +1963,8 @@ export default class TaggerOrgProject extends Component {
                       as="a"
                       href={path + "space?type=deleted"}
                       onClick={event => {
-                        this.openScreen("overview", "deleted");
+                        if(permissions.canSeeCompletedHITs)
+                          this.openScreen("overview", "deleted");
                         event.preventDefault();
                       }}
                     >
@@ -2037,6 +2099,10 @@ export default class TaggerOrgProject extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs skipped</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
                   {this.getContributorsData(projectDetails.contributorDetails)}
@@ -2059,12 +2125,13 @@ export default class TaggerOrgProject extends Component {
               >
                 <Header attached="top" block as="h4">
                   <Icon name="line chart" disabled />
-                  <Header.Content>Stats for the selected date
+                  <Header.Content>Stats for the selected date from  
                       <DatePicker
                       onChange={this.onChangeDate}
-                      value={this.state.date}
+                      value={[this.state.date, this.state.enddate]}
                       maxDate={new Date()}
-                      />
+                      selectRange="true"
+                      />  to  {dateToLocalString(this.state.enddate)}
                   </Header.Content>
                 </Header>
                 {this.state.dateStats && (
@@ -2074,9 +2141,13 @@ export default class TaggerOrgProject extends Component {
                       <th>Name</th>
                       <th>Time(s) / HIT</th>
                       <th>#HITs done</th>
+                      <th>#HITs deleted</th>
+                      <th>#HITs skipped</th>
+                      <th>#HITs correct</th>
+                      <th>#HITs incorrect</th>
                     </tr>
                   </thead>
-                  {this.getContributorsData(this.state.dateStats)}
+                  {this.getContributorsDataByDate(this.state.dateStats)}
                 </Table>
                 )}
               </Segment.Group>

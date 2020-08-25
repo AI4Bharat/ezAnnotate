@@ -4,6 +4,7 @@ public class DTypes {
     public enum User_Roles {
         ADMIN,
         MEMBER,
+        ANNOTATOR,
     }
     //who can contributor etc.
     public enum Project_Access_Type {
@@ -44,6 +45,7 @@ public class DTypes {
     public enum Project_User_Role {
         OWNER,
         CONTRIBUTOR,
+        ANNOTATOR,
     }
 
     public enum File_Type {
