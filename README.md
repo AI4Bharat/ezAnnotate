@@ -1,5 +1,3 @@
-### This project has been forked from [Dataturks](http://www.dataturks.com/).
-
 # What's new in ezAnnotate Beta
 
 - Brand new UI design.
@@ -14,6 +12,8 @@
 - Performance improvement.
 - Enhanced mobile support.
 - Further enhanced performance.
+
+### This project has been forked from [Dataturks](http://www.dataturks.com/).
 
 # DataTurks
 An open-source tool for powering data annotations.
