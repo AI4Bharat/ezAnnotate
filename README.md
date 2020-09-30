@@ -1,4 +1,34 @@
-# What's new in EzAnnotate Beta
+# EzAnnotate
+
+An open-source tool for powering data annotations for maching learning, data science, NLP and other AI tasks.
+
+## Features
+  ### NER tagging in Documents
+	Full length document annotations (PDF, Doc, Text etc).
+  ### Image Segmentation, Bounding Boxes & Classification
+        Draw free form polygons and generate image masks.
+  ### POS tagging
+        A super easy interface to tag for PoS/NER in sentences.
+  ### More features listed at www.dataturks.com
+
+Note:  
+This project has been forked from [DataTurks](https://github.com/DataTurks/DataTurks).
+
+## Installation
+
+For the latest intstructions to build on Linux, check here: [**Building_on_Linux**](docs/Building_on_Linux.md)
+
+For the intstructions for MacOs, check here: [**Old_build_Instructions**](docs/Old_build_Instructions.md)
+
+## API Documentation
+
+For the latest API Documentation, [**Click Here**](https://docs.dataturks.com/).
+
+<hr/>
+
+### Changelogs
+
+#### What's new in EzAnnotate Beta 2
 
 - Brand new UI design.
 - Introduced new feature: A detailed profile page for users, from where you'll be able to track self-engagement and contribution to the system.
@@ -13,28 +43,5 @@
 - Enhanced mobile support.
 - Further enhanced performance.
 
-### This project has been forked from [Dataturks](http://www.dataturks.com/).
-
-# EzAnnotate
-
-An open-source tool for powering data annotations.
-
-## Features
-  ### NER tagging in Documents
-	Full length document annotations (PDF, Doc, Text etc).
-  ### Image Segmentation, Bounding Boxes & Classification
-        Draw free form polygons and generate image masks.
-  ### POS tagging
-        A super easy interface to tag for PoS/NER in sentences.
-  ### More features listed at www.dataturks.com
-
-
-## Installation
-
-For the latest intstructions to build on Linux, check here: [**Building_on_Linux**](docs/Building_on_Linux.md)
-
-For the intstructions for MacOs, check here: [**Old_build_Instructions**](docs/Old_build_Instructions.md)
-
-## API Documentation
-
-For the latest API Documentation, [**Click Here**](https://docs.dataturks.com/).
+ToDo:  
+Update older logs
