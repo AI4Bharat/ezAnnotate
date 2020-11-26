@@ -1,6 +1,6 @@
 * [HOME](/)
 
-* [How It Works?](how-it-works/index)
+* [Features](how-it-works/index)
   * [Architecture](how-it-works/architecture)
   * [Tasks Supported](how-it-works/tasks)
 
