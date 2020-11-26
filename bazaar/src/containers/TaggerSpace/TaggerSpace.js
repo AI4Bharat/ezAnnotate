@@ -92,9 +92,29 @@ import {
   ForwardControl,
   PlaybackRateMenuButton
 } from "video-react";
-// const entities = [
-//   'NN', 'NP', 'NMP', 'NNRS'
-// ];
+
+import SuggestionInputSearch from 'suggestion-react-input-search';
+import $ from 'jquery';
+
+// Language option data init
+window.langOptions = [];
+
+// Handles the selection procedure of suggestions
+function selectTransliteration(event) {
+  event = event || window.event;
+  var target = event.target || event.srcElement;
+  var slno = target.getAttribute("slno");
+  var selTxt = target.getAttribute("data");
+  var currStr = $('#translitTA_' + slno).val();
+  var currStrArr = currStr.split(" ");
+
+  currStrArr[currStrArr.length - 1] = selTxt;
+  currStr = currStrArr.join(" ");
+
+  $('#translitTA_' + slno).val(currStr);
+  $('#translitDiv_' + slno).html("");
+  $('#translitTA_' + slno).focus();
+}
 
 // const INITIAL_COUNT = 10;
 const styles = require("./TaggerSpace.scss");
@@ -552,15 +572,91 @@ export default class TaggerSpace extends Component {
         changesInSession: 0,
         shortcuts: {},
         isFullscreenEnabled: false,
-        translateValues: [""]
+        translateValues: [""],
+        value: '',
+        suggestions: [],
       };
     }
+
+    // Supported language init
+    this.state.supportedLanguages = [];
+    this.state.translateSuggs = [""];
+    this.state.trans_lang = "";
+    this.state.cursor = 0;
+    this.state.suggResultLen = 0;
+
     this.props.setCurrentHit(undefined);
+  }
+
+  handleSuggKeyDown(slno = 0, e) {
+    const { cursor, suggResultLen } = this.state
+    // alert(e.keyCode + " ---- " + slno + " ---- " + cursor + " ---- " + suggResultLen);
+
+    // Arrow Up[38] and Down[40] button should select next/previous list element
+    // Space[32] and Enter[13] button should select current active element's value 
+    if (e.keyCode === 38 && cursor > 0) {
+      // alert("38");
+      this.setState( prevState => ({
+        cursor: prevState.cursor - 1
+      }))
+
+      // move active class to previous elem
+      var currActive = $('div#translitDiv_' + slno + ' div.auto-sugg-cls ul li.active');
+      currActive.removeClass('active');
+      currActive.prev('li').addClass('active');
+      $('.active li').focus();
+    } else if (e.keyCode === 40 && cursor < suggResultLen - 1) {
+      // alert("40");
+      this.setState( prevState => ({
+        cursor: prevState.cursor + 1
+      }))
+
+      // move active class to next elem
+      var currActive = $('.active');
+      currActive.removeClass('active');
+      currActive.next('li').addClass('active');
+      $('.active li').focus();
+    } else if (e.keyCode === 32 || e.keyCode === 13) {
+      if($('div#translitDiv_' + slno + ' div.auto-sugg-cls ul li.active span').length > 0) {
+        e.preventDefault();
+        var suggVal = $('div#translitDiv_' + slno + ' div.auto-sugg-cls ul li.active span').html() + " ";
+        var currStr = $('#translitTA_' + slno).val();
+        var currStrArr = currStr.split(" ");
+
+        currStrArr[currStrArr.length - 1] = suggVal;
+        currStr = currStrArr.join(" ");
+
+        $('#translitTA_' + slno).val(currStr);
+        $('#translitDiv_' + slno).html("");
+        $('#translitTA_' + slno).blur();
+        $('#translitTA_' + slno).focus();
+      }
+    }
   }
 
   componentWillMount() {
     console.log("TaggerSpace componentWillMount");
     // document.addEventListener('keydown', this.handleKeyDown.bind(this));
+
+    // Fetch all supported language for transliteration
+    fetch("https://api.varnamproject.com/languages")
+    .then(response => response.json())
+    .then(langRes => {
+      if(langRes) {
+        Object.keys(langRes).forEach(key => {
+          let stability = langRes[key].IsStable ? "" : " (Beta)"
+  
+          // Facilitate the variable to show language supports
+          window.langOptions.push({
+            text: langRes[key].DisplayName + stability,
+            value: langRes[key].LangCode
+          });
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   componentDidMount() {
@@ -2513,19 +2609,22 @@ export default class TaggerSpace extends Component {
     }
   }
   
-  createListOfTextBox(){
-    
+  createListOfTextBox() {
     return this.state.translateValues.map((elem, i) => 
-        <div key={i} style={{marginBottom: 15}}>
-         <TextArea 
+      <div key={i} style={{marginBottom: 15}}>
+        <TextArea 
+          id={'translitTA_' + i }
           rows="1"
           value={elem||''}
           ref={(input) => { this.currentTextBox = input; }}
           onChange={this.handleTextChange.bind(this, i)}
+          onFocus={this.handleTextChangeFocus.bind(this, i)}
+          onKeyDown={ this.handleSuggKeyDown.bind(this, i) }
           className="form-control"
           style={{ "display": "inline-block", "width":"70%", "fontSize": "25px" }}
-         ></TextArea>
-         <Button
+        ></TextArea>
+
+        <Button
           type="button"
           size="medium"
           color="red"
@@ -2535,8 +2634,24 @@ export default class TaggerSpace extends Component {
           >
           <Icon name="delete"/>
           </Button>
-        </div>          
+          
+          <div id={'translitDiv_' + i } dangerouslySetInnerHTML={{__html: this.state.translateSuggs[i]}} />
+      </div>          
     )
+  }
+
+  handleLangChange = (e, {value}) => {
+    e.persist();
+    // alert(value + " ----- " + e.target.textContent);
+    let trans_lang = this.state.trans_lang;
+    trans_lang = value;
+    this.setState({ trans_lang });
+  };
+
+  handleTextChangeFocus(i, event) {
+    let translateValues = [...this.state.translateValues];
+    translateValues[i] = event.target.value;
+    this.setState({ translateValues });
   }
   
   handleTextChange(i, event) {
@@ -2544,6 +2659,76 @@ export default class TaggerSpace extends Component {
     translateValues[i] = event.target.value;
     const changesInSession = this.state.changesInSession + 1;
     this.setState({ translateValues,changesInSession });
+
+    // Fetch transliteration result goes here
+    this.fetchSupportedTransliterations("tl", this.state.trans_lang, i, translateValues[i]);
+  }
+
+  // Fetch supported transliterations
+  fetchSupportedTransliterations(task = "tl", lang_code = "", slno = 0, trans_str = "") {
+    // alert(task + " ---- " + lang_code + " ---- "+ slno + " ---- " + trans_str);
+    
+    if(lang_code != "" && trans_str != "") {
+      let trans_arr = trans_str.split(" ");
+      fetch("https://api.varnamproject.com/"+task+"/"+lang_code+"/"+trans_arr[trans_arr.length - 1])
+      .then(response => response.json())
+      .then(transRes => {
+        if(transRes && transRes.success) {
+          let suggHtml = "";
+          if(Object.keys(transRes.result).length > 0) {
+            suggHtml += '<div class="suggestions-container center auto-sugg-cls" style="max-height: 200px; width: 69%; background-color: #eaeaea; border-color: #8c8c8c; border: 2px solid #8c8c8c; overflow-x: hidden;"><ul>';
+
+            let count = 1;
+            let activeCls = "active";
+            Object.keys(transRes.result).forEach(key => {
+              if(transRes.result[key] != "") {
+                activeCls = count === 1 ? 'active' : '';
+                suggHtml += '<li class=' + activeCls + '><span data="' + transRes.result[key] + '" slno="' + slno + '" style="font-size: 1.75rem;">' + transRes.result[key] + '</span></li>';
+                count++;
+              }
+            });
+
+            suggHtml += "</ul></div>";
+
+            let suggResultLen = this.state.suggResultLen;
+            suggResultLen = count - 1;
+            let cursor = this.state.cursor;
+            cursor = 0;
+
+            // Make a shallow copy of the items
+            let translateSuggs = [...this.state.translateSuggs];
+            // Replace the property you're intested in
+            translateSuggs[slno] = suggHtml;            
+            // Set the state to our new copy
+            this.setState({cursor, suggResultLen, translateSuggs});
+
+            // add event listeners for selection 
+            setTimeout(function() { 
+              // alert("translitDiv_"+slno);
+              var uls = document.getElementById("translitDiv_"+slno).getElementsByTagName('ul');
+              for (var i = 0; i < uls.length; i++) {
+                uls[i].addEventListener('click', selectTransliteration);
+              }
+            }, 1000); 
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    } else {
+      let suggResultLen = this.state.suggResultLen;
+      suggResultLen = 0;
+      let cursor = this.state.cursor;
+      cursor = 0;
+
+      // Make a shallow copy of the items
+      let translateSuggs = [...this.state.translateSuggs];
+      // Replace the property you're intested in
+      translateSuggs = [""];            
+      // Set the state to our new copy
+      this.setState({cursor, suggResultLen, translateSuggs});
+    }
   }
  
   addNewTextBox() {
@@ -2602,9 +2787,27 @@ export default class TaggerSpace extends Component {
           Mousetrap.bind(combo, this.addNewTextBox.bind(this));
         }
       }
+
+      const { value, suggestions } = this.state;
+      const inputProps = {
+        placeholder: "Type 'c'",
+        value,
+        onChange: this.onTransChange
+      };
+
       return (
         <form>
+            <Dropdown
+              id="trans_lang"
+              placeholder="Select language"
+              selection
+              options={window.langOptions}
+              style={{ width: '20%', fontSize: '1.25rem', marginBottom: '1rem' }}
+              onChange={this.handleLangChange.bind(this)}
+            />
+
             {this.createListOfTextBox()}
+
             <Button 
             type="button"
             size="medium"
@@ -2616,6 +2819,15 @@ export default class TaggerSpace extends Component {
               <Icon name="add square"/>
               {addMoreButtonName}
             </Button>
+
+            {/* <Autosuggest 
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+            /> */}
         </form>
       );
     }
@@ -3879,6 +4091,24 @@ export default class TaggerSpace extends Component {
     );
   }
 
+  onTransChange = (event, { newValue, method }) => {
+    this.setState({
+      value: newValue
+    });
+  };
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
   render() {
     // const {user, logout} = this.props;
     let popoverTop = undefined;
@@ -4792,6 +5022,17 @@ export default class TaggerSpace extends Component {
             </div>
           </div>
         )}
+
+        <style>{"\
+          .auto-sugg-cls ul li:hover {\
+            background-color: rgba(53,60,72,.1);\
+            padding-left: 5px;\
+          }\
+          .active {\
+            background-color: rgba(53,60,72,.1);\
+            padding-left: 5px;\
+          }\
+        "}</style>
       </div>
     );
   }
