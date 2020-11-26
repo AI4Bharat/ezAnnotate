@@ -1,4 +1,4 @@
-# EZAnnotate
+![LOGO_EZAnnotate](assets/LOGO_EZAnnotate.png)
 
 EZAnnotate An open-source tool for powering data annotations for maching learning, data science, NLP and other AI tasks.
 
