@@ -1,6 +1,8 @@
-# ezAnnotate
+# EZAnnotate
 
 > Welcome to our project!!
+
+An open-source tool for powering data annotations for maching learning, data science, NLP and other AI tasks.
 
 This is just a template for the project.  
 You need to edit all the files in it (including this README),  
