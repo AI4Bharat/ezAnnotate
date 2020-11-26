@@ -12,12 +12,12 @@ Finally, you can enable the GitHub pages for this project by choosing to render 
 
 <hr/>
 
-# To run this locally
+### To run this locally
 
 - `cd docs/` and `python -m http.server`
 - The website will be available at: http://localhost:8000/
 
-# More resources
+### More resources
 
 - https://docsify.js.org
 - https://jhildenbiddle.github.io/docsify-themeable
