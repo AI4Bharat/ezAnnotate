@@ -12,6 +12,6 @@
   ### Text Summarization
     This feature is the best thing for the case of content moderation.
 
-### More features listed at www.dataturks.com
+### More features listed at  www.dataturks.com
 
 **Note: ** This project has been forked from [DataTurks](https://github.com/DataTurks/DataTurks).
