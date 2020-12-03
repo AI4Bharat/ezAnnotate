@@ -4,8 +4,8 @@
   * [Architecture](how-it-works/architecture)
   * [Tasks Supported](how-it-works/tasks)
 
-* [Demo Website](https://ezannotate.ai4bharat.org)
-  * [Demo Video](demo)
+* [Website](https://ezannotate.ai4bharat.org)
+  * [See Demo](demo)
 
 * [Technical Details](code/index)
   * [Developing](code/developing)
