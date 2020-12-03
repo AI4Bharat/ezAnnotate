@@ -42,7 +42,7 @@ For the latest API Documentation, [**Click Here**](https://docs.dataturks.com/).
 - Performance improvement.
 - Enhanced mobile support.
 - Further enhanced performance.
-- Newly added [**Transliteration Input Tool**](https://drive.google.com/file/d/1WlzBTKylfYmNHc0JbPNkJbyNtlYaXfbX/view).
+- Newly added [**Transliteration Input Tool**](https://drive.google.com/file/d/1SkXzgqftbR4Nv8xOfPyTtMy5hffFWq4c/view).
 
 ToDo:  
 Update older logs
