@@ -2,6 +2,20 @@
 
 #### EZAnnotate is an open-source tool for powering data annotations for maching learning, data science, NLP and other AI tasks.
 
+## Quick Sneakpeak at the Features
+
+EZAnnotate provides support for a lot of useful annotation and taggin features such as:
+
+- Document Annotations (Pdf, Docs, Text etc)	
+- Label Inside Labels/Overlapping
+- NER/PoS Tagging	
+- Text Classification	
+- Text Summarization	
+- Content Moderation	
+- Multi-user work support for teams/groups	
+- Data Visualization	
+- Per-user Analytics
+
 This is just a template for the project.  
 You need to edit all the files in it (including this README),  
 feel free to structure it however you want and  
