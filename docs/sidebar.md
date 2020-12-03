@@ -19,5 +19,6 @@
 
 * [Technical Support]()
   * [Setup on Linux](Building_on_Linux)
+  * [Current Changelog](changelog)
 
 * [About us](about)
