@@ -17,7 +17,7 @@
   * [Hosting](code/hosting) -->
   
 
-* [Technical Details]()
-  * [EZAnnotate setup on Linux](Building_on_Linux)
+* [Technical Support]()
+  * [Setup on Linux](Building_on_Linux)
 
 * [About us](about)
