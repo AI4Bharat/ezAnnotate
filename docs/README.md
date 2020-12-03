@@ -4,7 +4,7 @@
 
 ## A Sneakpeak at the Features
 
-EZAnnotate provides support for a lot of useful annotation and taggin features such as:
+EZAnnotate provides support for wise array of features such as:
 
 - Document Annotations (Pdf, Docs, Text etc)	
 - Label Inside Labels/Overlapping
