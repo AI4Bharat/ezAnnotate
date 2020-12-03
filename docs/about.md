@@ -1,4 +1,4 @@
-#What our group represents
+# What our group represents
 
 Our group is focused on taking the tasks like annotation, classification etc to the next level. We are continuously improving the existing features alongside developing new features. EZAnnotate was made by love from the Engineers from [One Fourth Labs](https://www.onefourthlabs.com/) under the [AI4Bharat Initiative](https://ai4bharat.org/).
 
