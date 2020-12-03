@@ -2,7 +2,7 @@
 
 #### EZAnnotate is an open-source tool for powering data annotations for maching learning, data science, NLP and other AI tasks.
 
-## Quick Sneakpeak at the Features
+## A Sneakpeak at the Features
 
 EZAnnotate provides support for a lot of useful annotation and taggin features such as:
 
