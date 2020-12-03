@@ -26,4 +26,10 @@ There are two ways you can upload the data:
 
 ### Downloading tagged data
 
-Once you are done with the tagging, you can download the result. The resulting data is a text file. Each line of the result data is a JSON which contains the text from the document. Also, the JSON contains the definition of each entity that has been tagged or labelled in the document.
+Once you are done with the tagging, you can download the result. 
+
+![download-res](/docs/assets/download-res.png)
+
+The resulting data is a text file. Each line of the result data is a JSON which contains the text from the document. Also, the JSON contains the definition of each entity that has been tagged or labelled in the document.
+
+![result-json](/docs/assets/result-json.png)
