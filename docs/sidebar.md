@@ -3,7 +3,7 @@
 * [Features](how-it-works/index)
   * [Document Annotations](how-it-works/tasks)
   * [Text Annotations](how-it-works/txt-annotation)
-  * [Multi-user work support for teams/groups](how-it-works/multi-user-support)
+  * [Work support for teams](how-it-works/multi-user-support)
   * [Data Visualization](how-it-works/data-vis)
   * [Architecture](how-it-works/architecture)
 
