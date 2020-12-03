@@ -8,7 +8,7 @@ The **text annotation** is a simple feature provided by EZAnnotate that lets you
 
 ## Augmented Transliteration Input Tool
 
-Recently we have walked an extra mile and integrated a **Transliteration Input Tool**(we call it the TIA). Optimised especially for you. By this, you can easily provide correct texts in a large array of Indian languages.
+Recently we have walked an extra mile and integrated a **Transliteration Input Tool**(we call it the TIA). Optimised especially for you. By this, you can easily provide correct texts in a wide array of Indian languages.
 
 ## Supported Language for the TIA
 
