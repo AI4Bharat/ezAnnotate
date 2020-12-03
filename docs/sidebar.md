@@ -1,7 +1,8 @@
 * [HOME](/)
 
 * [Features](how-it-works/index)
-  * [Tasks Supported](how-it-works/tasks)
+  * [Document Annotations](how-it-works/tasks)
+  * [Text Annotations](how-it-works/txt-annotation)
   * [Architecture](how-it-works/architecture)
 
 * [Website](https://ezannotate.ai4bharat.org)
