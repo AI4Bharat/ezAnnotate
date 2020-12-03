@@ -9,9 +9,13 @@
 
 * [Try EZAnnotate](https://ezannotate.ai4bharat.org)
 
-* [Technical Details](code/index)
+<!-- * [Technical Details](code/index)
   * [Developing](code/developing)
   * [Building on Linux](Building_on_Linux)
-  * [Hosting](code/hosting)
+  * [Hosting](code/hosting) -->
+  
+
+* [Technical Details]()
+  * [EZAnnotate setup on Linux](Building_on_Linux)
 
 * [About us](about)
