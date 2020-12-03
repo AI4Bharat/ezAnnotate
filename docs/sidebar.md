@@ -5,7 +5,7 @@
   * [Text Annotations](how-it-works/txt-annotation)
   * [Work support for teams](how-it-works/multi-user-support)
   * [Data Visualization](how-it-works/data-vis)
-  * [Architecture](how-it-works/architecture)
+  <!-- * [Architecture](how-it-works/architecture) -->
 
 * [Try EZAnnotate](https://ezannotate.ai4bharat.org)
 
