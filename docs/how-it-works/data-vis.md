@@ -12,7 +12,7 @@ This is project-based data analytics. You can see the metrics like **Unique Word
 
 EZAnnotate has a built-in stat-metric in the profile section. It shows project-specific analytics based on the authenticated user.
 
-When a person has worked on many projects, managing that can be complicated. The user-stat provided by EZAnnotate lets you put a grip on that. The analytic shows various statistics like Time(s) per HIT, Performed HITs, Deleted or Skipped HITs, Correct or Incorrect HITs etc. These statistics are shown based on the projects that the user has worked so far. 
+When a person has worked on many projects, managing that can be complicated. The user-stat provided by EZAnnotate lets you put a grip on that. The analytic shows various statistics like **Time(s) per HIT**, **Performed HITs**, **Deleted or Skipped HITs**, **Correct or Incorrect HITs** etc. These statistics are shown based on the projects that the user has worked so far. 
 
 ![profile-stat-1](../assets/profile-stat-1.png)
 
