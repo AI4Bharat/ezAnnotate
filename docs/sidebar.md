@@ -1,8 +1,8 @@
 * [HOME](/)
 
 * [Features](how-it-works/index)
-  * [Architecture](how-it-works/architecture)
   * [Tasks Supported](how-it-works/tasks)
+  * [Architecture](how-it-works/architecture)
 
 * [Website](https://ezannotate.ai4bharat.org)
   * [See Demo](demo)
