@@ -1,6 +1,8 @@
 * [HOME](/)
 
-* [Features](how-it-works/index)
+<!--* [Features](how-it-works/index)-->
+
+* [Features]()
   * [Document Annotations](how-it-works/tasks)
   * [Text Annotations](how-it-works/txt-annotation)
   * [Work support for teams](how-it-works/multi-user-support)
