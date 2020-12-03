@@ -8,11 +8,11 @@ Using this feature, you can tag and mark entities in PDF, DOC, DOCX or text docu
 
 - You can select any word on sentence and then select the checkboxes from the tagging window. Once done, press the save to tag the selected data. You can label data with multiple tags.
 
-![selecting-tags](/docs/assets/selecting-tags.png)
+![selecting-tags](../assets/selecting-tags.png)
 
 - You can also perform multi-labelling on single data. After labelling it once, select the data and label it again in the same process described above. 
 
-![tagging-res](/docs/assets/tagging-res.png)
+![tagging-res](../assets/tagging-res.png)
 
 ### Uploading data
 
@@ -28,8 +28,8 @@ There are two ways you can upload the data:
 
 Once you are done with the tagging, you can download the result. 
 
-![download-res](/docs/assets/download-res.png)
+![download-res](../assets/download-res.png)
 
 The resulting data is a text file. Each line of the result data is a JSON which contains the text from the document. Also, the JSON contains the definition of each entity that has been tagged or labelled in the document.
 
-![result-json](/docs/assets/result-json.png)
+![result-json](../assets/result-json.png)
