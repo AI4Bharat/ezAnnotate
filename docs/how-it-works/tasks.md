@@ -2,15 +2,15 @@
 
 Using this feature, you can tag and mark entities in PDF, DOC, DOCX or text documents. You can just create such a project, upload your data and start tagging. You can collect the data once you are done by downloading.
 
-- On the tagger window, you can see all the available tags. They are color coded.
+- **On the tagger window, you can see all the available tags. They are color coded.**
 
 ![text-tags](../assets/text-tags.png)
 
-- You can select any word on sentence and then select the checkboxes from the tagging window. Once done, press the save to tag the selected data. You can label data with multiple tags.
+- **You can select any word on sentence and then select the checkboxes from the tagging window. Once done, press the save to tag the selected data. You can label data with multiple tags.**
 
 ![selecting-tags](../assets/selecting-tags.png)
 
-- You can also perform multi-labelling on single data. After labelling it once, select the data and label it again in the same process described above. 
+- **You can also perform multi-labelling on single data. After labelling it once, select the data and label it again in the same process described above. **
 
 ![tagging-res](../assets/tagging-res.png)
 
