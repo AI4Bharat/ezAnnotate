@@ -5,8 +5,7 @@
   * [Text Annotations](how-it-works/txt-annotation)
   * [Architecture](how-it-works/architecture)
 
-* [Website](https://ezannotate.ai4bharat.org)
-  * [See Demo](demo)
+* [Try EZAnnotate](https://ezannotate.ai4bharat.org)
 
 * [Technical Details](code/index)
   * [Developing](code/developing)
