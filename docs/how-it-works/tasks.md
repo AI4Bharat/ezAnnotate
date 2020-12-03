@@ -4,13 +4,25 @@ Using this feature, you can tag and mark entities in *PDF, DOC, DOCX or text doc
 
 ## Features
 
-- **Multi-labelling and Overlapping:** This featur enables you to tag entities inside other entity.
+- **Multi-labelling and Overlapping:** This feature enables you to tag entities inside other entity.
 
 ![overlapping](../assets/overlapping.png)
 
+- **Text Classification:** This features enables you to perform classification on your textual data. You can classify them in single or multi classes from the available set of classes.
+
+![txt-class](../assets/txt-class.png)
+
+- **NER and PoS Labeling:** This useful feature enables you to tag **entities** from the available set of tag-able entities. You can tag **parts-of-speech** using this feature as well.
+
+![ner-pos](../assets/ner-pos.png)
+
+- **Text Summarization:** If you have some text or a bulk content, by this feature you can easily and effectively moderate all your content.
+
+![txt-summ](../assets/txt-summ.png)
+
 ## How it Works
 
-- **On the tagger window, you can see all the available tags. They are color coded.**
+- **On the tagger window, you can see all the available tags. They are color-coded.**
 
 ![text-tags](../assets/text-tags.png)
 
@@ -38,6 +50,6 @@ Once you are done with the tagging, you can download the result.
 
 ![download-res](../assets/download-res.png)
 
-The resulting data is a *text file*. Each line of the result data is a **JSON** which contains the text from the document. Also, the **JSON** contains the definition of each entity that has been tagged or labelled in the document.
+The resulting data is a *text file*. Each line of the result data is a **JSON** which contains the text from the document. Also, the **JSON** contains the definition of each entity that has been tagged or labelled in the document. You can also download the content in the Stanford NLP or spacy format.
 
 ![result-json](../assets/result-json.png)
