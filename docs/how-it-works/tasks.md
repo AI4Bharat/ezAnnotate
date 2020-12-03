@@ -1,6 +1,14 @@
-## Full-Length Document Annotations
+# Full-Length Document Annotations
 
-Using this feature, you can tag and mark entities in *PDF, DOC, DOCX or text documents*. You can just create such a project, upload your data and start tagging. You can collect the data once you are done by downloading. This also supports **multi-labelling** and **overlapping** which enables you to tag entities inside other entity.
+Using this feature, you can tag and mark entities in *PDF, DOC, DOCX or text documents*. You can just create such a project, upload your data and start tagging. You can collect the data once you are done by downloading. 
+
+## Features
+
+- **Multi-labelling and Overlapping:** This featur enables you to tag entities inside other entity.
+
+![overlapping](../assets/overlapping.png)
+
+## How it Works
 
 - **On the tagger window, you can see all the available tags. They are color coded.**
 
