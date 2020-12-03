@@ -15,6 +15,7 @@ EZAnnotate provides support for a lot of useful annotation and taggin features s
 - Multi-user work support for teams/groups	
 - Data Visualization	
 - Per-user Analytics
+- Enterprise-grade Solution
 
 <!--This is just a template for the project.  
 You need to edit all the files in it (including this README),  
