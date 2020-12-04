@@ -1,4 +1,4 @@
-#### What's new in EzAnnotate Beta 2
+#### What's new in EZAnnotate Beta 2.0
 
 - Brand new UI design.
 - Introduced new feature: A detailed profile page for users, from where you'll be able to track self-engagement and contribution to the system.
