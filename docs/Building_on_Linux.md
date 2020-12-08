@@ -48,7 +48,8 @@ cd bazaar/
 chmod -R 777 *
 ```
 
-#### Setting up the server stack
+#### Setting up the apache server stack
+
 ```
 sudo apt install -y apache2 php7.0 libapache2-mod-php7.0
 sudo a2enmod proxy_http
@@ -57,6 +58,7 @@ sudo service apache2 restart
 
 sudo cp ../hope/docker/onprem-dataturks.com.conf /etc/apache2/sites-available/
 sudo sed -i "s|/home/dataturks/bazaar|`pwd`|g" /etc/apache2/sites-available/onprem-dataturks.com.conf
+sudo a2dissite 000-default.conf
 sudo a2ensite onprem-dataturks.com.conf
 
 sudo cp ../hope/docker/dataturks-ssl.conf /etc/apache2/sites-available/
