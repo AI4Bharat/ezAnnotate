@@ -9,7 +9,7 @@
   * [Data Visualization](how-it-works/data-vis)
   <!-- * [Architecture](how-it-works/architecture) -->
 
-* [Try EZAnnotate](https://ezannotate.ai4bharat.org)
+<!-- * [Try EZAnnotate](https://ezannotate.ai4bharat.org) -->
 
 <!-- * [Technical Details](code/index)
   * [Developing](code/developing)
